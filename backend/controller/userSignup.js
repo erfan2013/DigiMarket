@@ -5,7 +5,8 @@ var bcrypt = require('bcryptjs');
 async function userSignupController(req,res){
     try{
         const {name,email,password} = req.body
-
+        
+            
             const user = await userModel.findOne({email})
             console.log(user)
             if(user){
@@ -31,6 +32,7 @@ async function userSignupController(req,res){
 
         const payload = {
             ...req.body,
+            role : "GENERAL",
             password : hashPasword
 
         }
