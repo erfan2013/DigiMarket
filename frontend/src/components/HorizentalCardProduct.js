@@ -30,7 +30,8 @@ const HorizentalCardProduct = ({category,heading}) => {
    setLoading(false)
 
    
-    setData(categoryProduct?.data)
+    setData(Array.isArray(categoryProduct?.data) ? categoryProduct.data : []);
+
 
   }
   useEffect(()=>{
@@ -77,7 +78,7 @@ const HorizentalCardProduct = ({category,heading}) => {
   
           })
         ) : (
-          data.map((product,index)=>{
+          (data || []).map((product,index)=>{
             return(
   
               <Link key={index} to={'/product/' +product?._id} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-36 bg-white rounded-lg shadow flex' onClick={scrollToTop}>

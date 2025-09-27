@@ -29,7 +29,8 @@ const VerticalCardProduct = ({category,heading}) => {
     setLoading(false)
 
    
-    setData(categoryProduct?.data)
+    setData(Array.isArray(categoryProduct?.data) ? categoryProduct.data : []);
+
 
   }
   useEffect(()=>{
@@ -81,7 +82,7 @@ const VerticalCardProduct = ({category,heading}) => {
 
 
         ) : (
-            data.map((product,index)=>{
+            (data || []).map((product,index)=>{
                 return(
                   <Link key={index} to={'/product/' +product?._id} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow' onClick={scrollToTop}>
                   <div className='bg-slate-200 h-48 p-4 min-w-[280px] md:min-w-[145px] flex justify-center items-center '>

@@ -12,7 +12,7 @@ const CategoryList = () => {
         const response = await fetch(SummaryApi.categoryProduct.url);
         const dataResponse = await response.json();
         setLoading(false)
-        setCategoriesProduct(dataResponse.data)
+        setCategoriesProduct(Array.isArray(dataResponse?.data) ? dataResponse.data : []);
         console.log("response", dataResponse)
     }
 
@@ -37,7 +37,7 @@ const CategoryList = () => {
         
         ):
         (
-            categoryProduct.map((product,index) => (
+            (categoryProduct || []).map((product,index) => (
                 <Link to={'/product-category?category='+product?.category} className='cursor-pointer' key={product?.category}>
                     <div className='w-16 md:w-20 h-20 rounded-lg overflow-hidden p-4 bg-slate-200  flex items-center justify-center'>
                           <img src={product?.ProductImage[0]} alt={product.category} className='w-fit object-scale-down h-full mix-blend-multiply hover:scale-125 transition-all' />
