@@ -1,4 +1,4 @@
-const backendDomain = "http://localhost:8080"
+const backendDomain = "https://digimarket-luaj.onrender.com"
 
 const SummaryApi = {
     SignUp : {
