@@ -132,7 +132,7 @@ const UploadProdoct = ({
                         {
                             data.ProductImage.map((el,index) => {
                                 return (
-                                    <div className='relative group'>
+                                    <div key={index} className='relative group'>
                                         <img src={el} alt={el} width={80} height={80} className='bg-slate-100 border rounded-lg' onClick={() =>{
                                         setOpenFullScreenImage(true)
                                         setFullScreenImage(el)

@@ -57,7 +57,7 @@ const VerticalCardProduct = ({category,heading}) => {
         loading ? (
             loadingList.map((product,index)=>{
                 return(
-                  <div className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow '>
+                  <div key={index} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow '>
                   <div className='bg-slate-200 h-48 p-4 min-w-[280px] md:min-w-[145px] flex justify-center items-center animate-pulse '>
                   </div>
                   <div className='p-4 mx-auto gap-3 '>
@@ -83,7 +83,7 @@ const VerticalCardProduct = ({category,heading}) => {
         ) : (
             data.map((product,index)=>{
                 return(
-                  <Link to={'/product/' +product?._id} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow' onClick={scrollToTop}>
+                  <Link key={index} to={'/product/' +product?._id} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow' onClick={scrollToTop}>
                   <div className='bg-slate-200 h-48 p-4 min-w-[280px] md:min-w-[145px] flex justify-center items-center '>
                   <img src={product.ProductImage[0]} alt={product.category} className='cursor-pointer objeect-scale-down hover:scale-110 transition-all mix-blend-multiply h-full' />
                   </div>
