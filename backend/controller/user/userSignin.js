@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const userModel = require('../../models/userModel');
 const jwt = require('jsonwebtoken');
 
-const isProd = process.env.NODE_ENV === 'production';
+
 
 async function userSigninController(req, res) {
   try {
@@ -21,7 +21,7 @@ async function userSigninController(req, res) {
 
     const tokenData = { _id: user._id, email: user.email };
     const token = jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, { expiresIn: "8h" });
-
+    const isProd = process.env.NODE_ENV === 'production';
     const cookieOptions = {
       httpOnly: true,
       secure: isProd,                     // فقط روی پروداکشن

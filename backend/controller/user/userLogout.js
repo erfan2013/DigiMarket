@@ -1,5 +1,4 @@
 const isProd = process.env.NODE_ENV === 'production';
-
 async function userLogout(req, res) {
   try {
     res.clearCookie("token", {
