@@ -22,8 +22,8 @@ const AdminPanel = () => {
         <div className='h-32 flex items-center justify-center flex-col'>
         <div className='text-5xl cursor-pointer relative flex items-center justify-center py-4'>
            {
-              user?.profilepic ? (
-                <img src={user?.profilepic} alt={user?.name} className='w-15 h-15 rounded-full' />
+              user?.profilePic ? (
+                <img src={user?.profilePic} alt={user?.name} className='w-16 h-16 rounded-full' />
               ) : (
                 <FaUser />
               )

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import moment from 'moment'
 import { MdEdit } from "react-icons/md";
 import ChengeUserRool from '../components/ChengeUserRole';
-
+import { authHeaders } from '../common/auth';
 const AllUsers = () => {
     const [allUser, setAllUsers] = useState([]);
     const [openUpdateRole, setOpenUpdateRole] = useState(false);
@@ -18,17 +18,29 @@ const AllUsers = () => {
 
     })
     const fetchAllUsers = async() => {
-        const fetchData = await fetch(SummaryApi.allUser.url,{
+        const res = await fetch(SummaryApi.allUser.url,{
             method: SummaryApi.allUser.method,
             credentials: "include",
+            headers: {
+         ...authHeaders(),                // ⭐️ هدر Bearer
+         'Cache-Control': 'no-store',     // ⭐️ جلوگیری از 304
+       },
         })
-        const dataResponse = await fetchData.json()
+
+        const dataResponse = await res.json()
+        if (res.status === 401) {
+       toast.error('Unauthorized. Please login as admin.');
+       return;
+     }
         if(dataResponse.success){
             setAllUsers(dataResponse.data)
         }
 
         if(dataResponse.error){
             toast.error(dataResponse.massage)
+        }
+        if (dataResponse.error) {
+            toast.error(dataResponse.message || 'Failed to load users');
         }
     }
 
@@ -39,7 +51,7 @@ const AllUsers = () => {
     <div className='bg-white pb-4'>
         <table className='w-full userTable'>
             <thead>
-               <tr className="bg-slate-600 text-white">
+               <tr className="bg-slate-600 text-white" key={el?._id}>
                 <th>sr.</th>
                 <th>Name</th>
                 <th>Email</th>

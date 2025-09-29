@@ -82,8 +82,8 @@ const Header = () => {
               user?._id && (
                 <div className='text-3xl cursor-pointer' onClick={() => setMenuDisplay(preve => ! preve)}>
            {
-              user?.profilepic ? (
-                <img src={user?.profilepic} alt={user?.name} className='w-8 h-8 rounded-full' />
+              user?.profilePic ? (
+                <img src={user?.profilePic} alt={user?.name} className='w-8 h-8 rounded-full' />
               ) : (
                 <FaUser />
               )
