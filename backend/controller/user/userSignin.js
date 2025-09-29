@@ -26,7 +26,7 @@ async function userSigninController(req, res) {
       httpOnly: true,
       path: "/",
       secure: isProd,                     // فقط روی پروداکشن
-      sameSite: isProd ? "none" : "lax",  // روی لوکال = lax
+      sameSite: "none",  // روی لوکال = lax
       maxAge: 8 * 60 * 60 * 1000,          // 8 ساعت
     };
 
