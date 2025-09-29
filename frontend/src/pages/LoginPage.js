@@ -42,14 +42,17 @@ const LoginPage = () => {
 
     const dataApi = await dataResponse.json();
 
-    if(dataApi.success){
-      toast.success(dataApi.message);
-      
-      navigate("/")
-      fetchUserDetails();
-      fetchUserAddToCart();
+   if (dataApi.success) {
+   toast.success(dataApi.message);
+   // فالبک برای زمانی که کوکی third-party ارسال نشه
+   if (dataApi.data) {
+     localStorage.setItem('jwt', dataApi.data);
+   }
+   await fetchUserDetails();   // اول پروفایل بیاد
+   await fetchUserAddToCart();
+   navigate("/");
+   }
     
-    }
     if(dataApi.error){
       toast.error(dataApi.message);
     }

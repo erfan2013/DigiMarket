@@ -9,6 +9,7 @@ import SummaryApi from './common';
 import Context from './context';
 import { useDispatch } from 'react-redux';
 import { setUserDetails } from './Store/UserSlice';
+import { authHeaders } from './common/auth';
 
 
 
@@ -22,8 +23,12 @@ function App() {
       method: SummaryApi.current_user.method,
       credentials: 'include',
       cache: 'no-store',
-     
+      headers: {
+        ...authHeaders(),
+      },
+
     })
+    
     const dataApi = await dataResponse.json();
 
     if (dataApi.success) {
@@ -38,6 +43,10 @@ function App() {
       method: SummaryApi.countAddToCart.method,
       credentials: 'include',
       cache: 'no-store',
+      headers: {
+       'Content-Type': 'application/json',
+       ...authHeaders(),
+     },
     })
 
     const dataApi = await dataResponse.json();
