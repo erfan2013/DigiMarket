@@ -7,51 +7,109 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// لازم برای کوکی Secure پشت پراکسی (Render/Vercel)
+// 1) حتماً برای HTTPS پشت پراکسی (Render)
 app.set("trust proxy", 1);
 
-// میدل‌ورها
+// 2) میدلورها
 app.use(express.json());
 app.use(cookieParser());
 
-// مبداهای مجاز را از ENV (Comma-separated) بخوان
-// مثال در .env:
-// FRONT_END_URLS="https://digi-market-zeta.vercel.app,http://localhost:3000"
+// 3) CORS: هر دو مبدا (Vercel + لوکال) مجاز باشند
+// Render → Environment: FRONT_END_URLS="https://digi-market-zeta.vercel.app,http://localhost:3000"
 const allowedOrigins = (process.env.FRONT_END_URLS || "")
   .split(",")
   .map(s => s.trim())
   .filter(Boolean);
 
-app.use(
-  cors({
-    origin(origin, cb) {
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-      return cb(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors({
+  origin(origin, cb) {
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+}));
 
-// preflight
+// preflight برای برخی مرورگرها حیاتی است
 app.options("*", cors());
 
-// health check (برای تست سریع)
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok" });
-});
+// (اختیاری) هِلث
+app.get("/health", (req,res)=>res.status(200).json({status:"ok"}));
 
-// API
+// روتر اصلی
 app.use("/api", router);
 
 const PORT = process.env.PORT || 8080;
-
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+connectDB().then(()=>{
+  app.listen(PORT, ()=> console.log(`Server is running on port ${PORT}`));
+  console.log("Server is running");
 });
+
+
+
+
+
+
+
+
+
+
+
+// const express = require("express");
+// const cors = require("cors");
+// require("dotenv").config();
+// const connectDB = require("./config/db");
+// const router = require("./routes/index");
+// const cookieParser = require("cookie-parser");
+
+// const app = express();
+
+// // لازم برای کوکی Secure پشت پراکسی (Render/Vercel)
+// app.set("trust proxy", 1);
+
+// // میدل‌ورها
+// app.use(express.json());
+// app.use(cookieParser());
+
+// // مبداهای مجاز را از ENV (Comma-separated) بخوان
+// // مثال در .env:
+// // FRONT_END_URLS="https://digi-market-zeta.vercel.app,http://localhost:3000"
+// const allowedOrigins = (process.env.FRONT_END_URLS || "")
+//   .split(",")
+//   .map(s => s.trim())
+//   .filter(Boolean);
+
+// app.use(
+//   cors({
+//     origin(origin, cb) {
+//       if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+//       return cb(new Error("Not allowed by CORS"));
+//     },
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   })
+// );
+
+// // preflight
+// app.options("*", cors());
+
+// // health check (برای تست سریع)
+// app.get("/health", (req, res) => {
+//   res.status(200).json({ status: "ok" });
+// });
+
+// // API
+// app.use("/api", router);
+
+// const PORT = process.env.PORT || 8080;
+
+// connectDB().then(() => {
+//   app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+//   });
+// });
 
 
 

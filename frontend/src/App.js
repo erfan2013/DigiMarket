@@ -21,6 +21,7 @@ function App() {
     const dataResponse = await fetch(SummaryApi.current_user.url, {
       method: SummaryApi.current_user.method,
       credentials: 'include',
+      cache: 'no-store',
      
     })
     const dataApi = await dataResponse.json();
@@ -36,6 +37,7 @@ function App() {
     const dataResponse = await fetch(SummaryApi.countAddToCart.url, {
       method: SummaryApi.countAddToCart.method,
       credentials: 'include',
+      cache: 'no-store',
     })
 
     const dataApi = await dataResponse.json();

@@ -24,9 +24,10 @@ async function userSigninController(req, res) {
     const isProd = process.env.NODE_ENV === 'production';
     const cookieOptions = {
       httpOnly: true,
+      path: "/",
       secure: isProd,                     // فقط روی پروداکشن
       sameSite: isProd ? "none" : "lax",  // روی لوکال = lax
-      path: "/",
+      maxAge: 8 * 60 * 60 * 1000,          // 8 ساعت
     };
 
     res.cookie("token", token, cookieOptions).status(200).json({
