@@ -51,7 +51,7 @@ const AllUsers = () => {
     <div className='bg-white pb-4'>
         <table className='w-full userTable'>
             <thead>
-               <tr className="bg-slate-600 text-white" key={el?._id}>
+               <tr className="bg-slate-600 text-white">
                 <th>sr.</th>
                 <th>Name</th>
                 <th>Email</th>
@@ -65,7 +65,7 @@ const AllUsers = () => {
                 {
                     allUser.map((el, index) => {
                         return(
-                            <tr>
+                            <tr key={el?._id}>
                                 <td>{index+1}</td>
                                 <td>{el?.name}</td>
                                 <td>{el?.email}</td>
