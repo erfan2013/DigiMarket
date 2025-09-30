@@ -35,6 +35,7 @@ async function userSigninController(req, res) {
       data: token,
       success: true,
       error: false,
+      token,
     });
 
   } catch (err) {

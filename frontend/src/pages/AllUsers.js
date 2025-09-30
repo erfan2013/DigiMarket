@@ -22,8 +22,8 @@ const AllUsers = () => {
             method: SummaryApi.allUser.method,
             credentials: "include",
             headers: {
-         ...authHeaders(),                // ⭐️ هدر Bearer
-         'Cache-Control': 'no-store',     // ⭐️ جلوگیری از 304
+         ...authHeaders(),                // ⭐️ هدر Bearer       },
+         cache: "no-cache",
        },
         })
 

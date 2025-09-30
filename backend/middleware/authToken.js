@@ -1,52 +1,78 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 async function authToken(req, res, next) {
   try {
-    // 1) توکن را از کوکی یا هدر بخوان
     const bearer = req.headers.authorization;
-    const headerToken = bearer && bearer.startsWith('Bearer ')
-      ? bearer.slice(7)        // حذف "Bearer "
-      : null;
+    const headerToken = bearer && bearer.startsWith("Bearer ") ? bearer.slice(7) : null;
+    const cookieToken = req.cookies?.token;
+    const token = headerToken || cookieToken;
 
-    const token = req.cookies?.token || headerToken;
-    console.log('authToken → token:', token ? '[present]' : '[missing]');
-
-    // 2) اگر نبود، 401 بده (نه 200)
     if (!token) {
-      return res.status(401).json({
-        message: 'Please Login...!',
-        error: true,
-        success: false,
-      });
+      return res.status(401).json({ message: "Unauthorized", error: true, success: false });
     }
 
-    // 3) اعتبارسنجی JWT
-    jwt.verify(token, process.env.TOKEN_SECRET_KEY, (err, decoded) => {
-      if (err) {
-        console.log('authToken → verify err:', err?.message);
-        return res.status(401).json({
-          message: 'Invalid or expired token',
-          error: true,
-          success: false,
-        });
-      }
-
-      // 4) تزریق userId و ادامه
-      req.userId = decoded?._id;
-      return next();
-    });
-
-  } catch (error) {
-    console.log('authToken → catch:', error?.message);
-    return res.status(400).json({
-      message: error.message || 'Auth error',
-      error: true,
-      success: false,
-    });
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
+    req.userId = decoded?._id;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token", error: true, success: false });
   }
 }
 
 module.exports = authToken;
+
+
+
+
+// const jwt = require('jsonwebtoken');
+
+// async function authToken(req, res, next) {
+//   try {
+//     // 1) توکن را از کوکی یا هدر بخوان
+//     const bearer = req.headers.authorization;
+//     const headerToken = bearer && bearer.startsWith('Bearer ')
+//       ? bearer.slice(7)        // حذف "Bearer "
+//       : null;
+
+//     const token = req.cookies?.token || headerToken;
+//     console.log('authToken → token:', token ? '[present]' : '[missing]');
+
+//     // 2) اگر نبود، 401 بده (نه 200)
+//     if (!token) {
+//       return res.status(401).json({
+//         message: 'Please Login...!',
+//         error: true,
+//         success: false,
+//       });
+//     }
+
+//     // 3) اعتبارسنجی JWT
+//     jwt.verify(token, process.env.TOKEN_SECRET_KEY, (err, decoded) => {
+//       if (err) {
+//         console.log('authToken → verify err:', err?.message);
+//         return res.status(401).json({
+//           message: 'Invalid or expired token',
+//           error: true,
+//           success: false,
+//         });
+//       }
+
+//       // 4) تزریق userId و ادامه
+//       req.userId = decoded?._id;
+//       return next();
+//     });
+
+//   } catch (error) {
+//     console.log('authToken → catch:', error?.message);
+//     return res.status(400).json({
+//       message: error.message || 'Auth error',
+//       error: true,
+//       success: false,
+//     });
+//   }
+// }
+
+// module.exports = authToken;
 
 
 
