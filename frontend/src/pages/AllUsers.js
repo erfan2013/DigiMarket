@@ -21,10 +21,10 @@ const AllUsers = () => {
         const res = await fetch(SummaryApi.allUser.url,{
             method: SummaryApi.allUser.method,
             credentials: "include",
+            cache: "no-cache",
             headers: {
-         ...authHeaders(),                // ⭐️ هدر Bearer       },
-         cache: "no-cache",
-       },
+                ...authHeaders(),                // ⭐️ هدر Bearer
+            },
         })
 
         const dataResponse = await res.json()
