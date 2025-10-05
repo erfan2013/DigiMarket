@@ -82,6 +82,30 @@ const SummaryApi = {
         url : `${backendDomain}/api/checkout`,
         method : "post"
     },
+    me: {
+        url: `${backendDomain}/api/me`,
+        method: "get"
+    },
+    updateMe: {
+        url: `${backendDomain}/api/me`,
+        method: "PATCH"
+    },
+    changePassword: {
+        url: `${backendDomain}/api/change-password`,
+        method: "PATCH"
+    },
+    updateAvatar: {
+        url: `${backendDomain}/api/me/avatar`,
+        method: "PATCH"
+    },
+    forgotPassword: {
+        url: `${backendDomain}/api/auth/forgot-password`,
+        method: "POST"
+    },
+    resetPassword: {
+        url: `${backendDomain}/api/auth/reset-password`,
+        method: "POST"
+    }
 }
 
 export default SummaryApi

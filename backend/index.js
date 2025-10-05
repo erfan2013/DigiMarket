@@ -3,44 +3,111 @@ const cors = require("cors");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
-const router = require("./routes/index");
+const router = require("./routes/index");     // ← فقط یک روتر نهایی
+// یا اگر همه‌چیز در user.js است: const router = require("./routes/user");
+const path = require("path");
 
 const app = express();
-
-// پشت پراکسی/کلودفلر/رندر
 app.set("trust proxy", 1);
 
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// اجازه‌دادن به مبداهای تولید و لوکال (ENV روی Render: FRONT_END_URLS="https://digi-market-zeta.vercel.app,http://localhost:3000")
-const allowedOrigins = (process.env.FRONT_END_URLS || "").split(",").map(s => s.trim()).filter(Boolean);
+// ---------- CORS (حتماً قبل از /api) ----------
+const allowedOrigins = (process.env.FRONT_END_URLS || "")
+  .split(",")
+  .map(s => s.trim())
+  .filter(Boolean); // e.g. "http://localhost:3000,https://digi-market-zeta.vercel.app"
 
 const corsOptions = {
   origin(origin, cb) {
-    if (!origin) return cb(null, true); // مثل Postman
-    return cb(null, allowedOrigins.includes(origin));
+    if (!origin) return cb(null, true);                 // Postman/server-to-server
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error("Not allowed by CORS: " + origin));
   },
   credentials: true,
-  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"], // ← PATCH حتماً هست
   allowedHeaders: ["Content-Type","Authorization","Cache-Control","X-Requested-With"],
-  exposedHeaders: ["Set-Cookie"]
+  exposedHeaders: ["Set-Cookie"],
 };
 
-// حتماً preflight را هم پاسخ بده
+// preflight برای همه مسیرها
 app.options("*", cors(corsOptions));
+// CORS اصلی
 app.use(cors(corsOptions));
 
+// ---------- health ----------
 app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
 
+// ---------- API (فقط یک بار) ----------
 app.use("/api", router);
 
 const PORT = process.env.PORT || 8080;
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on :${PORT}`);
-  });
+  app.listen(PORT, () => console.log(`Server running on :${PORT}`));
+  console.log("server is connected");
 });
+
+
+
+
+
+
+
+
+
+
+// const express = require("express");
+// const cors = require("cors");
+// require("dotenv").config();
+// const cookieParser = require("cookie-parser");
+// const connectDB = require("./config/db");
+// const router = require("./routes/index");
+// const userRoutes = require("./routes/user");
+// const path = require("path");
+// const app = express();
+
+// // پشت پراکسی/کلودفلر/رندر
+// app.set("trust proxy", 1);
+// app.use(express.json());
+// app.use(cookieParser());
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/api", userRoutes);
+// // اجازه‌دادن به مبداهای تولید و لوکال (ENV روی Render: FRONT_END_URLS="https://digi-market-zeta.vercel.app,http://localhost:3000")
+// const allowedOrigins = [
+//   "http://localhost:3000",                      // لوکال فرانت
+//   "https://digi-market-zeta.vercel.app",       // پرود فرانت (در صورت نیاز تغییر بده)
+//   ...(process.env.FRONT_END_URLS
+//       ? process.env.FRONT_END_URLS.split(",").map(s=>s.trim())
+//       : []),
+// ];
+// const corsOptions = {
+//   origin(origin, cb) {
+//     if (!origin) return cb(null, true); // مثل Postman
+//     return cb(null, allowedOrigins.includes(origin));
+//   },
+//   credentials: true,
+//   methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+//   allowedHeaders: ["Content-Type","Authorization","Cache-Control","X-Requested-With"],
+//   exposedHeaders: ["Set-Cookie"]
+// };
+
+// // حتماً preflight را هم پاسخ بده
+// app.options("*", cors(corsOptions));
+// app.use(cors(corsOptions));
+
+// app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
+
+// app.use("/api", router);
+
+// const PORT = process.env.PORT || 8080;
+// connectDB().then(() => {
+//   app.listen(PORT, () => {
+//     console.log(`Server running on :${PORT}`);
+//     console.log("server is connected");
+//   });
+// });
 
 
 

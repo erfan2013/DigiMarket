@@ -6,6 +6,7 @@ import { RouterProvider } from 'react-router-dom';
 import router from './routes'; 
 import { store } from './Store/Store';
 import { Provider } from 'react-redux';
+import 'react-phone-number-input/style.css';
 
 // Ensure the root element exists
 const rootElement = document.getElementById('root');

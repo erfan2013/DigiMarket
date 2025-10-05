@@ -10,7 +10,16 @@ const userScheme = new mongoose.Schema({
     },
     password : String,
     profilePic : String,
-    role : String,
+    role: { type: String, enum: ["ADMIN","USER"], default: "USER" },
+    phone: { type: String, default: "" },
+    address: { type: String, default: "" },
+    avatar: { type: String, default: "" },
+    countryCode: { type: String, default: "" }, // +98 (اختیاری)
+    resetPasswordToken: { type: String, default: "" },
+    resetPasswordExpires: { type: Date, default: null },
+
+
+
 },{
     timestamps: true,
 })

@@ -3,7 +3,7 @@ import {createBrowserRouter} from 'react-router-dom';
 import App from '../App';
 import Home from '../pages/Home';
 import Login from '../pages/LoginPage';
-import ForgotPassword from '../pages/ForgotPassword';
+import ForgotPassword from '../pages/ForgotPaasword';
 import SignUp from '../pages/SignUp';
 import About from '../components/About';
 import PrivacyPolicy from '../components/PrivacyPolicy';
@@ -16,6 +16,10 @@ import CategoryProduct from '../pages/CategoryProduct';
 import ProductDetails from '../pages/ProductDetails';
 import Cart from '../pages/Cart';
 import SearchProduct from '../pages/SearchProduct';
+import ProtectedRoute from './ProtectedRoute';
+import Profile from '../pages/Profile';
+import AdminRoute from './AdminRoute';
+import ResetPassword from '../pages/ResetPasswords';
 
 const router = createBrowserRouter([
         {
@@ -70,10 +74,25 @@ const router = createBrowserRouter([
                     path: "search",
                     element: <SearchProduct/>
                 },
-                {
-                    path: "admin-panel",
-                    element: <AdminPanel/>,
-                    children : 
+            {
+                path: "profile",
+                element: <ProtectedRoute><Profile /></ProtectedRoute>
+            },
+            {
+                path: "reset-password",
+                element: <ResetPassword />
+            },
+            {
+                path: "forgot-password",
+                element: <ForgotPassword />
+            },
+            {
+                path: "admin-panel",
+                element: 
+                    <AdminRoute>
+                    <AdminPanel/>
+                    </AdminRoute>,
+                children : 
                     [
                         {
                             path: "all-users",
@@ -84,6 +103,7 @@ const router = createBrowserRouter([
                             element: <AllProducts/>
                         },
                     ]
+
                         
                     
                 },

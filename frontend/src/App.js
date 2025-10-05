@@ -12,7 +12,6 @@ import { setUserDetails } from './Store/UserSlice';
 import { authHeaders } from './common/auth';
 
 
-
 function App() {
   const dispatch = useDispatch()
   const [cartProductCount, setCartProductCount] = useState(0);
