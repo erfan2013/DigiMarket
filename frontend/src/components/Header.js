@@ -11,6 +11,7 @@ import ROLE from '../common/role';
 import Context from '../context';
 import Button from './ui/Button';
 
+
 export default function Header() {
   const user = useSelector(state => state?.user?.user);
   const dispatch = useDispatch();
@@ -22,6 +23,11 @@ export default function Header() {
   const serachQuery = URLSerach.get("q") || "";
   const [search, setSearch] = useState(serachQuery);
 
+
+
+
+  const HIDE_HEADER_PATHS = ['/login', '/sign-up'];
+  if (HIDE_HEADER_PATHS.includes(searchinput?.pathname)) return null;
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
       method: SummaryApi.logout_user.method,
