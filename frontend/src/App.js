@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation ,Link } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -10,6 +10,7 @@ import Context from './context';
 import { useDispatch } from 'react-redux';
 import { setUserDetails } from './Store/UserSlice';
 import { authHeaders } from './common/auth';
+import { MdOutlineHome } from "react-icons/md";
 
 function App() {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function App() {
 
   // 👇 مسیر فعلی برای تصمیم‌گیری نمایش/عدم نمایش هدر/فوتر
   const { pathname } = useLocation();
-  const HIDE_CHROME_ON = ['/login', '/signup'];
+  const HIDE_CHROME_ON = ['/login', '/sign-up'];
   const hideChrome = HIDE_CHROME_ON.some(
     p => pathname === p || pathname.startsWith(p + '/')
   );
@@ -64,6 +65,22 @@ function App() {
 
         {/* فقط وقتی auth page نیست هدر رو نشون بده */}
         {!hideChrome && <Header />}
+
+        {
+          hideChrome && (
+            <Link to="/" 
+            className=" ml-5 fixed left-4 top-4 z-50 inline-flex items-center gap-2 rounded-xl
+                      px-3 py-1.5 text-sm font-medium
+                      bg-white/10 text-white ring-1 ring-white/20 backdrop-blur
+                      hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/40"
+           aria-label="Back to home">
+              {/* Add content inside the Link, e.g. a home icon or text */}
+              <span>
+                <MdOutlineHome className='text-white text-5xl' />
+              </span>
+            </Link>
+          )
+        }
 
         {/* اگر هدر داریم، فاصله‌ی بالای مین رو بذاریم؛
             Header ارتفاع h-16 (4rem) داره، پس pt-16 دقیقا فیت می‌شه */}
