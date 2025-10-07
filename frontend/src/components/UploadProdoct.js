@@ -87,7 +87,7 @@ const UploadProdoct = ({
 
 
   return (
-    <div className='fixed w-full h-full bg-slate-200 bg-opacity-35 top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
+    <div className='fixed inset-0 z-[9999] w-full h-full bg-slate-200 bg-opacity-35 top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
       <div className='bg-white p-4 rounded-lg w-full max-w-xl h-full max-h-[82%] overflow-hidden'>
 
         <div className='flex items-center justify-between'>

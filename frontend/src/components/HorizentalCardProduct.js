@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import addToCart from '../helper/addToCart'
 import Context from '../context'
 import scrollToTop from '../helper/ScrolTop'
+import resolveImageUrl from '../helper/resolveImageUrl'
 
 
 const HorizentalCardProduct = ({category,heading}) => {
@@ -83,7 +84,7 @@ const HorizentalCardProduct = ({category,heading}) => {
   
               <Link key={index} to={'/product/' +product?._id} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-36 bg-white rounded-lg shadow flex' onClick={scrollToTop}>
               <div className='bg-slate-200 h-full p-4 min-w-[120px] md:min-w-[145px]'>
-              <img src={product.ProductImage[0]} alt={product.category} className='cursor-pointer objeect-scale-down hover:scale-110 transition-all h-full mix-blend-multiply' />
+              <img src={resolveImageUrl(product?.ProductImage?.[0])} alt={product.category} className='cursor-pointer objeect-scale-down hover:scale-110 transition-all h-full mix-blend-multiply' />
               </div>
               <div className='p-1 mx-auto'>
                 <h2 className='font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black'>{product?.ProductName}</h2>

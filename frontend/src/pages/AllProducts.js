@@ -1,47 +1,119 @@
-import React, { useEffect, useState } from 'react'
-import UploadProdoct from '../components/UploadProdoct'
-import SummaryApi from '../common'
-import AdminProductCard from '../components/AdminProductCard'
+import React, { useEffect, useMemo, useState } from "react";
+import UploadProdoct from "../components/UploadProdoct";
+import SummaryApi from "../common";
+import AdminProductCard from "../components/AdminProductCard";
 
-const AllProducts = () => {
-  const [uploadProducts, setUploadProducts] = useState(false)
-  const [allproducts, setAllProducts] = useState([])
+export default function AllProducts() {
+  const [openUpload, setOpenUpload] = useState(false);
+  const [all, setAll] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [q, setQ] = useState("");
 
   const fetchProducts = async () => {
-    const response = await fetch(SummaryApi.allProduct.url)
-      const dataResponse = await response.json()
-      setAllProducts(dataResponse?.data || [])
+    try {
+      setLoading(true);
+      const res = await fetch(SummaryApi.allProduct.url, { cache: "no-store" });
+      const json = await res.json();
+      setAll(Array.isArray(json?.data) ? json.data : []);
+    } catch (e) {
+      console.error(e);
+      setAll([]);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    useEffect(() => {
-      fetchProducts()
-    }, [])
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // فیلتر سریع سمت کلاینت
+  const filtered = useMemo(() => {
+    if (!q.trim()) return all;
+    const s = q.toLowerCase();
+    return all.filter(
+      (p) =>
+        p?.ProductName?.toLowerCase().includes(s) ||
+        p?.BrandName?.toLowerCase().includes(s) ||
+        p?.category?.toLowerCase().includes(s)
+    );
+  }, [all, q]);
+
   return (
-    <div>
-      <div className='bg-white py-2 px-4 flex justify-between items-center'>
-        <h2 className='font-bold text-lg '>All Products</h2>
-        <button className='text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center' onClick={()=>setUploadProducts(true)}>Upload Product</button>
+    <div className="p-4">
+      {/* هدر و اکشن‌ها */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-3 md:p-4 shadow-sm">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="text-lg font-semibold">All Products</div>
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <div className="relative">
+              <input
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Search by name / brand / category…"
+                className="w-full sm:w-72 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              />
+              <svg
+                viewBox="0 0 24 24"
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-3.5-3.5" />
+              </svg>
+            </div>
+
+            <button
+              onClick={() => setOpenUpload(true)}
+              className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+            >
+              Upload product
+            </button>
+          </div>
+        </div>
       </div>
 
-
-      <div className='flex items-center gap-5 py-4 flex-wrap overflow-y-scroll'>
-        {
-          allproducts.map((product,index)=> {
-            return (
-              <AdminProductCard data={product} key={index+ "allProduct"}  fetchdata={fetchProducts} />
-            )
-          })
-        }
+      {/* گرید محصولات */}
+      <div className="mt-4">
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {filtered.map((p) => (
+              <AdminProductCard key={p?._id} data={p} fetchdata={fetchProducts} />
+            ))}
+            {!filtered.length && (
+              <div className="col-span-full rounded-2xl border border-slate-200 bg-white p-6 text-center text-slate-500">
+                No product found.
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      {
-        uploadProducts && (
-          <UploadProdoct onClose = {() => setUploadProducts(false)} fetchData={fetchProducts} />
-        )
-      }
-      
+
+      {openUpload && (
+        <UploadProdoct onClose={() => setOpenUpload(false)} fetchData={fetchProducts} />
+      )}
     </div>
-  )
+  );
 }
 
-export default AllProducts
-
+function SkeletonCard() {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-3">
+      <div className="h-40 w-full rounded-xl bg-slate-200 animate-pulse" />
+      <div className="mt-3 h-4 w-3/4 rounded bg-slate-200 animate-pulse" />
+      <div className="mt-2 h-3 w-1/2 rounded bg-slate-200 animate-pulse" />
+      <div className="mt-3 h-8 w-full rounded-lg bg-slate-200 animate-pulse" />
+    </div>
+  );
+}

@@ -8,11 +8,11 @@ async function updateUser(req,res) {
 
         const sessionUser  = req.userId
 
-        const {userId,name , email,role} = req.body
+        const {userId,lastname ,firstname , email,role } = req.body
 
         const payload = {
             ...(email && {email : email}),
-            ...(name && {name : name}),
+            ...(firstname && lastname && { name: `${firstname} ${lastname}` }),
             ...(role && {role : role}),
         }
 

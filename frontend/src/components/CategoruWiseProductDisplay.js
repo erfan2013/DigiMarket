@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import addToCart from '../helper/addToCart'
 import Context from '../context'
 import scrollToTop from '../helper/ScrolTop'
+import resolveImageUrl from '../helper/resolveImageUrl'
 
 
 const CategoryWiseProductDisplay = ({category,heading}) => {
@@ -76,7 +77,7 @@ const CategoryWiseProductDisplay = ({category,heading}) => {
                 return(
                   <Link to={'/product/' +product?._id} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow ' onClick={scrollToTop}>
                   <div className='bg-slate-200 h-48 p-4 min-w-[280px] md:min-w-[145px] flex justify-center items-center '>
-                  <img src={product.ProductImage[0]} alt={product.category} className='cursor-pointer objeect-scale-down hover:scale-110 transition-all mix-blend-multiply h-full' />
+                  <img src={resolveImageUrl(product?.ProductImage?.[0])} alt={product.category} className='cursor-pointer objeect-scale-down hover:scale-110 transition-all mix-blend-multiply h-full' />
                   </div>
                   <div className='p-4 mx-auto gap-3 '>
                     <h2 className='font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black'>{product?.ProductName}</h2>

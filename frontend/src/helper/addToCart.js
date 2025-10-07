@@ -1,63 +1,56 @@
+// src/helper/addToCart.js
 import SummaryApi from "../common";
-import { toast } from "react-toastify";
 import { authHeaders } from "../common/auth";
+import { toast } from "react-toastify";
 
-const addToCart = async (e, id) => {
-  e?.stopPropagation();
-  e?.preventDefault();
+/**
+ * سازگار با هر دو امضا:
+ * - addToCart(e, productId)
+ * - addToCart(productId, quantity?)
+ */
+export default async function addToCart(eOrId, maybeId, qty = 1) {
+  let productId;
+  let quantity = qty;
 
-  const res = await fetch(SummaryApi.addToCart.url, {
-    method: SummaryApi.addToCart.method,
-    credentials: "include",            // می‌توانی نگه داری
-    headers: {
-      "Content-Type": "application/json",
-      ...authHeaders(),                // ⭐️ این باعث حذف 401 می‌شود
-    },
-    body: JSON.stringify({ productId: id, quantity: 1 }),
-  });
+  // حالت قدیمی: (e, id)
+  if (typeof eOrId === "object" && eOrId?.preventDefault) {
+    eOrId.preventDefault();
+    productId = maybeId;
+  } else {
+    // حالت جدید: (id, qty?)
+    productId = eOrId;
+    if (typeof maybeId === "number") quantity = maybeId;
+  }
 
-  const data = await res.json();
+  if (!productId) {
+    toast.error("No product id");
+    return false;
+  }
 
-  if (data.success) toast.success(data.message);
-  if (data.error) toast.error(data.message);
+  try {
+    const res = await fetch(SummaryApi.addToCart.url, {
+      method: SummaryApi.addToCart.method || "POST",
+      credentials: "include",
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders(),               // ⭐️ لازم
+      },
+      body: JSON.stringify({ productId, quantity }),
+    });
 
-  return data;
-};
+    const data = await res.json().catch(() => ({}));
 
-export default addToCart;
+    if (!res.ok || !data?.success) {
+      if (res.status === 401) toast.error("Please login to add to cart");
+      else toast.error(data?.message || "Add to cart failed");
+      return false;
+    }
 
-
-
-
-// import SummaryApi from "../common"
-// import { toast } from "react-toastify"
-
-// const addToCart = async (e,id) => {
-//     e?.stopPropagation()
-//     e?.preventDefault()
-
-//     const response = await fetch(SummaryApi.addToCart.url,{
-//         method : SummaryApi.addToCart.method,
-//         credentials : 'include', 
-//         headers : {
-//             'Content-Type' : 'application/json',
-//         },
-//         body : JSON.stringify({
-//             productId : id,
-            
-//         })
-//     })
-
-//     const responseData = await response.json()  
-
-//     if(responseData.success){
-//         toast.success(responseData.message)
-//     }
-//     if(responseData.error){
-//         toast.error(responseData.message)
-//     }
-
-//     return responseData
-// }
-
-// export default addToCart
+    toast.success("Added to cart");
+    return true;
+  } catch (err) {
+    toast.error(err.message || "Network error");
+    return false;
+  }
+}

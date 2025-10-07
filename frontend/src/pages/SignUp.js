@@ -1,69 +1,69 @@
-import React, { useState } from 'react';
-import UserImage from '../assest/signin.gif';
+import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom';
-import imageTobase64 from '../helper/imageTobase64';
-import SummaryApi from '../common';
-import { toast } from 'react-toastify';
-import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
+import { Link, useNavigate } from "react-router-dom";
+import imageTobase64 from "../helper/imageTobase64";
+import SummaryApi from "../common";
+import { toast } from "react-toastify";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import UserImage from "../assest/signin.gif";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
-    name: "",
+    firstName: "",
+    lastName: "",
     profilePic: "",
-    phone: "",        // ⭐️ شماره به فرمت E.164 (مثل +98912...)
+    phone: "",
     address: "",
   });
 
   const navigate = useNavigate();
 
   const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setData(prev => ({ ...prev, [name]: value }));
+    const { name, value } = e.target; // ✅ درستش اینه
+    setData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleUploadPic = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
-    const imagePic = await imageTobase64(file);
-    setData(prev => ({ ...prev, profilePic: imagePic }));
+    const base64 = await imageTobase64(file);
+    setData((prev) => ({ ...prev, profilePic: base64 }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ولیدیشن ساده
-    if (data.password !== data.confirmPassword) {
-      toast.error("Password and confirm password does not match");
-      return;
-    }
-    if (!data.phone || !isValidPhoneNumber(data.phone)) {
-      toast.error("Please enter a valid phone number");
-      return;
-    }
-    if (!data.address.trim()) {
-      toast.error("Please enter your address");
-      return;
-    }
+    if (!data.firstName.trim()) return toast.error("Enter your first name");
+    if (!data.lastName.trim()) return toast.error("Enter your last name");
+    if (!data.email.trim()) return toast.error("Enter your email");
+    if (!data.password) return toast.error("Enter a password");
+    if (data.password !== data.confirmPassword)
+      return toast.error("Passwords do not match");
+    if (!data.phone || !isValidPhoneNumber(data.phone))
+      return toast.error("Enter a valid phone number");
+    if (!data.address.trim()) return toast.error("Enter your address");
 
     const payload = {
-      name: data.name.trim(),
+      firstName: data.firstName.trim(), // ✅ هماهنگ با بک‌اند
+      lastName: data.lastName.trim(),
+      name: `${data.firstName.trim()} ${data.lastName.trim()}`, // برای سازگاری
       email: data.email.trim().toLowerCase(),
       password: data.password,
-      profilePic: data.profilePic,     // اگر سمت سرور ذخیره‌اش می‌کنی
-      phone: data.phone,               // مثل +98912...
+      profilePic: data.profilePic,
+      phone: data.phone, // E.164 e.g. +98912...
       address: data.address.trim(),
-      // countryCode لازم نیست بفرستی؛ بکند خودش از phone استخراج می‌کند
     };
 
     try {
+      setLoading(true);
       const res = await fetch(SummaryApi.SignUp.url, {
         method: SummaryApi.SignUp.method, // POST
         headers: { "Content-Type": "application/json" },
@@ -78,141 +78,209 @@ const SignUp = () => {
         toast.error(json.message || "Sign up failed");
       }
     } catch (err) {
-      toast.error("Network error");
+      toast.error(err?.message || "Network error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <section id='sign-up'>
-      <div className='mx-auto container p-4'>
-        <div className='bg-gray-600 p-5 w-full max-w-sm mx-auto rounded-lg'>
-          <div className='w-20 h-20 mx-auto relative overflow-hidden rounded-full'>
-            <div>
-              <img src={data.profilePic || UserImage} alt='UserImage' />
-            </div>
-            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-              <div className='text-xs bg-opacity-80 bg-slate-200 pb-5 pt-0.1 text-center absolute bottom-0 w-full cursor-pointer'>
-                Upload Photo
-              </div>
-              <input type="file" name='profilePic' className='hidden' onChange={handleUploadPic} />
-            </label>
-          </div>
+    <main className="relative min-h-screen overflow-hidden bg-slate-950">
+      {/* soft gradient blobs */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-gradient-to-tr from-cyan-400/30 to-teal-500/30 blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-gradient-to-tr from-fuchsia-500/20 to-rose-500/20 blur-3xl" />
+      </div>
 
-          <form onSubmit={handleSubmit} className='pt-6 flex flex-col gap-4'>
-            {/* Name */}
-            <div className='grid'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Name :</label>
-              <div className='border rounded-lg block w-full p-2.5 bg-white text-black border-black'>
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4">
+        <div className="w-full max-w-md">
+          {/* glass card */}
+          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
+            {/* header */}
+            <div className="flex flex-col items-center gap-4 pt-2">
+              <div className="relative">
+                <div className="h-20 w-20 overflow-hidden rounded-2xl ring-2 ring-white/20">
+                  <img src={data.profilePic || UserImage} alt="" className="h-full w-full object-cover" />
+                </div>
+                <label className="absolute -bottom-2 left-1/2 -translate-x-1/2 cursor-pointer rounded-xl bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md ring-1 ring-white/30 hover:bg-white/30">
+                  Upload photo
+                  <input type="file" accept="image/*" className="hidden" onChange={handleUploadPic} />
+                </label>
+              </div>
+
+              <div className="text-center">
+                <h1 className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-2xl font-semibold text-transparent">
+                  Create an account ✨
+                </h1>
+                <p className="mt-1 text-sm text-slate-200/80">
+                  Fill the details to get started
+                </p>
+              </div>
+            </div>
+
+            {/* form */}
+            <form onSubmit={handleSubmit} className="mt-8 grid gap-4">
+              {/* firstName */}
+              <label className="grid gap-1">
+                <span className="text-xs text-slate-200/80">First name</span>
                 <input
-                  onChange={handleOnChange}
-                  required
-                  value={data.name}
-                  name='name'
                   type="text"
-                  placeholder='Enter your Name'
-                  className='w-full h-full outline-none bg-transparent'
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className='grid'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Email :</label>
-              <div className='border rounded-lg block w-full p-2.5 bg-white text-black border-black'>
-                <input
+                  name="firstName"
+                  value={data.firstName}
                   onChange={handleOnChange}
-                  required
-                  value={data.email}
-                  name='email'
-                  type="email"
-                  placeholder='Enter your email'
-                  className='w-full h-full outline-none bg-transparent'
+                  placeholder="First name"
+                  className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
                 />
-              </div>
-            </div>
+              </label>
 
-            {/* Password */}
-            <div>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Password :</label>
-              <div className='flex items-center border rounded-lg w-full p-2.5 bg-white text-black border-black'>
+              {/* lastName */}
+              <label className="grid gap-1">
+                <span className="text-xs text-slate-200/80">Last name</span>
                 <input
+                  type="text"
+                  name="lastName"
+                  value={data.lastName}
                   onChange={handleOnChange}
-                  required
-                  value={data.password}
-                  name='password'
-                  type={showPassword ? "text" : "password"}
-                  placeholder='Enter your Password'
-                  className='w-full h-full outline-none bg-transparent'
+                  placeholder="Last name"
+                  className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
                 />
-                <div className='cursor-pointer text-xl' onClick={() => setShowPassword(p => !p)}>
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </label>
+
+              {/* Email */}
+              <label className="grid gap-1">
+                <span className="text-xs text-slate-200/80">Email</span>
+                <div className="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    value={data.email}
+                    onChange={handleOnChange}
+                    placeholder="you@example.com"
+                    className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                    autoComplete="email"
+                  />
+                  <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                    <span className="text-slate-300/50">@</span>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </label>
 
-            {/* Confirm Password */}
-            <div>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Confirm Password :</label>
-              <div className='flex items-center border rounded-lg w-full p-2.5 bg-white text-black border-black'>
-                <input
-                  onChange={handleOnChange}
-                  required
-                  value={data.confirmPassword}
-                  name='confirmPassword'
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder='Enter your Password'
-                  className='w-full h-full outline-none bg-transparent'
-                />
-                <div className='cursor-pointer text-xl' onClick={() => setShowConfirmPassword(p => !p)}>
-                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              {/* Phone */}
+              <label className="grid gap-1">
+                <span className="text-xs text-slate-200/80">Phone</span>
+                <div className="rounded-2xl border border-white/15 bg-white/5 px-2 py-1 text-black">
+                  <PhoneInput
+                    international
+                    defaultCountry="IR"
+                    value={data.phone}
+                    onChange={(val) => setData((prev) => ({ ...prev, phone: val || "" }))}
+                    placeholder="e.g. +98 912 123 4567"
+                    className="text-[15px] [&_.PhoneInputInput]:!bg-transparent [&_.PhoneInputInput]:!text-slate-100 [&_.PhoneInputInput]:!outline-none [&_.PhoneInputInput]:!border-none"
+                  />
                 </div>
-              </div>
-            </div>
+                {data.phone && !isValidPhoneNumber(data.phone) && (
+                  <span className="text-xs text-rose-300">Invalid phone number</span>
+                )}
+              </label>
 
-            {/* Phone (react-phone-number-input) */}
-            <div className='grid'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Phone :</label>
-              <div className='border rounded-lg block w-full p-2 bg-white text-black border-black'>
-                <PhoneInput
-                  international
-                  defaultCountry="IR"
-                  value={data.phone}
-                  onChange={(val) => setData(prev => ({ ...prev, phone: val || "" }))}
-                  placeholder="e.g. +98 912 123 4567"
-                />
-              </div>
-              {data.phone && !isValidPhoneNumber(data.phone) && (
-                <p className='text-xs text-red-200 mt-1'>Invalid phone number</p>
-              )}
-            </div>
-
-            {/* Address */}
-            <div className='grid'>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Address :</label>
-              <div className='border rounded-lg block w-full p-2.5 bg-white text-black border-black'>
+              {/* Address */}
+              <label className="grid gap-1">
+                <span className="text-xs text-slate-200/80">Address</span>
                 <textarea
-                  onChange={handleOnChange}
-                  required
+                  name="address"
                   value={data.address}
-                  name='address'
-                  placeholder='Street, No, Unit...'
+                  onChange={handleOnChange}
+                  placeholder="Street, number, unit…"
                   rows={3}
-                  className='w-full h-full outline-none bg-transparent resize-none'
+                  className="w-full resize-none rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
                 />
+              </label>
+
+              {/* Password */}
+              <div className="grid gap-1">
+                <span className="text-xs text-slate-200/80">Password</span>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={data.password}
+                    onChange={handleOnChange}
+                    placeholder="••••••••"
+                    className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((p) => !p)}
+                    className="absolute inset-y-0 right-3 flex items-center text-slate-300/70 hover:text-white"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <button className='text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2'>
-              Sign Up
-            </button>
-          </form>
+              {/* Confirm Password */}
+              <div className="grid gap-1">
+                <span className="text-xs text-slate-200/80">Confirm password</span>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={data.confirmPassword}
+                    onChange={handleOnChange}
+                    placeholder="••••••••"
+                    className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((p) => !p)}
+                    className="absolute inset-y-0 right-3 flex items-center text-slate-300/70 hover:text-white"
+                    aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+              </div>
 
-          <p className='font-medium mt-3 text-slate-300'>
-            Have an Account ? <Link to={"/login"} className='hover:text-blue-600 hover:underline'>Log in</Link>
-          </p>
+              <button
+                type="submit"
+                disabled={loading}
+                className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loading ? "Creating account..." : "Sign up"}
+              </button>
+
+              <div className="relative my-2">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-white/10" />
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-slate-950 px-3 text-xs text-slate-300/60">
+                    or
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-center text-sm text-slate-200/80">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="text-indigo-300 underline-offset-4 hover:text-indigo-200 hover:underline"
+                >
+                  Sign in
+                </Link>
+              </p>
+            </form>
+
+            <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-white/10 blur-xl" />
+            <div className="pointer-events-none absolute -bottom-10 -right-10 h-24 w-24 -rotate-12 rounded-3xl bg-white/10 blur-xl" />
+          </div>
         </div>
       </div>
-    </section>
+    </main>
   );
 };
 
@@ -223,175 +291,287 @@ export default SignUp;
 
 
 
-// import React from 'react'
-// import { useState } from 'react';
-// import UserImage from '../assest/signin.gif'
-// import { FaEye , FaEyeSlash } from "react-icons/fa";
-// import { Link, useNavigate } from 'react-router-dom';
-// import imageTobase64 from '../helper/imageTobase64';
-// import SummaryApi from '../common';
-// import { toast } from 'react-toastify';
-// import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
-
+// import React, { useState } from "react";
+// import { FaEye, FaEyeSlash } from "react-icons/fa";
+// import { Link, useNavigate } from "react-router-dom";
+// import imageTobase64 from "../helper/imageTobase64";
+// import SummaryApi from "../common";
+// import { toast } from "react-toastify";
+// import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+// import "react-phone-number-input/style.css";
+// import UserImage from "../assest/signin.gif";
 
 // const SignUp = () => {
 //   const [showPassword, setShowPassword] = useState(false);
 //   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-//   const[data,setData] =useState({
-//     email:"",
-//     password:"",
-//     confirmPassword:"",
-//     name:"",
-//     profilePic:"",
-//     phone:"",
-//     address:"",
-//     countryCode:"+98"  
-//   })
+//   const [loading, setLoading] = useState(false);
+
+//   const [data, setData] = useState({
+//     email: "",
+//     password: "",
+//     confirmPassword: "",
+//     firstname: "",
+//     lastname: "",
+//     profilePic: "",
+//     phone: "",
+//     address: "",
+//   });
+
 //   const navigate = useNavigate();
+
 //   const handleOnChange = (e) => {
 //     const { name, value } = e.target;
+//     setData((prev) => ({ ...prev, [name]: value }));
+//   };
 
-//     setData((prev)=>{
-//       return{
-//         ...prev,
-//         [name]:value
-//       }
-//     })
-//   }
 //   const handleUploadPic = async (e) => {
-//     const file = e.target.files[0];
-//     const imagePic = await imageTobase64(file);
-//     setData((prev)=>{
-//       return{
-//         ...prev,
-//         profilePic: imagePic
-//       }
-//     })
-//   }
-//   const handleSubmit =  async(e) => {
+//     const file = e.target.files?.[0];
+//     if (!file) return;
+//     const base64 = await imageTobase64(file);
+//     setData((prev) => ({ ...prev, profilePic: base64 }));
+//   };
+
+//   const handleSubmit = async (e) => {
 //     e.preventDefault();
 
-//     if(data.password === data.confirmPassword){
-//       const dataResponse = await fetch(SummaryApi.SignUp.url, {
-//         method : SummaryApi.SignUp.method,
-//         headers : {
-//           "Content-Type" : "application/json"
-//         },
-//         body : JSON.stringify(data)
-//       })
-//       const dataApi = await dataResponse.json();
+//     if (!data.firstname.trim()) return toast.error("Enter your first name");
+//     if (!data.lastname.trim()) return toast.error("Enter your last name");
+//     if (!data.email.trim()) return toast.error("Enter your email");
+//     if (!data.password) return toast.error("Enter a password");
+//     if (data.password !== data.confirmPassword)
+//       return toast.error("Passwords do not match");
+//     if (!data.phone || !isValidPhoneNumber(data.phone))
+//       return toast.error("Enter a valid phone number");
+//     if (!data.address.trim()) return toast.error("Enter your address");
 
-//        console.log("data",dataApi);
+//     const payload = {
+//       firstname: data.firstname.trim(),
+//       lastname: data.lastname.trim(),
+//       email: data.email.trim().toLowerCase(),
+//       password: data.password,
+//       profilePic: data.profilePic,
+//       phone: data.phone, // E.164 e.g. +98912...
+//       address: data.address.trim(),
+//     };
 
+//     try {
+//       setLoading(true);
+//       const res = await fetch(SummaryApi.SignUp.url, {
+//         method: SummaryApi.SignUp.method, // POST
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(payload),
+//       });
+//       const json = await res.json();
 
-
-//       if(dataApi.success){
-//         toast.success(dataApi.message);
+//       if (json.success) {
+//         toast.success(json.message || "Account created");
 //         navigate("/login");
+//       } else {
+//         toast.error(json.message || "Sign up failed");
 //       }
-//       if(dataApi.error){
-//         toast.error(dataApi.message);
-//       }
-
-       
-//     }else {
-//       toast.error("Password and confirm password does not match");
+//     } catch (err) {
+//       toast.error(err?.message || "Network error");
+//     } finally {
+//       setLoading(false);
 //     }
-//   }
-//   console.log("data login",data);
+//   };
+
 //   return (
-//     <section id='sign-up'>
-//         <div className='mx-auto container p-4' >
+//     <main className="relative min-h-screen overflow-hidden bg-slate-950">
+//       {/* soft gradient blobs */}
+//       <div className="pointer-events-none absolute inset-0">
+//         <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
+//         <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-gradient-to-tr from-cyan-400/30 to-teal-500/30 blur-3xl" />
+//         <div className="absolute top-1/3 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-gradient-to-tr from-fuchsia-500/20 to-rose-500/20 blur-3xl" />
+//       </div>
 
-//             <div className='bg-gray-600 p-5 w-full max-w-sm mx-auto rounded-lg'>
-//             <div className='w-20 h-20 mx-auto relative overflow-hidden rounded-full'>
-//             <div>
-//                <img src={data.profilePic || UserImage} alt='UserImage' />
-//               </div>
-//               <form>
-//                 <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-//                 <div className='text-xs bg-opacity-80 bg-slate-200 pb-5 pt-0.1 text-center absolute bottom-0 w-full cursor-pointer'>
-//                 Upload Photo
-//               </div>
-//                   <input type="file" name='profilePic' className='hidden' onChange={handleUploadPic} />
+//       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4">
+//         <div className="w-full max-w-md">
+//           {/* glass card */}
+//           <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
+//             {/* header */}
+//             <div className="flex flex-col items-center gap-4 pt-2">
+//               <div className="relative">
+//                 <div className="h-20 w-20 overflow-hidden rounded-2xl ring-2 ring-white/20">
+//                   <img src={data.profilePic || UserImage} alt="" className="h-full w-full object-cover" />
+//                 </div>
+//                 <label className="absolute -bottom-2 left-1/2 -translate-x-1/2 cursor-pointer rounded-xl bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md ring-1 ring-white/30 hover:bg-white/30">
+//                   Upload photo
+//                   <input type="file" accept="image/*" className="hidden" onChange={handleUploadPic} />
 //                 </label>
-              
-//               </form>
+//               </div>
+
+//               <div className="text-center">
+//                 <h1 className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-2xl font-semibold text-transparent">
+//                   Create an account ✨
+//                 </h1>
+//                 <p className="mt-1 text-sm text-slate-200/80">
+//                   Fill the details to get started
+//                 </p>
+//               </div>
 //             </div>
-            
-//             <form onSubmit={handleSubmit} className='pt-6 flex flex-col gap-4'>
-//             <div className='grid'>
-//                 <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Name :</label>
-//                 <div className='border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-white text-black border-black'>
-//                   <input
-//                   onChange={handleOnChange}
-//                   required
-//                   value={data.name}
-//                   name='name'
-//                    type="text" placeholder='Enter your Name' className='w-full h-full outline-none bg-transparent'/>
-                   
-//                 </div>
-                
-//               </div>
-//               <div className='grid'>
-//                 <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Email :</label>
-//                 <div className='border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-white text-black border-black'>
-//                   <input
-//                   onChange={handleOnChange}
-//                   required
-//                   value={data.email}
-//                   name='email'
-//                    type="email" placeholder='Enter your email' className='w-full h-full outline-none bg-transparent'/>
-//                 </div>
-                
-//               </div>
-//               <div>
-//                 <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Password :</label>
-//                 <div className='flex items-center border rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 bg-white text-black border-black'>
+
+//             {/* form */}
+//             <form onSubmit={handleSubmit} className="mt-8 grid gap-4">
+//               {/* firstName */}
+//               <label className="grid gap-1">
+//                 <span className="text-xs text-slate-200/80">firstName</span>
 //                 <input
-//                  onChange={handleOnChange}
-//                  required
-//                  value={data.password}
-//                  name='password'
-//                 type={showPassword ? "text" : "password"} placeholder='Enter your Password' className='w-full h-full outline-none bg-transparent'/>
-                
-//                 <div className='cursor-pointer text-xl' onClick={()=>setShowPassword((prev)=>!prev)}>
-//                   <span>
+//                   type="text"
+//                   name="firstname"
+//                   value={data.firstname}
+//                   onChange={handleOnChange}
+//                   placeholder="First name"
+//                   className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                 />
+//               </label>
+//               <label className="grid gap-1">
+//                 <span className="text-xs text-slate-200/80">lastName</span>
+//                 <input
+//                   type="text"
+//                   name="lastname"
+//                   value={data.lastname}
+//                   onChange={handleOnChange}
+//                   placeholder="Last name"
+//                   className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                 />
+//               </label>
+
+//               {/* Email */}
+//               <label className="grid gap-1">
+//                 <span className="text-xs text-slate-200/80">Email</span>
+//                 <div className="relative">
+//                   <input
+//                     type="email"
+//                     name="email"
+//                     value={data.email}
+//                     onChange={handleOnChange}
+//                     placeholder="you@example.com"
+//                     className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                     autoComplete="email"
+//                   />
+//                   <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+//                     <span className="text-slate-300/50">@</span>
+//                   </div>
+//                 </div>
+//               </label>
+
+//               {/* Phone */}
+//               <label className="grid gap-1">
+//                 <span className="text-xs text-slate-200/80">Phone</span>
+//                 <div className="rounded-2xl border border-white/15 bg-white/5 px-2 py-1 text-black">
+//                   <PhoneInput
+//                     international
+//                     defaultCountry="IR"
+//                     value={data.phone}
+//                     onChange={(val) => setData((prev) => ({ ...prev, phone: val || "" }))}
+//                     placeholder="e.g. +98 912 123 4567"
+//                     className="text-[15px] [&_.PhoneInputInput]:!bg-transparent [&_.PhoneInputInput]:!text-slate-100 [&_.PhoneInputInput]:!outline-none [&_.PhoneInputInput]:!border-none"
+//                   />
+//                 </div>
+//                 {data.phone && !isValidPhoneNumber(data.phone) && (
+//                   <span className="text-xs text-rose-300">Invalid phone number</span>
+//                 )}
+//               </label>
+
+//               {/* Address */}
+//               <label className="grid gap-1">
+//                 <span className="text-xs text-slate-200/80">Address</span>
+//                 <textarea
+//                   name="address"
+//                   value={data.address}
+//                   onChange={handleOnChange}
+//                   placeholder="Street, number, unit…"
+//                   rows={3}
+//                   className="w-full resize-none rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                 />
+//               </label>
+
+//               {/* Password */}
+//               <div className="grid gap-1">
+//                 <span className="text-xs text-slate-200/80">Password</span>
+//                 <div className="relative">
+//                   <input
+//                     type={showPassword ? "text" : "password"}
+//                     name="password"
+//                     value={data.password}
+//                     onChange={handleOnChange}
+//                     placeholder="••••••••"
+//                     className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                     autoComplete="new-password"
+//                   />
+//                   <button
+//                     type="button"
+//                     onClick={() => setShowPassword((p) => !p)}
+//                     className="absolute inset-y-0 right-3 flex items-center text-slate-300/70 hover:text-white"
+//                     aria-label={showPassword ? "Hide password" : "Show password"}
+//                   >
 //                     {showPassword ? <FaEyeSlash /> : <FaEye />}
-//                   </span>
-//                 </div>
+//                   </button>
 //                 </div>
 //               </div>
-//               <div>
-//                 <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Confirm Password :</label>
-//                 <div className='flex items-center border rounded-lg focus:ring-primary-600 focus:border-primary-600  w-full p-2.5 bg-white text-black border-black'>
-//                 <input
-//                  onChange={handleOnChange}
-//                  required
-//                  value={data.confirmPassword}
-//                  name='confirmPassword'
-//                 type={showConfirmPassword ? "text" : "password"} placeholder='Enter your Password' className='w-full h-full outline-none bg-transparent'/>
-                
-//                 <div className='cursor-pointer text-xl' onClick={()=>setShowConfirmPassword((prev)=>!prev)}>
-//                   <span>
+
+//               {/* Confirm Password */}
+//               <div className="grid gap-1">
+//                 <span className="text-xs text-slate-200/80">Confirm password</span>
+//                 <div className="relative">
+//                   <input
+//                     type={showConfirmPassword ? "text" : "password"}
+//                     name="confirmPassword"
+//                     value={data.confirmPassword}
+//                     onChange={handleOnChange}
+//                     placeholder="••••••••"
+//                     className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                     autoComplete="new-password"
+//                   />
+//                   <button
+//                     type="button"
+//                     onClick={() => setShowConfirmPassword((p) => !p)}
+//                     className="absolute inset-y-0 right-3 flex items-center text-slate-300/70 hover:text-white"
+//                     aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+//                   >
 //                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-//                   </span>
-//                 </div>
+//                   </button>
 //                 </div>
 //               </div>
-              
 
+//               <button
+//                 type="submit"
+//                 disabled={loading}
+//                 className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+//               >
+//                 {loading ? "Creating account..." : "Sign up"}
+//               </button>
 
-//               <button className='text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2'>Sign Up</button>
+//               <div className="relative my-2">
+//                 <div className="absolute inset-0 flex items-center">
+//                   <span className="w-full border-t border-white/10" />
+//                 </div>
+//                 <div className="relative flex justify-center">
+//                   <span className="bg-slate-950 px-3 text-xs text-slate-300/60">
+//                     or
+//                   </span>
+//                 </div>
+//               </div>
+
+//               <p className="text-center text-sm text-slate-200/80">
+//                 Already have an account?{" "}
+//                 <Link
+//                   to="/login"
+//                   className="text-indigo-300 underline-offset-4 hover:text-indigo-200 hover:underline"
+//                 >
+//                   Sign in
+//                 </Link>
+//               </p>
 //             </form>
-//             <p className='font-medium mt-3 text-slate-300'>Have an Account ? <Link to={"/login"} className='hover:text-blue-600 hover:underline'>Log in</Link></p>
 
-
-//             </div>
-
+//             <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-white/10 blur-xl" />
+//             <div className="pointer-events-none absolute -bottom-10 -right-10 h-24 w-24 -rotate-12 rounded-3xl bg-white/10 blur-xl" />
+//           </div>
 //         </div>
-//     </section>
-//   )
-// }
+//       </div>
+//     </main>
+//   );
+// };
 
-// export default SignUp
+// export default SignUp;

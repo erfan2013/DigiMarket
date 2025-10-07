@@ -2,7 +2,9 @@ const mongoose = require("mongoose")
 
 
 const userScheme = new mongoose.Schema({
-    name : String,
+    firstName: { type: String, default: "" },
+    lastName: { type: String, default: "" },
+    name: { type: String, default: "" }, 
     email: {
         type: String,
         unique: true,
@@ -23,6 +25,17 @@ const userScheme = new mongoose.Schema({
 },{
     timestamps: true,
 })
+userScheme.pre("save", function (next) {
+  const full = [this.firstName, this.lastName].filter(Boolean).join(" ").trim();
+  if (full) this.name = full;
+  next();
+});
+
+// خروجی JSON: fullName کمکی
+userScheme.set("toJSON", { virtuals: true });
+userScheme.virtual("fullName").get(function () {
+  return [this.firstName, this.lastName].filter(Boolean).join(" ").trim();
+});
 
 const userModel = mongoose.model("user",userScheme)
 

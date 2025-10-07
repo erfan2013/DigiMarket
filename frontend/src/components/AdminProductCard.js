@@ -1,157 +1,121 @@
-import React, { useState } from 'react'
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import AdminEditProduct from './AdminEditProduct';
-import DisplayUSDCurrency from '../helper/displayCurrency';
-import { toast } from 'react-toastify';
-import SummaryApi from '../common';
-import { authHeaders } from '../common/auth';
-import resolveImageUrl from '../helper/resolveImageUrl';
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import AdminEditProduct from "./AdminEditProduct";
+import SummaryApi from "../common";
+import resolveImageUrl from "../helper/resolveImageUrl";
+import DisplayUSDCurrency from "../helper/displayCurrency";
+import { LuPencil, LuTrash2 } from "react-icons/lu";
+import { authHeaders } from "../common/auth";
 
-const AdminProductCard = ({ data, fetchdata }) => {
-  const [editProduct, setEditProduct] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+export default function AdminProductCard({ data, fetchdata }) {
+  const [openEdit, setOpenEdit] = useState(false);
+  const id = data?._id;
 
+  // -------- Delete (همون که الان درست شده؛ نگه می‌داریم) ----------
+  async function tryDeleteParam() {
+    const url = `${SummaryApi.deleteProduct.url}/${id}`;
+    const res = await fetch(url, {
+      method: SummaryApi.deleteProduct.method || "DELETE",
+      credentials: "include",
+      headers: { ...authHeaders() },
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json?.success) {
+      throw new Error(json?.message || `Delete failed (${res.status})`);
+    }
+    return json;
+  }
+  async function tryDeleteBody() {
+    const res = await fetch(SummaryApi.deleteProduct.url, {
+      method: SummaryApi.deleteProduct.method || "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify({ _id: id }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json?.success) {
+      throw new Error(json?.message || `Delete failed (${res.status})`);
+    }
+    return json;
+  }
   const onDelete = async () => {
+    if (!id) return toast.error("Invalid product id");
     if (!window.confirm("Delete this product?")) return;
-    setIsDeleting(true);
     try {
-      // از SummaryApi یک origin مطمئن برای بک‌اند دربیار؛ fallback هم برای لوکال
-      const API_BASE = (() => {
-        try {
-          const u = new URL(SummaryApi?.SignUp?.url);  // مثلا http://localhost:8080/api/signup
-          return `${u.origin}/api`;                    // → http://localhost:8080/api
-        } catch {
-          const base = process.env.REACT_APP_BASE_URL || "http://localhost:8080";
-          return `${base}/api`;
-        }
-      })();
-
-      const res = await fetch(`${API_BASE}/product/${data?._id}`, {
-        method: "DELETE",
-        credentials: "include",
-        headers: { ...authHeaders() },
-      });
-
-      const json = await res.json().catch(() => ({}));
-      if (res.ok && json?.success) {
-        toast.success("Product deleted");
-        fetchdata && fetchdata(); // لیست را تازه کن
-      } else {
-        toast.error(json?.message || `Delete failed (${res.status})`);
+      try {
+        await tryDeleteParam();
+      } catch {
+        await tryDeleteBody();
       }
+      toast.success("Product deleted");
+      fetchdata?.();
     } catch (e) {
-      toast.error(e.message || "Network error");
-    } finally {
-      setIsDeleting(false);
+      toast.error(e?.message || "Delete failed");
     }
   };
 
+  // -------- Edit ----------
+  const onEdit = () => setOpenEdit(true);
+
   return (
-    <div className='bg-white p-4 rounded'>
-      <div className='w-44'>
-        <div className='h-32 flex items-center justify-center'>
+    <>
+      <div className="group relative rounded-2xl border border-slate-200 bg-white p-3 hover:shadow-md transition">
+        {/* اکشن‌ها: فقط یک Edit و یک Delete */}
+        <div className="absolute right-3 top-3 z-10 flex gap-1">
+          <button
+            title="Edit"
+            onClick={onEdit}
+            className="rounded-full border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-50"
+          >
+            <LuPencil className="h-4 w-4" />
+          </button>
+          <button
+            title="Delete"
+            onClick={onDelete}
+            className="rounded-full border border-slate-200 bg-white p-2 text-rose-600 hover:bg-rose-50"
+          >
+            <LuTrash2 className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* تصویر */}
+        <div className="h-40 w-full overflow-hidden rounded-xl bg-slate-50">
           <img
             src={resolveImageUrl(data?.ProductImage?.[0])}
-            alt={data?.ProductName || "product"}
-            width={120}
-            height={120}
-            className='mx-auto border-b object-fill h-full'
+            alt={data?.ProductName || ""}
+            className="h-full w-full object-contain mix-blend-multiply transition-transform duration-200 group-hover:scale-105"
           />
         </div>
 
-        <h1 className='text-ellipsis line-clamp-2'>{data?.ProductName}</h1>
+        {/* اطلاعات */}
+        <div className="pt-3">
+          <div className="line-clamp-1 text-sm font-medium text-slate-900">
+            {data?.ProductName}
+          </div>
+          <div className="mt-1 text-xs text-slate-500 capitalize">
+            {data?.category}
+          </div>
 
-        <div className='flex items-center justify-between mt-2'>
-          <p>{DisplayUSDCurrency(data?.Price)}</p>
-
-          <div className='flex items-center gap-2'>
-            <button
-              className='px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700'
-              onClick={() => setEditProduct(true)}
-              title="Edit"
-            >
-              <AiFillEdit />
-            </button>
-
-            <button
-              className='px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700 disabled:opacity-50'
-              onClick={onDelete}
-              disabled={isDeleting}
-              title="Delete"
-            >
-              <AiFillDelete />
-            </button>
+          <div className="mt-2 flex items-center gap-2 text-sm">
+            <div className="font-semibold text-slate-900">
+              {DisplayUSDCurrency(data?.Selling)}
+            </div>
+            {data?.Price ? (
+              <div className="text-slate-400 line-through">
+                {DisplayUSDCurrency(data?.Price)}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
 
-      {editProduct && (
+      {openEdit && (
         <AdminEditProduct
           productData={data}
-          onClose={() => setEditProduct(false)}
+          onClose={() => setOpenEdit(false)}
           fetchdata={fetchdata}
         />
       )}
-    </div>
+    </>
   );
-};
-
-export default AdminProductCard;
-
-
-
-
-
-
-
-
-
-// import React, { useState } from 'react'
-// import { AiFillEdit } from "react-icons/ai";
-// import AdminEditProduct from './AdminEditProduct';
-// import DisplayUSDCurrency from '../helper/displayCurrency';
-
-// const AdminProductCard = ({
-//     data,
-//     fetchdata
-// }) => {
-//     const [editProduct , setEditProduct] = useState(false)
-//   return (
-
-//       <div className='bg-white p-4 rounded'>
-//                 <div className='w-44'>
-//                     <div className=' h-32 flex items-center justify-center'>
-//                     <img src={data?.ProductImage[0]} alt="" width={120} height={120} className='mx-auto border-b object-fill h-full' />
-//                     </div>
-//                 <h1 className='text-ellipsis line-clamp-2'>{data?.ProductName}</h1>
-//                 <div>
-
-//                     <p>
-//                         {    
-//                             DisplayUSDCurrency(data.Price)
-//                         }
-//                     </p>
-
-//                 <div className='w-fit ml-auto p-2 bg-green-400 rounded-lg text-white cursor-pointer hover:bg-green-600' onClick={()=>setEditProduct(true)}>
-//                 <AiFillEdit />
-                
-//                 </div>
-
-
-//                 </div>
-
-                
-//                 </div>
-
-//                 {
-//                     editProduct && (
-//                         <AdminEditProduct productData={data} onClose={()=>setEditProduct(false)} fetchdata={fetchdata} />
-//                     )
-//                 }
-//               </div>
-
-   
-//   )
-// }
-
-// export default AdminProductCard
+}

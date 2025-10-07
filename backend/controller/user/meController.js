@@ -22,9 +22,10 @@ exports.getMe = async (req, res) => {
 
 exports.updateMe = async (req, res) => {
   try {
-    const { name, phone, address } = req.body || {};
+    const { firstName, lastName, phone, address } = req.body || {};
     const update = {};
-    if (typeof name === "string") update.name = name.trim();
+    if (typeof firstName === "string") update.firstName = firstName.trim();
+    if (typeof lastName === "string") update.lastName = lastName.trim();
     if (typeof phone === "string") update.phone = phone.trim();
     if (typeof address === "string") update.address = address.trim();
 
@@ -87,12 +88,3 @@ exports.updateAvatar = async (req, res) => {
     res.status(400).json({ success:false, error:true, message:e.message });
   }
 };
-// اگر بخواهید آواتار را حذف کنید
-// exports.deleteAvatar = async (req, res) => {
-//   try {
-//     const user = await userModel.findById(req.userId);
-//     if (!user) return res.status(404).json({ success:false, error:true, message:"User not found" });
-//   } catch (e) {
-//     res.status(400).json({ success:false, error:true, message:e.message });
-//   }
-// };

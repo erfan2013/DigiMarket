@@ -16,8 +16,10 @@ function normalizePhone(phone) {
 async function userSignupController(req, res) {
   try {
     const {
-      name = "",
+      firstName = "",
+      lastName = "",
       email = "",
+      name = "", // برای سازگاری
       password = "",
       profilePic = "",
       phone = "",
@@ -25,6 +27,8 @@ async function userSignupController(req, res) {
     } = req.body || {};
 
     if (!name.trim()) throw new Error("Please provide name");
+    if (!firstName.trim()) throw new Error("Please provide first name");
+    if (!lastName.trim()) throw new Error("Please provide last name");
     if (!email.trim()) throw new Error("Please provide email");
     if (!password) throw new Error("Please provide password");
 
@@ -46,7 +50,9 @@ async function userSignupController(req, res) {
     const hash = await bcrypt.hash(password, 10);
 
     const doc = await userModel.create({
-      name: name.trim(),
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      name     : `${firstName.trim()} ${lastName.trim()}`, // برای سازگاری
       email: email.toLowerCase().trim(),
       password: hash,
       profilePic,            // اگر می‌خوای ذخیره‌اش کنی

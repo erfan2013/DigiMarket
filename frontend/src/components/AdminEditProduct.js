@@ -1,190 +1,337 @@
-import React, { useState } from 'react'
-import SummaryApi from '../common'
-import { toast } from 'react-toastify'
-import uploadImage from '../helper/UploadImage'
-import { IoIosCloudUpload, IoMdCloseCircle } from 'react-icons/io'
-import productCategory from '../helper/ProductCategory'
-import { AiFillDelete } from 'react-icons/ai'
-import DisplayImage from './DisplayImage'
+// src/components/AdminEditProduct.js
+import React, { useEffect, useMemo, useState } from "react";
+import SummaryApi from "../common";
+import { toast } from "react-toastify";
+import { authHeaders } from "../common/auth";
 
-const AdminEditProduct = ({
-    onClose,
-    productData,
-    fetchdata
-}) => {
-    const [data,setData] = useState({
-        ...productData,
-        ProductName : productData?.ProductName || "",
-        BrandName : productData?.BrandName || "",
-        category : productData?.category || "",
-        ProductImage : productData?.ProductImage || [],
-        Price : productData?.Price || "",
-        Description : productData?.Description || "",
-        Selling : productData?.Selling || "",
-    })
-    const [openFulllScreenImage,setOpenFullScreenImage] = useState(false)
-    const [FullScreenImage,setFullScreenImage] = useState("")
+export default function AdminEditProduct({ productData, onClose, fetchdata }) {
+  const original = useMemo(() => productData || {}, [productData]);
+  const [saving, setSaving] = useState(false);
 
-    const handleOnChenge =  (e) => {
-        const {name,value} = e.target
-        setData((prev)=> {
-            return {
-                ...prev,
-                [name] : value
-            }
-        })
+  // فرم ساده
+  const [form, setForm] = useState({
+    ProductName: "",
+    BrandName: "",
+    category: "",
+    Selling: "",
+    Price: "",
+    Description: "",
+  });
+
+  // عکس‌های موجود که می‌خوای نگه‌داری
+  const [keptUrls, setKeptUrls] = useState([]);
+  // فایل‌های جدیدی که کاربر انتخاب می‌کنه
+  const [newFiles, setNewFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
+
+  useEffect(() => {
+    setForm({
+      ProductName: original?.ProductName || "",
+      BrandName: original?.BrandName || "",
+      category: original?.category || "",
+      Selling: original?.Selling ?? "",
+      Price: original?.Price ?? "",
+      Description: original?.Description || "",
+    });
+    setKeptUrls(Array.isArray(original?.ProductImage) ? [...original.ProductImage] : []);
+    // پاکسازی پیش‌نمایش‌ها در آن‌ماونت
+    return () => previews.forEach((u) => URL.revokeObjectURL(u));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [original]);
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+  };
+
+  // انتخاب فایل‌های جدید
+  const onPickFiles = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setNewFiles((curr) => [...curr, ...files]);
+    const pv = files.map((f) => URL.createObjectURL(f));
+    setPreviews((curr) => [...curr, ...pv]);
+  };
+
+  // حذف یکی از فایل‌های جدید
+  const removeNewFile = (idx) => {
+    setNewFiles((curr) => curr.filter((_, i) => i !== idx));
+    setPreviews((curr) => {
+      const url = curr[idx];
+      URL.revokeObjectURL(url);
+      return curr.filter((_, i) => i !== idx);
+    });
+  };
+
+  // حذف یکی از URLهای قدیمی
+  const removeKeptUrl = (idx) => {
+    setKeptUrls((curr) => curr.filter((_, i) => i !== idx));
+  };
+
+  // آپلود فایل‌های جدید به /api/upload/images
+  const uploadSelectedFiles = async () => {
+    if (!newFiles.length) return [];
+    const fd = new FormData();
+    // نکته: اسم فیلد باید دقیقا "images" باشه
+    newFiles.forEach((f) => fd.append("images", f));
+
+    const res = await fetch(SummaryApi.uploadImages.url, {
+      method: SummaryApi.uploadImages.method, // "POST"
+      credentials: "include",
+      body: fd, // هدر Content-Type نذار
+    });
+
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json?.success) {
+      throw new Error(json?.message || `Upload failed (${res.status})`);
     }
+    // انتظار: { success: true, urls: [ ... ] }
+    return json.urls || [];
+  };
 
-    const handleUploadProduct = async (e) => {
-        const file = e.target.files[0]
-
-        const uploadImageCloudinary = await uploadImage(file)
-        setData((prev)=> {
-            return {
-                ...prev,
-                ProductImage : [ ...prev.ProductImage , uploadImageCloudinary.url]
-        }
-        })
+  // تلاش برای PATCH /api/product/:id
+  async function tryUpdateParam(id, payload) {
+    const url = `${SummaryApi.updateProductById.url}/${id}`; // مثلا /api/product/:id
+    const res = await fetch(url, {
+      method: SummaryApi.updateProductById.method || "PATCH",
+      credentials: "include",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json?.success) {
+      throw new Error(json?.message || `Update failed (${res.status})`);
     }
+    return json;
+  }
 
-    const handleDeleteImage = async (index) => {
-        const newProdouctImage = [...data.ProductImage]
-        newProdouctImage.splice(index,1)
-        
-
-        setData((prev) => {
-            return {
-                ...prev,
-                ProductImage : [...newProdouctImage]
-            }
-        })
+  // فُلبک: POST /api/update-product  (بدنه شامل _id)
+  async function tryUpdateBody(id, payload) {
+    const res = await fetch(SummaryApi.updateProduct.url, {
+      method: SummaryApi.updateProduct.method || "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify({ _id: id, ...payload }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json?.success) {
+      throw new Error(json?.message || `Update failed (${res.status})`);
     }
+    return json;
+  }
 
-    const handleSubmit = async(e) => {
-        e.preventDefault()
-        const response = await fetch(SummaryApi.updateProduct.url, {
-            method : SummaryApi.updateProduct.method,
-            credentials : "include",
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body : JSON.stringify(data)
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (!original?._id) return toast.error("Invalid product id");
 
-        })
-        const ResponseData = await response.json()
-        if(ResponseData.success){
-            toast.success(ResponseData?.message)
-            onClose()
-            fetchdata()
-        }
-        if(ResponseData.error){
-            toast.error(ResponseData?.message)
-        }
-        console.log(ResponseData);
-        
+    try {
+      setSaving(true);
+
+      // 1) اگر فایل جدید داریم، اول آپلود کن
+      let uploaded = [];
+      if (newFiles.length) {
+        uploaded = await uploadSelectedFiles(); // ← Cloudinary باید صحیح کانفیگ شده باشد
+      }
+
+      // 2) مجموعه نهایی عکس‌ها (قدیمی‌هایی که نگه داشتی + جدیدها)
+      const finalImages = [...keptUrls, ...uploaded];
+
+      // 3) ساخت payload
+      const payload = {
+        ProductName: form.ProductName.trim(),
+        BrandName: form.BrandName.trim(),
+        category: form.category.trim(),
+        Selling: Number(form.Selling) || 0,
+        Price: Number(form.Price) || 0,
+        Description: form.Description,
+        ProductImage: finalImages, // ⭐️ کلید درست: ProductImage (آرایه URL)
+      };
+
+      // 4) آپدیت
+      try {
+        await tryUpdateParam(original._id, payload);
+      } catch {
+        await tryUpdateBody(original._id, payload);
+      }
+
+      toast.success("Product updated");
+
+      // پاک‌سازی فایل‌های جدید (پیش‌نمایش‌ها رو هم آزاد کن)
+      previews.forEach((u) => URL.revokeObjectURL(u));
+      setNewFiles([]);
+      setPreviews([]);
+
+      fetchdata?.();
+      onClose?.();
+    } catch (e1) {
+      toast.error(e1?.message || "Update failed");
+    } finally {
+      setSaving(false);
     }
+  };
 
   return (
-    <div className='fixed w-full h-full bg-slate-200 bg-opacity-35 top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
-    <div className='bg-white p-4 rounded-lg w-full max-w-xl h-full max-h-[82%] overflow-hidden'>
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 p-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-slate-200 p-4">
+          <h3 className="text-lg font-semibold">Edit product</h3>
+          <button
+            onClick={onClose}
+            className="rounded-lg border border-slate-200 px-3 py-1 text-sm hover:bg-slate-50"
+          >
+            Close
+          </button>
+        </div>
 
-      <div className='flex items-center justify-between'>
-          <h2 className='font-bold text-lg'>Edit Product</h2>
-          <div className='w-fit ml-auto text-3xl cursor-pointer hover:text-red-500 mb-2' onClick={onClose}>
-          <IoMdCloseCircle />
-          </div>
-      </div>
+        {/* Body */}
+        <form onSubmit={onSubmit} className="grid gap-4 p-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <label className="grid gap-1">
+              <span className="text-sm text-slate-700">Product name</span>
+              <input
+                name="ProductName"
+                value={form.ProductName}
+                onChange={onChange}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              />
+            </label>
 
-      <form className='grid p-4 overflow-y-scroll h-full' onSubmit={handleSubmit}>
-          <div>
-          <label htmlFor="productname" className='block mb-2 text-sm font-medium text-gray-900 '>Product Name :</label>
-          <input name='ProductName' value={data.ProductName} onChange={handleOnChenge} type="text" id="productname" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Product Name' required />
-          <label htmlFor="Brandname" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Brand Name :</label>
-          <input name='BrandName' value={data.BrandName} onChange={handleOnChenge} type="text" id="brandname" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Brand Name' required />
-          <label htmlFor="category" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Category :</label>
-          <select name='category' value={data.category} onChange={handleOnChenge} type="text" id="category" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Category' required>
-          <option value={""}>Select Category</option>
-              {
-                  productCategory.map((el,index) => {
-                      
-                      return (
-                          <option key={el.value+index} value={el.value}>{el.label}</option>
-                      )
-                  })
-              }
-          </select>
-          <label htmlFor="ProductImage" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Product Image :</label>
-          <label htmlFor='uploadImageInput'>
-          <div className='p-2 bg-slate-100 border rounded-lg h-32 w-full mb-4 flex justify-center items-center cursor-pointer' >
-             <div className='flex flex-col justify-center items-center gap-2'>
-              <span className='text-4xl'><IoIosCloudUpload /></span>
-              <p className='text-sm'>UploadProdoct Image</p>
-              <input type="file" id='uploadImageInput' className='hidden' onChange={handleUploadProduct} />
-              </div>
+            <label className="grid gap-1">
+              <span className="text-sm text-slate-700">Brand</span>
+              <input
+                name="BrandName"
+                value={form.BrandName}
+                onChange={onChange}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              />
+            </label>
+
+            <label className="grid gap-1">
+              <span className="text-sm text-slate-700">Category</span>
+              <input
+                name="category"
+                value={form.category}
+                onChange={onChange}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              />
+            </label>
+
+            <label className="grid gap-1">
+              <span className="text-sm text-slate-700">Selling price</span>
+              <input
+                type="number"
+                min="0"
+                name="Selling"
+                value={form.Selling}
+                onChange={onChange}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              />
+            </label>
+
+            <label className="grid gap-1">
+              <span className="text-sm text-slate-700">Original price</span>
+              <input
+                type="number"
+                min="0"
+                name="Price"
+                value={form.Price}
+                onChange={onChange}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              />
+            </label>
+
+            <label className="grid gap-1 md:col-span-2">
+              <span className="text-sm text-slate-700">Description</span>
+              <textarea
+                name="Description"
+                value={form.Description}
+                onChange={onChange}
+                rows={3}
+                className="w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              />
+            </label>
           </div>
-          </label>
-          <div className='mb-4'>
-              {
-                  data?.ProductImage[0] ? (
-                  <div className='flex gap-2 items-center cursor-pointer overflow-x-scroll scrollbar-none p-3'>
-                      {
-                          data.ProductImage.map((el,index) => {
-                              return (
-                                  <div className='relative group'>
-                                      <img src={el} alt={el} width={80} height={80} className='bg-slate-100 border rounded-lg' onClick={() =>{
-                                      setOpenFullScreenImage(true)
-                                      setFullScreenImage(el)
-                                  }} />
-                                  <div className='absolute bottom-0 right-0 p-1 text-white bg-red-500 rounded-lg hidden group-hover:block cursor-pointer' onClick={() => handleDeleteImage(index)}>
-                                  <AiFillDelete />
-                                  </div >
-                                  </div>
-                                  
-                              )
-                          })
-                      }
+
+          {/* تصاویر قبلی (kept) */}
+          <div className="rounded-xl border border-slate-200 p-3">
+            <div className="mb-2 text-sm font-medium text-slate-700">Current images</div>
+            {keptUrls.length === 0 && (
+              <div className="text-xs text-slate-500">No images kept.</div>
+            )}
+            <div className="flex flex-wrap gap-3">
+              {keptUrls.map((u, idx) => (
+                <div key={idx} className="relative">
+                  <img
+                    src={u}
+                    alt=""
+                    className="h-20 w-20 rounded-lg object-cover border border-slate-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeKeptUrl(idx)}
+                    className="absolute -right-2 -top-2 rounded-full bg-white border border-slate-200 px-2 py-0.5 text-xs text-rose-600 shadow-sm hover:bg-rose-50"
+                    title="Remove"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* انتخاب فایل‌های جدید */}
+          <div className="rounded-xl border border-slate-200 p-3">
+            <div className="mb-2 text-sm font-medium text-slate-700">Add new images</div>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={onPickFiles}
+              className="block w-full text-sm file:mr-3 file:rounded-lg file:border file:border-slate-300 file:bg-white file:px-3 file:py-2 file:text-sm file:hover:bg-slate-50"
+            />
+            {previews.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-3">
+                {previews.map((p, idx) => (
+                  <div key={p} className="relative">
+                    <img
+                      src={p}
+                      alt=""
+                      className="h-20 w-20 rounded-lg object-cover border border-slate-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeNewFile(idx)}
+                      className="absolute -right-2 -top-2 rounded-full bg-white border border-slate-200 px-2 py-0.5 text-xs text-rose-600 shadow-sm hover:bg-rose-50"
+                      title="Remove"
+                    >
+                      ×
+                    </button>
                   </div>
-                  ) : (
-                      <p className='text-red-600 text-xs'>*Please Upload Product Image</p>
-                  )
-              }
-              
+                ))}
+              </div>
+            )}
           </div>
 
-          <label htmlFor="Price" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Price :</label>
-          <input name='Price' value={data.Price} onChange={handleOnChenge} type="number" id="Price" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Price' required />
-
-          <label htmlFor="Selling" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Selling :</label>
-          <input name='Selling' value={data.Selling} onChange={handleOnChenge} type="number" id="Selling" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Selling' required />
-
-          <label htmlFor="Description" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Description :</label>
-          <textarea rows={5} name='Description' value={data.Description} onChange={handleOnChenge} type="text" id="Description" className='resize-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Enter Your Description' required />
-
-          {/* <input name='ProductImage' value={data.ProductImage} onChange={handleOnChenge} type="text" id="ProductImage" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Product Image' required />
-          <label htmlFor="Price" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Price :</label>
-          <input name='Price' value={data.Price} onChange={handleOnChenge} type="text" id="Price" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Price' required />
-          <label htmlFor="Description" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Description :</label>
-          <input name='Description' value={data.Description} onChange={handleOnChenge} type="text" id="Description" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Description' required />
-          <label htmlFor="Selling" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Selling :</label>
-          <input name='Selling' value={data.Selling} onChange={handleOnChenge} type="text" id="Selling" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Selling' required /> */}
+          {/* اکشن‌ها */}
+          <div className="flex items-center justify-end gap-2 pt-2 sticky bottom-0 bg-white">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg border border-slate-200 px-4 py-2 text-sm hover:bg-slate-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60"
+            >
+              {saving ? "Saving…" : "Save changes"}
+            </button>
           </div>
-          <div className='my-5'>
-          <button type='submit' className='w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600'>update Product</button>
-          </div>
-      </form>
-
-
-
-      
-   </div>
-
-{
-  openFulllScreenImage && (
-      <DisplayImage imageUrl={FullScreenImage} onClose={()=> setOpenFullScreenImage(false)} />
-  )
+        </form>
+      </div>
+    </div>
+  );
 }
-  </div>
-  )
-}
-
-export default AdminEditProduct

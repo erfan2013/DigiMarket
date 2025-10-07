@@ -4,10 +4,9 @@ const uploadProductPermisson = require("../../helpers/Permisson");
 async function deleteProductController(req, res) {
   try {
     const userId = req.userId;
-    if (!uploadProductPermisson(userId)) {
+    if (!(await uploadProductPermisson(userId))) {
       return res.status(403).json({ success: false, error: true, message: "Forbidden" });
     }
-
     const { id } = req.params;
     if (!id) return res.status(400).json({ success: false, error: true, message: "Product id is required" });
 

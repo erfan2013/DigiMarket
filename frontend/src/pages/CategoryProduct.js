@@ -1,137 +1,168 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import productCategory from '../helper/ProductCategory'
-import VerticalCartProduct from '../components/verticalCartProduct'
-import SummaryApi from '../common'
+// src/pages/CategoryProduct.js
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import productCategory from "../helper/ProductCategory";
+import SummaryApi from "../common";
+import ProductGrid from "../components/ui/ProductGrid";
 
 const CategoryProduct = () => {
-    const params = useParams()
-    const [data,setData] = useState([])
-    const [loading,setLoading] = useState(false)
-    const navigate = useNavigate()
-    const location = useLocation()
-    const URLSearch = new URLSearchParams(location.search)
-    const urlCategoryListArray = URLSearch.getAll("category")
-    const urlCategoryListObject = {}
-    urlCategoryListArray.forEach(el => {
-      urlCategoryListObject[el] = true
-    })
-    const [selectedCatgory,setSelectedCatgory] = useState(urlCategoryListObject)
-    const [filterCategoryList,setFilterCategoryList] = useState([])
-    const [sort,setSort] = useState("")
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const fetchdata = async () => {
-      const response = await fetch(SummaryApi.filterProduct.url,{
-        method : SummaryApi.filterProduct.method,
-        headers: {
-          "Content-Type": "application/json"
-        },
+  // خواندن دسته‌بندی‌ها از QueryString
+  const URLSearch = new URLSearchParams(location.search);
+  const urlCategoryListArray = URLSearch.getAll("category"); // مثلا ?category=phone&category=laptop
+  const urlCategoryListObject = {};
+  urlCategoryListArray.forEach((el) => {
+    urlCategoryListObject[el] = true;
+  });
 
-        body : JSON.stringify({
-          category : filterCategoryList
-        })
-      })
+  const [selectedCatgory, setSelectedCatgory] = useState(urlCategoryListObject);
+  const [filterCategoryList, setFilterCategoryList] = useState([]);
+  const [sort, setSort] = useState("");
 
-      const dataResponse = await response.json()
-      setData(dataResponse?.data || [])
+  // گرفتن دیتا بر اساس فیلتر دسته‌بندی
+  const fetchdata = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(SummaryApi.filterProduct.url, {
+        method: SummaryApi.filterProduct.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category: filterCategoryList }),
+      });
+      const dataResponse = await response.json();
+      setData(dataResponse?.data || []);
+    } catch (e) {
+      console.error(e);
+      setData([]);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const handleSelectCategory = (e) => {
-      const {name,value , checked} = e.target ;
-      setSelectedCatgory((preve)=> {
-        return {
-          ...preve,
-          [value] : checked
-        }
-      })
-    }
-    useEffect(()=> {
-      fetchdata()
-    },[filterCategoryList])
-    useEffect(()=> {
-      const arrayofCategory = Object.keys(selectedCatgory).map(categoryKeyName => {
-        if(selectedCatgory[categoryKeyName]){
-          return categoryKeyName
-        }
-        return null
+  const handleSelectCategory = (e) => {
+    const { value, checked } = e.target;
+    setSelectedCatgory((prev) => ({ ...prev, [value]: checked }));
+  };
 
-      }).filter(el => el)
+  useEffect(() => {
+    fetchdata();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterCategoryList]);
 
-      setFilterCategoryList(arrayofCategory)
-      const urlformat = arrayofCategory.map((el ,index) => {
-        if((arrayofCategory.length - 1) === index ){
-          return `/category=${el}`
-        }
+  // هر بار که چک‌باکس‌ها تغییر کنند، QueryString و لیست فیلتر به‌روز می‌شود
+  useEffect(() => {
+    const arrayofCategory = Object.keys(selectedCatgory)
+      .map((key) => (selectedCatgory[key] ? key : null))
+      .filter(Boolean);
 
-        return `category=${el}&&`
-      })
-      navigate('/product-category?' + urlformat.join(""))
-    },[selectedCatgory])
+    setFilterCategoryList(arrayofCategory);
 
-    const handleOnchengeSortBy = (e) => {
-      const {value} = e.target
-      setSort(value)
-      if(value === 'asc'){
-        setData(preve => preve.sort((a,b)=> a.Selling - b.Selling))
-      }
-      if(value === 'dsc'){
-        setData(preve => preve.sort((a,b)=> b.Selling - a.Selling))
-      }
-    }
-    useEffect(()=>{
+    // ساخت آدرس تمیز: /product-category?category=a&category=b
+    const qs = arrayofCategory
+      .map((el) => `category=${encodeURIComponent(el)}`)
+      .join("&");
+    navigate(`/product-category${qs ? `?${qs}` : ""}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCatgory]);
 
-    },[sort])
+  // سورت قیمت (Low→High / High→Low) بر اساس Selling (درصورت نبود Price)
+  const num = (x) => Number(x ?? 0);
+  const effective = (p) => num(p?.Selling ?? p?.Price);
+  const handleOnchengeSortBy = (e) => {
+    const { value } = e.target;
+    setSort(value);
+    setData((prev) => {
+      const next = [...prev];
+      if (value === "asc") next.sort((a, b) => effective(a) - effective(b));
+      if (value === "dsc") next.sort((a, b) => effective(b) - effective(a));
+      return next;
+    });
+  };
 
-   
   return (
-    <div className='container mx-auto p-4'>
+    <div className="container mx-auto p-4">
+      <div className="hidden lg:grid grid-cols-[220px,1fr] gap-6">
+        {/* ستون فیلترها */}
+        <aside className="rounded-2xl border border-slate-200 bg-white p-4 h-max sticky top-24">
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-900">
+              Sort By
+            </h3>
+            <form className="text-sm flex flex-col gap-2 py-3">
+              <label className="flex items-center gap-3">
+                <input
+                  type="radio"
+                  name="sortBy"
+                  checked={sort === "asc"}
+                  value="asc"
+                  onChange={handleOnchengeSortBy}
+                />
+                <span>Price Low → High</span>
+              </label>
+              <label className="flex items-center gap-3">
+                <input
+                  type="radio"
+                  name="sortBy"
+                  checked={sort === "dsc"}
+                  value="dsc"
+                  onChange={handleOnchengeSortBy}
+                />
+                <span>Price High → Low</span>
+              </label>
+            </form>
+          </div>
 
-      <div className=' hidden lg:grid grid-cols-[200px,1fr] rele'>
-            <div className='bg-white p-2 min-h-[calc(100vh-120px)] overflow-y-scroll'>
-              <div className=''>
-                <h3 className='text-base capitalize font-medium text-slate-500 border-b pb-1 border-slate-300'>Sort By</h3>
-                <form className='text-sm flex flex-col gap-2 py-2'>
-                      <div className='flex items-center gap-3'>
-                        <input type='radio' name='sortBy' checked={sort === 'asc'} value={'asc'} onChange={handleOnchengeSortBy}/>
-                        <label>Price Low To high</label>
-                      </div>
-                      <div className='flex items-center gap-3'>
-                        <input type='radio' name='sortBy' checked={sort === 'dsc'} value={'dsc'} onChange={handleOnchengeSortBy}/>
-                        <label>Price high To low</label>
-                      </div>
-                </form>
-                </div>
-                {/**filterby */}
-                <div className=''>
-                <h3 className='text-base capitalize font-medium text-slate-500 border-b pb-1 border-slate-300'>Category</h3>
-                <form className='text-sm flex flex-col gap-2 py-2'>
-                     {
-                      productCategory.map((categoryName,index)=> {
-                        return (
-                          <div className='flex items-center gap-3 font-semibold'>
-                            <input type='checkbox' name={'category'} id={categoryName?.value} checked={selectedCatgory[categoryName?.value]} value={categoryName?.value} onChange={handleSelectCategory} />
-                            <label htmlFor={categoryName?.value}>{categoryName?.label}</label>
-                          </div>
-                        )
-                      })
-                     }
-                </form>
-                </div>
-            </div>
-            <div className='px-4 '>
-              <p className='font-semibold my-2 text-slate-800 text-lg'>Search Results : {data.length}</p>
-             <div className='min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)]'>
-             {
-               data.length !== 0 &&(
-                <VerticalCartProduct data={data} loading={loading}/>
-               )
-              }
-             </div>
-            </div>
+          <div className="mt-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-900">
+              Category
+            </h3>
+            <form className="text-sm flex flex-col gap-2 py-3">
+              {productCategory.map((c) => (
+                <label key={c?.value} className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    name="category"
+                    id={c?.value}
+                    checked={!!selectedCatgory[c?.value]}
+                    value={c?.value}
+                    onChange={handleSelectCategory}
+                  />
+                  <span>{c?.label}</span>
+                </label>
+              ))}
+            </form>
+          </div>
+        </aside>
+
+        {/* ستون نتایج */}
+        <main>
+          <p className="font-semibold mb-3 text-slate-800 text-lg">
+            Search Results : {data?.length ?? 0}
+          </p>
+          <ProductGrid
+            items={data}
+            loading={loading}
+            onClickItem={(p) => navigate(`/product/${p._id}`)}
+          />
+        </main>
       </div>
-     
-    </div>
-  )
-}
 
-export default CategoryProduct
+      {/* موبایل */}
+      <div className="lg:hidden">
+        <p className="font-semibold my-2 text-slate-800 text-lg">
+          Search Results : {data?.length ?? 0}
+        </p>
+        <ProductGrid
+          items={data}
+          loading={loading}
+          onClickItem={(p) => navigate(`/product/${p._id}`)}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default CategoryProduct;

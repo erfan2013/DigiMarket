@@ -8,7 +8,7 @@ const userLogout = require('../controller/user/userLogout');
 const authToken = require('../middleware/authToken');
 const upload = require('../middleware/upload');
 const deleteProductController = require("../controller/product/deleteProduct");
-
+const deleteUser = require('../controller/user/deleteUser');
 const allUsers = require('../controller/user/allUsers');
 const UploadProductController = require('../controller/product/UploadProduct');
 const getProductController = require('../controller/product/getProduct');
@@ -35,9 +35,10 @@ router.patch("/me", authToken, updateMe);                           // ⭐️ ب
 router.patch("/me/password", authToken, changePassword);
 router.patch("/change-password", authToken, changePassword);
 router.patch("/me/avatar", authToken, upload.single("avatar"), updateAvatar);
+router.patch("/product/:id", authToken, updateProductController);
 
 
-
+router.delete("/user/:id", authToken, deleteUser);
 router.delete("/product/:id", authToken, deleteProductController);
 router.post("/auth/forgot-password", forgotPassword);
 router.post("/auth/reset-password", resetPassword);
@@ -61,7 +62,7 @@ router.post("/signin",userSigninController)
 router.get("/userDetails",authToken ,userDetailsController)
 router.get("/userLogout",userLogout)
 
-
+router.post("/update-product", authToken, updateProductController);
 
 //Admin Panel Routes
 router.get("/all-users",authToken,allUsers)

@@ -1,4 +1,4 @@
-const backendDomain = process.env.REACT_APP_BASE_URL || "http://localhost:8080"
+const backendDomain = process.env.REACT_APP_BASE_URL?.trim() || "http://localhost:8080"
 
 const SummaryApi = {
     SignUp : {
@@ -105,7 +105,25 @@ const SummaryApi = {
     resetPassword: {
         url: `${backendDomain}/api/auth/reset-password`,
         method: "POST"
-    }
+    },
+    deleteProduct: {
+        url: `${backendDomain}/api/product`,
+        method: "DELETE"
+    },
+    uploadImages: {
+        url: `${backendDomain}/api/upload/images`,
+        method: "POST"
+    },
+    updateProductById: {
+        url: `${backendDomain}/api/update-product-by-id`,
+        method: "PATCH"
+    },
+    deleteUser: {
+        url: `${backendDomain}/api/user`,
+        method: "DELETE"
+    },
+    
+    
 }
 
 export default SummaryApi
