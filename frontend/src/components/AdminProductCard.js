@@ -6,12 +6,12 @@ import resolveImageUrl from "../helper/resolveImageUrl";
 import DisplayUSDCurrency from "../helper/displayCurrency";
 import { LuPencil, LuTrash2 } from "react-icons/lu";
 import { authHeaders } from "../common/auth";
+import ProductImage from "./ui/productImage";
 
 export default function AdminProductCard({ data, fetchdata }) {
   const [openEdit, setOpenEdit] = useState(false);
   const id = data?._id;
 
-  // -------- Delete (همون که الان درست شده؛ نگه می‌داریم) ----------
   async function tryDeleteParam() {
     const url = `${SummaryApi.deleteProduct.url}/${id}`;
     const res = await fetch(url, {
@@ -54,13 +54,12 @@ export default function AdminProductCard({ data, fetchdata }) {
     }
   };
 
-  // -------- Edit ----------
   const onEdit = () => setOpenEdit(true);
 
   return (
     <>
       <div className="group relative rounded-2xl border border-slate-200 bg-white p-3 hover:shadow-md transition">
-        {/* اکشن‌ها: فقط یک Edit و یک Delete */}
+        {/* اکشن‌ها */}
         <div className="absolute right-3 top-3 z-10 flex gap-1">
           <button
             title="Edit"
@@ -79,11 +78,14 @@ export default function AdminProductCard({ data, fetchdata }) {
         </div>
 
         {/* تصویر */}
-        <div className="h-40 w-full overflow-hidden rounded-xl bg-slate-50">
-          <img
+        <div className="w-full overflow-hidden rounded-xl bg-slate-50">
+          <ProductImage
             src={resolveImageUrl(data?.ProductImage?.[0])}
             alt={data?.ProductName || ""}
-            className="h-full w-full object-contain mix-blend-multiply transition-transform duration-200 group-hover:scale-105"
+            ratio="1:1"                  // 👈 ارتفاع یکدست
+            fit="contain"                // 👈 بدون برش تصویر
+            bg="bg-transparent"          // پس‌زمینه از والد (bg-slate-50) میاد
+            className="transition-transform duration-200 group-hover:scale-105"
           />
         </div>
 

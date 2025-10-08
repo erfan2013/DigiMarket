@@ -138,7 +138,7 @@ export default function Header() {
                 <Button>Sign in</Button>
               </Link>
               <Link to="/sign-up">
-                <Button className="bg-black">Sign up</Button>
+                <Button className="bg-purple-950 text-white">Sign up</Button>
               </Link>
             </div>
           )}

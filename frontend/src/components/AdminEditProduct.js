@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
 import { authHeaders } from "../common/auth";
+import ProductImage from "./ui/productImage";
 
 export default function AdminEditProduct({ productData, onClose, fetchdata }) {
   const original = useMemo(() => productData || {}, [productData]);
@@ -262,10 +263,13 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
             <div className="flex flex-wrap gap-3">
               {keptUrls.map((u, idx) => (
                 <div key={idx} className="relative">
-                  <img
+                  {/* ⬇️ اندازه را با width کنترل می‌کنیم؛ نسبت را ProductImage می‌سازد */}
+                  <ProductImage
                     src={u}
                     alt=""
-                    className="h-20 w-20 rounded-lg object-cover border border-slate-200"
+                    ratio="1:1"
+                    fit="cover"
+                    className="w-20 rounded-lg border border-slate-200"
                   />
                   <button
                     type="button"
@@ -280,7 +284,7 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
             </div>
           </div>
 
-          {/* انتخاب فایل‌های جدید */}
+            {/* انتخاب فایل‌های جدید */}
           <div className="rounded-xl border border-slate-200 p-3">
             <div className="mb-2 text-sm font-medium text-slate-700">Add new images</div>
             <input
@@ -294,10 +298,13 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
               <div className="mt-3 flex flex-wrap gap-3">
                 {previews.map((p, idx) => (
                   <div key={p} className="relative">
-                    <img
+                    {/* از ProductImage برای پیش‌نمایش هم استفاده می‌کنیم */}
+                    <ProductImage
                       src={p}
                       alt=""
-                      className="h-20 w-20 rounded-lg object-cover border border-slate-200"
+                      ratio="1:1"
+                      fit="cover"
+                      className="w-20 rounded-lg border border-slate-200"
                     />
                     <button
                       type="button"

@@ -30,7 +30,8 @@ export default function Home() {
   };
 
   return (
-    <div className="pb-12">
+    <div className="pb-12 min-h-screen
+     bg-slate-50 [background:radial-gradient(80%_50%_at_10%_0%,rgba(99,102,241,.08),transparent_60%),radial-gradient(70%_40%_at_100%_100%,rgba(34,211,238,.10),transparent_60%)]">
       {/* نوار دسته‌بندی افقی با فلش */}
       <CategoryStrip items={productCategory} />
 
@@ -48,7 +49,7 @@ export default function Home() {
       </div>
 
       {/* ریل‌های افقی محصولات */}
-      <div className="mx-auto max-w-7xl px-4 space-y-12 mt-8">
+      <div className="mx-auto max-w-7xl px-4 space-y-12 mt-8 ">
         <ProductRail title="Top Airpods" category={CAT.airpodes || CAT.airpods || "airpodes"} onAdd={handleAdd} />
         <ProductRail title="Mobiles"      category={CAT.mobiles || CAT.mobile || "mobiles"} onAdd={handleAdd} />
         <ProductRail title="Earphones"    category={CAT.earphones || "earphones"} onAdd={handleAdd} />
