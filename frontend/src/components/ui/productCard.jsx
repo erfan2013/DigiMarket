@@ -3,86 +3,68 @@ import DisplayUSDCurrency from "../../helper/displayCurrency";
 import resolveImageUrl from "../../helper/resolveImageUrl";
 import ProductImage from "./productImage";
 
-/**
- * کارت محصول استاندارد
- * - تصویر درشت با نسبت 4:5 (پورتریت) → شکیل‌تر از 1:1
- * - عرض ریسپانسیو: 280 → 300 → 320px (برای ریل افقی عالیه)
- * - اگر توی Grid استفاده می‌کنی و نمی‌خوای min-width بده، prop "noMinWidth" رو true کن
- */
 export default function ProductCard({
   data = {},
-  onAdd,                 // اختیاری: کلیک "Add to cart"
-  onClick,               // اختیاری: کلیک روی کل کارت
+  onAdd,                 // پاس بدی کار می‌کنه، اگر ندی دکمه disabled میشه (ولی دیده میشه)
+  onClick,
   className = "",
-  imageRatio = "4:5",    // نسبت تصویر (مثلاً "1:1" یا "3:4")
-  noMinWidth = false,    // اگر Grid داری و نمی‌خوای min-w بده → true
+  inRail = false,        // در ریل → min-width ثابت
+  ratio = "1:1",
+  showAdd = true,
 }) {
-  const rawImg = data?.ProductImage?.[0];
-  const img = resolveImageUrl(rawImg) || "/placeholder.png";
-
-  const priceNow = Number(data?.Selling ?? data?.Price ?? 0);
-  const priceOld = Number(data?.Price ?? 0);
-
-  const widthClasses = noMinWidth
-    ? ""
-    : "min-w-[280px] sm:min-w-[300px] xl:min-w-[320px]";
+  const raw = data?.ProductImage?.[0];
+  const img = resolveImageUrl(raw) || "/placeholder.png";
+  const now = Number(data?.Selling ?? data?.Price ?? 0);
+  const old = Number(data?.Price ?? 0);
 
   return (
     <div
       onClick={onClick}
       className={[
-        "group rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition",
-        "p-3 md:p-4",
-        widthClasses,
+        "group rounded-2xl bg-white p-3 ring-1 ring-slate-200 shadow-sm",
+        "transition-transform duration-200 ease-out hover:scale-[1.02] hover:shadow-lg",
+        inRail ? "min-w-[260px] sm:min-w-[300px] xl:min-w-[320px]" : "",
         onClick ? "cursor-pointer" : "",
         className,
       ].join(" ")}
     >
-      {/* تصویر بزرگ و تمیز؛ padding کم تا عکس درشت دیده شود */}
-      <div className="w-full overflow-hidden rounded-xl bg-slate-50 p-1 md:p-2">
+      <div className="rounded-xl bg-slate-50 p-2 overflow-hidden">
         <ProductImage
           src={img}
-          alt={data?.ProductName || "product"}
-          ratio={imageRatio}                 // پیش‌فرض 4:5
+          alt={data?.ProductName}
+          ratio={ratio}
           fit="contain"
-          bg="bg-transparent"
-          sizes="(max-width:640px) 60vw, (max-width:1024px) 33vw, 320px"
-          className="transition-transform duration-200 group-hover:scale-[1.02]"
-          onError={(e) => (e.currentTarget.src = "/placeholder.png")}
+          className="transition-transform duration-200 group-hover:scale-[1.03]"
         />
       </div>
 
-      <div className="mt-3">
-        {/* ارتفاع ثابت برای هم‌قدی کارت‌ها */}
-        <h3 className="line-clamp-2 min-h-[52px] text-[15px] md:text-base font-medium text-slate-900">
+      <div className="">
+        <h3 className="text-[15px] md:text-base font-medium text-slate-900 line-clamp-2 min-h-[44px]">
           {data?.ProductName}
         </h3>
-
-        <div className="mt-1 text-xs md:text-[13px] capitalize text-slate-500">
-          {data?.category}
-        </div>
+        <div className="mt-1 text-xs capitalize text-slate-500">{data?.category}</div>
 
         <div className="mt-2 flex items-center gap-2">
           <div className="text-[17px] md:text-[18px] font-semibold text-slate-900">
-            {DisplayUSDCurrency(priceNow)}
+            {DisplayUSDCurrency(now)}
           </div>
-          {priceOld > priceNow && (
-            <div className="text-xs md:text-[13px] text-slate-400 line-through">
-              {DisplayUSDCurrency(priceOld)}
+          {old > now && (
+            <div className="text-xs text-slate-400 line-through">
+              {DisplayUSDCurrency(old)}
             </div>
           )}
         </div>
 
-        {onAdd && (
+        {showAdd && (
           <button
-            className="mt-3 w-full rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-800"
-            onClick={(e) => {
-              e.stopPropagation();
-              onAdd(data);
-            }}
-          >
-            Add to cart
-          </button>
+  className="mt-3 w-full rounded-lg bg-slate-900 px-3 py-2 font-medium text-white
+             hover:brightness-110  focus-visible:outline-none focus-visible:ring-2
+             focus-visible:ring-slate-400 disabled:opacity-60"
+  onClick={(e) => { e.stopPropagation(); onAdd?.(data); }}
+  disabled={!onAdd}
+>
+  Add to cart
+</button>
         )}
       </div>
     </div>

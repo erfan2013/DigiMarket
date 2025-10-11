@@ -1,16 +1,15 @@
+
 import React, { useContext, useMemo } from "react";
 import Context from "../context";
 import addToCart from "../helper/addToCart";
 import productCategory from "../helper/ProductCategory";
-
-import HeroCarousel from "../components/ui/HeroCarousel";
-import CategoryStrip from "../components/ui/CategoryStrip";
+import CategoryList from "../components/CategoryList";
 import ProductRail from "../components/ui/ProductRail";
 
 export default function Home() {
   const { fetchUserAddToCart } = useContext(Context);
 
-  // نگاشت امن برای اسلاگ دسته‌ها
+  // نقشهٔ امن برای نام دسته‌ها
   const CAT = useMemo(() => {
     const map = {};
     (productCategory || []).forEach(c => {
@@ -23,33 +22,23 @@ export default function Home() {
     return map;
   }, []);
 
-  const handleAdd = async (p) => {
-    // addToCart(e,id) → ایونت ساده
-    await addToCart({ preventDefault(){}, stopPropagation(){} }, p?._id);
-    fetchUserAddToCart?.();
+  const handleAdd = async (id) => {
+    if (!id) return;
+    await addToCart(id);
+    fetchUserAddToCart();
   };
 
   return (
-    <div className="pb-12 min-h-screen
-     bg-slate-50 [background:radial-gradient(80%_50%_at_10%_0%,rgba(99,102,241,.08),transparent_60%),radial-gradient(70%_40%_at_100%_100%,rgba(34,211,238,.10),transparent_60%)]">
-      {/* نوار دسته‌بندی افقی با فلش */}
-      <CategoryStrip items={productCategory} />
-
-      {/* هیرو با اسلایدها؛ اگر عکس نداری، همون گرادیِنت/پترن رندر میشه */}
-      <div className="mt-4">
-        <HeroCarousel
-          autoPlay
-          interval={5000}
-          slides={[
-            { src: "/banners/slide1.jpg", title: "Big Summer Sale", subtitle: "Up to 40% off • Free shipping" },
-            { src: "/banners/slide2.jpg", title: "New Arrivals", subtitle: "Phones • Laptops • Audio" },
-            { src: "/banners/slide3.jpg", title: "Accessories Deals", subtitle: "Headphones, Mice, Keyboards" },
-          ]}
-        />
+    <div className="w-full">
+      {/* --- Category strip همیشه بالاتر از همه --- */}
+      <div className="sticky top-[68px] z-20 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+        <div className="mx-auto max-w-7xl px-4 py-2">
+          <CategoryList />
+        </div>
       </div>
 
-      {/* ریل‌های افقی محصولات */}
-      <div className="mx-auto max-w-7xl px-4 space-y-12 mt-8 ">
+      {/* --- محتوای صفحهٔ اصلی --- */}
+      <div className="mx-auto max-w-7xl px-4 space-y-12 mt-6">
         <ProductRail title="Top Airpods" category={CAT.airpodes || CAT.airpods || "airpodes"} onAdd={handleAdd} />
         <ProductRail title="Mobiles"      category={CAT.mobiles || CAT.mobile || "mobiles"} onAdd={handleAdd} />
         <ProductRail title="Earphones"    category={CAT.earphones || "earphones"} onAdd={handleAdd} />
