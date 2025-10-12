@@ -51,7 +51,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-[#B6C8DB] bg-[#B9CDE0]/85 backdrop-blur supports-[backdrop-filter]:bg-[#B9CDE0]/65">
       <div className="container mx-auto h-16 px-4 flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center gap-3">

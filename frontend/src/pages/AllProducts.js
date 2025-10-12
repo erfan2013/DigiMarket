@@ -42,7 +42,9 @@ export default function AllProducts() {
   return (
     <div className="p-4">
       {/* هدر و اکشن‌ها */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-3 md:p-4 shadow-sm">
+      <div className="rounded-2xl p-3 md:p-4 shadow-sm
+    bg-[#EDF3FA] dark:bg-[#EDF3FA]
+    border border-[#C6D6E6]">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="text-lg font-semibold">All Products</div>
 

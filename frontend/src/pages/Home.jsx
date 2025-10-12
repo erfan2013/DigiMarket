@@ -31,14 +31,14 @@ export default function Home() {
   return (
     <div className="w-full">
       {/* --- Category strip همیشه بالاتر از همه --- */}
-      <div className="sticky top-[68px] z-20 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <div className="sticky top-[68px] z-20 bg-[#D9E6F0]/80 backdrop-blur supports-[backdrop-filter]:bg-[#D9E6F0]/60">
         <div className="mx-auto max-w-7xl px-4 py-2">
           <CategoryList />
         </div>
       </div>
 
       {/* --- محتوای صفحهٔ اصلی --- */}
-      <div className="mx-auto max-w-7xl px-4 space-y-12 mt-6">
+      <div className="mx-auto max-w-7xl px-4 space-y-12 mt-6 bg-[#CFDDEA] py-6">
         <ProductRail title="Top Airpods" category={CAT.airpodes || CAT.airpods || "airpodes"} onAdd={handleAdd} />
         <ProductRail title="Mobiles"      category={CAT.mobiles || CAT.mobile || "mobiles"} onAdd={handleAdd} />
         <ProductRail title="Earphones"    category={CAT.earphones || "earphones"} onAdd={handleAdd} />

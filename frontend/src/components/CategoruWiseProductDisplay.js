@@ -11,97 +11,103 @@ import ProductImage from "./ui/productImage";
 const CategoryWiseProductDisplay = ({ category, heading }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const loadingList = new Array(13).fill(null)
+  const loadingList = new Array(12).fill(null)
   const { fetchUserAddToCart } = useContext(Context)
 
   const handleAddToCart = async (e, id) => {
     e.preventDefault()
-    await addToCart(e, id)
-    fetchUserAddToCart()
+    e.stopPropagation()
+    const ok = await addToCart(e, id)
+    if (ok) fetchUserAddToCart?.()
   }
 
   const fetchData = async () => {
-    setLoading(true)
-    const categoryProduct = await fetchCategoryWiseProduct(category)
-    setLoading(false)
-    setData(Array.isArray(categoryProduct?.data) ? categoryProduct.data : [])
+    try {
+      setLoading(true)
+      const categoryProduct = await fetchCategoryWiseProduct(category)
+      setData(Array.isArray(categoryProduct?.data) ? categoryProduct.data : [])
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [category])
 
   return (
-    <div className="container mx-auto px-4 mt-10 my-6 relative">
+    <div className="container mx-auto px-4 mt-10 my-6">
       <h2 className="text-2xl font-semibold py-4">{heading}</h2>
 
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,320px))] justify-between md:gap-6 overflow-x-scroll scrollbar-none transition-all">
+      <div className="
+        grid gap-6
+        grid-cols-2 sm:grid-cols-3 lg:grid-cols-4
+        xl:grid-cols-5
+      ">
         {loading ? (
-          loadingList.map((_, index) => (
+          loadingList.map((_, i) => (
             <div
-              key={index}
-              className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow"
+              key={i}
+              className="rounded-2xl bg-white p-3 ring-1 ring-slate-200 shadow-sm"
             >
-              {/* اسکلت تصویر با نسبت ثابت 1:1 */}
-              <div className="p-4">
-                <div className="relative w-full overflow-hidden rounded-xl bg-slate-200">
-                  <div style={{ paddingTop: '100%' }} className="animate-pulse" />
-                </div>
+              <div className="rounded-xl bg-slate-200 overflow-hidden">
+                <div className="w-full" style={{ paddingTop: '100%' }} />
               </div>
-
-              <div className="p-4 mx-auto gap-3">
-                <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black p-1 animate-pulse rounded-full py-2" aria-busy="true">
-                  Loading product name...
-                </h2>
-                <p className="capitalize text-slate-500 p-1 animate-pulse rounded-full py-2"></p>
-                <div className="flex gap-3">
-                  <p className="text-blue-700 font-medium p-1 animate-pulse rounded-full py-2"></p>
-                  <p className="text-slate-500 line-through p-1 animate-pulse rounded-full py-2"></p>
-                </div>
-                <div className="flex justify-center">
-                  <button className="p-1 animate-pulse mt-2 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg md:text-sm text-xs md:px-5 md:py-2.5 px-3 py-2.5 text-center"></button>
-                </div>
+              <div className="mt-3 space-y-2">
+                <div className="h-4 w-3/4 bg-slate-200 rounded animate-pulse" />
+                <div className="h-3 w-1/2 bg-slate-200 rounded animate-pulse" />
+                <div className="h-4 w-1/3 bg-slate-200 rounded animate-pulse" />
               </div>
             </div>
           ))
         ) : (
-          (data || []).map((product) => (
+          (data || []).map((p) => (
             <Link
-              key={product?._id}
-              to={'/product/' + product?._id}
-              className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow"
+              key={p?._id}
+              to={`/product/${p?._id}`}
               onClick={scrollToTop}
+              className={[
+                "group rounded-2xl bg-white p-3 ring-1 ring-slate-200 shadow-sm",
+                "transition-transform duration-200 ease-out hover:scale-[1.02] hover:shadow-lg"
+              ].join(" ")}
             >
-              {/* فقط padding؛ ارتفاع ثابت به والد نمی‌دیم */}
-              <div className="p-4">
+              <div className="rounded-xl bg-slate-100 overflow-hidden">
                 <ProductImage
-                  src={resolveImageUrl(product?.ProductImage?.[0])}
-                  alt={product?.ProductName || product?.category || ''}
-                  ratio="1:1"          // اگر مستطیلی می‌خوای: "4:3"
+                  src={resolveImageUrl(p?.ProductImage?.[0])}
+                  alt={p?.ProductName || p?.category || ""}
+                  ratio="1:1"
                   fit="contain"
-                  bg="bg-slate-100"
-                  className="transition-transform duration-200 hover:scale-[1.02]"
                 />
               </div>
 
-              <div className="p-4 mx-auto gap-3">
-                <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black">
-                  {product?.ProductName}
-                </h2>
-                <p className="capitalize text-slate-500">{product?.category}</p>
-                <div className="flex gap-3">
-                  <p className="text-blue-700 font-medium">{DisplayUSDCurrency(product?.Selling)}</p>
-                  <p className="text-slate-500 line-through">{DisplayUSDCurrency(product?.Price)}</p>
+              <div className="mt-3">
+                <h3 className="text-sm md:text-base font-medium text-slate-900 line-clamp-1">
+                  {p?.ProductName}
+                </h3>
+                <p className="text-xs md:text-sm text-slate-500 capitalize">
+                  {p?.category}
+                </p>
+
+                <div className="mt-2 flex items-baseline gap-2">
+                  <span className="text-sm md:text-base font-semibold text-slate-900">
+                    {DisplayUSDCurrency(p?.Selling)}
+                  </span>
+                  {!!p?.Price && Number(p?.Price) > Number(p?.Selling) && (
+                    <span className="text-xs text-slate-500 line-through">
+                      {DisplayUSDCurrency(p?.Price)}
+                    </span>
+                  )}
                 </div>
-                <div className="flex justify-center">
-                  <button
-                    className="mt-2 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg md:text-sm text-xs md:px-5 md:py-2.5 px-3 py-2.5 text-center"
-                    onClick={(e) => handleAddToCart(e, product?._id)}
-                  >
-                    ADD TO CARD
-                  </button>
-                </div>
+
+                <button
+                  className="mt-3 w-full rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white
+                             transition-transform duration-200 ease-out hover:scale-[1.03]
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                  onClick={(e) => handleAddToCart(e, p?._id)}
+                >
+                  Add to cart
+                </button>
               </div>
             </Link>
           ))
@@ -112,3 +118,118 @@ const CategoryWiseProductDisplay = ({ category, heading }) => {
 }
 
 export default CategoryWiseProductDisplay
+
+// import React, { useContext, useEffect, useState } from 'react'
+// import fetchCategoryWiseProduct from '../helper/fetchCategoryWiseProduct'
+// import DisplayUSDCurrency from '../helper/displayCurrency'
+// import { Link } from 'react-router-dom'
+// import addToCart from '../helper/addToCart'
+// import Context from '../context'
+// import scrollToTop from '../helper/ScrolTop'
+// import resolveImageUrl from '../helper/resolveImageUrl'
+// import ProductImage from "./ui/productImage";
+
+// const CategoryWiseProductDisplay = ({ category, heading }) => {
+//   const [data, setData] = useState([])
+//   const [loading, setLoading] = useState(false)
+//   const loadingList = new Array(13).fill(null)
+//   const { fetchUserAddToCart } = useContext(Context)
+
+//   const handleAddToCart = async (e, id) => {
+//     e.preventDefault()
+//     await addToCart(e, id)
+//     fetchUserAddToCart()
+//   }
+
+//   const fetchData = async () => {
+//     setLoading(true)
+//     const categoryProduct = await fetchCategoryWiseProduct(category)
+//     setLoading(false)
+//     setData(Array.isArray(categoryProduct?.data) ? categoryProduct.data : [])
+//   }
+
+//   useEffect(() => {
+//     fetchData()
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [])
+
+//   return (
+//     <div className="container mx-auto px-4 mt-10 my-6 relative">
+//       <h2 className="text-2xl font-semibold py-4">{heading}</h2>
+
+//       <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,320px))] justify-between md:gap-6 overflow-x-scroll scrollbar-none transition-all">
+//         {loading ? (
+//           loadingList.map((_, index) => (
+//             <div
+//               key={index}
+//               className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow"
+//             >
+//               {/* اسکلت تصویر با نسبت ثابت 1:1 */}
+//               <div className="p-4">
+//                 <div className="relative w-full overflow-hidden rounded-xl bg-slate-200">
+//                   <div style={{ paddingTop: '100%' }} className="animate-pulse" />
+//                 </div>
+//               </div>
+
+//               <div className="p-4 mx-auto gap-3">
+//                 <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black p-1 animate-pulse rounded-full py-2" aria-busy="true">
+//                   Loading product name...
+//                 </h2>
+//                 <p className="capitalize text-slate-500 p-1 animate-pulse rounded-full py-2"></p>
+//                 <div className="flex gap-3">
+//                   <p className="text-blue-700 font-medium p-1 animate-pulse rounded-full py-2"></p>
+//                   <p className="text-slate-500 line-through p-1 animate-pulse rounded-full py-2"></p>
+//                 </div>
+//                 <div className="flex justify-center">
+//                   <button className="p-1 animate-pulse mt-2 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg md:text-sm text-xs md:px-5 md:py-2.5 px-3 py-2.5 text-center"></button>
+//                 </div>
+//               </div>
+//             </div>
+//           ))
+//         ) : (
+//           (data || []).map((product) => (
+//             <Link
+//               key={product?._id}
+//               to={'/product/' + product?._id}
+//               className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow"
+//               onClick={scrollToTop}
+//             >
+//               {/* فقط padding؛ ارتفاع ثابت به والد نمی‌دیم */}
+//               <div className="p-4">
+//                 <ProductImage
+//                   src={resolveImageUrl(product?.ProductImage?.[0])}
+//                   alt={product?.ProductName || product?.category || ''}
+//                   ratio="1:1"          // اگر مستطیلی می‌خوای: "4:3"
+//                   fit="contain"
+//                   bg="bg-slate-100"
+//                   className="transition-transform duration-200 hover:scale-[1.02]"
+//                 />
+//               </div>
+
+//               <div className="p-4 mx-auto gap-3">
+//                 <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black">
+//                   {product?.ProductName}
+//                 </h2>
+//                 <p className="capitalize text-slate-500">{product?.category}</p>
+//                 <div className="flex gap-3">
+//                   <p className="text-blue-700 font-medium">{DisplayUSDCurrency(product?.Selling)}</p>
+//                   <p className="text-slate-500 line-through">{DisplayUSDCurrency(product?.Price)}</p>
+//                 </div>
+//                 <div className="flex justify-center">
+//                   <button
+//                     className="mt-2 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg md:text-sm text-xs md:px-5 md:py-2.5 px-3 py-2.5 text-center"
+//                     onClick={(e) => handleAddToCart(e, product?._id)}
+//                   >
+//                     ADD TO CARD
+//                   </button>
+//                 </div>
+//               </div>
+//             </Link>
+//           ))
+//         )}
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default CategoryWiseProductDisplay

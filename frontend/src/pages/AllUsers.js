@@ -1,4 +1,3 @@
-// src/pages/AllUsers.jsx
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SummaryApi from '../common';
@@ -23,7 +22,7 @@ export default function AllUsers() {
   const [loading, setLoading] = useState(false);
 
   const [openUpdateRole, setOpenUpdateRole] = useState(false);
-  const [u, setU] = useState(null); // کاربر انتخابی برای ادیت
+  const [u, setU] = useState(null);
 
   const [q, setQ] = useState("");
   const dq = useDebounce(q, 400);
@@ -67,26 +66,35 @@ export default function AllUsers() {
 
   return (
     <div className="p-4">
-      <Card>
-        <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-3">
+      {/* کادر بزرگ هم‌رنگ هدر */}
+      <Card className="rounded-2xl border shadow-sm bg-[var(--surface)] border-[var(--surface-border)] ">
+        {/* نوار بالای کارت (هم‌رنگ هدر/سرفیس؛ فقط ترنسپرنت تا با والد یکی باشه) */}
+        <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-3 md:p-4 bg-transparent ">
+          <div className="flex items-center gap-3 ">
             <CardTitle>All Users</CardTitle>
-            <div className="text-sm text-slate-500">{rows.length} users</div>
+            <div className="text-sm text-slate-600 dark:text-slate-300">{rows.length} users</div>
           </div>
+
+          {/* سرچ باکسی که روی همین سرفیس جواب می‌دهد */}
           <div className="relative w-full max-w-md">
-            <LuSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <LuSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-300" />
             <input
               placeholder="Search by first/last name or email…"
               value={q} onChange={(e) => setQ(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+              className="w-full rounded-xl border border-[var(--surface-border)]
+                         bg-white/60 dark:bg-white/10
+                         text-slate-900 dark:text-slate-100
+                         pl-9 pr-3 py-2 text-sm outline-none
+                         focus:ring-2 focus:ring-[#60A5FA]"
             />
           </div>
         </CardHeader>
 
         <CardContent>
-          <div className="overflow-auto rounded-2xl border border-slate-100">
+          {/* همین باکس جدول هم‌رنگ هدر */}
+          <div className="overflow-auto rounded-2xl border bg-[var(--surface)] border-[var(--surface-border)]">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-slate-700">
+              <thead className="text-slate-700 dark:text-slate-200 bg-white/40 dark:bg-white/5">
                 <tr>
                   <th className="px-4 py-3">#</th>
                   <th className="px-4 py-3">firstName</th>
@@ -97,40 +105,43 @@ export default function AllUsers() {
                   <th className="px-4 py-3">Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 {loading && Array.from({ length: 6 }).map((_, i) => (
-                  <tr key={i} className="border-t">
-                    <td className="px-4 py-3"><div className="h-4 w-6 bg-slate-200 animate-pulse rounded" /></td>
-                    <td className="px-4 py-3"><div className="h-4 w-32 bg-slate-200 animate-pulse rounded" /></td>
-                    <td className="px-4 py-3"><div className="h-4 w-32 bg-slate-200 animate-pulse rounded" /></td>
-                    <td className="px-4 py-3"><div className="h-4 w-40 bg-slate-200 animate-pulse rounded" /></td>
-                    <td className="px-4 py-3"><div className="h-5 w-16 bg-slate-200 animate-pulse rounded-full" /></td>
-                    <td className="px-4 py-3"><div className="h-4 w-28 bg-slate-200 animate-pulse rounded" /></td>
-                    <td className="px-4 py-3"><div className="h-8 w-28 bg-slate-200 animate-pulse rounded-xl" /></td>
+                  <tr key={i} className="border-t border-[var(--surface-border)]/60">
+                    <td className="px-4 py-3"><div className="h-4 w-6 bg-white/50 dark:bg-white/10 animate-pulse rounded" /></td>
+                    <td className="px-4 py-3"><div className="h-4 w-32 bg-white/50 dark:bg-white/10 animate-pulse rounded" /></td>
+                    <td className="px-4 py-3"><div className="h-4 w-32 bg-white/50 dark:bg-white/10 animate-pulse rounded" /></td>
+                    <td className="px-4 py-3"><div className="h-4 w-40 bg-white/50 dark:bg-white/10 animate-pulse rounded" /></td>
+                    <td className="px-4 py-3"><div className="h-5 w-16 bg-white/50 dark:bg-white/10 animate-pulse rounded-full" /></td>
+                    <td className="px-4 py-3"><div className="h-4 w-28 bg-white/50 dark:bg-white/10 animate-pulse rounded" /></td>
+                    <td className="px-4 py-3"><div className="h-8 w-28 bg-white/50 dark:bg-white/10 animate-pulse rounded-xl" /></td>
                   </tr>
                 ))}
 
                 {!loading && rows.map((el, index) => (
-                  <tr key={el?._id} className="border-t last:border-b-0 hover:bg-slate-50/60">
+                  <tr key={el?._id} className="border-t border-[var(--surface-border)]/60 hover:bg-white/30 dark:hover:bg-white/5">
                     <td className="px-4 py-3">{index + 1}</td>
                     <td className="px-4 py-3">{el?.firstName || ""}</td>
                     <td className="px-4 py-3">{el?.lastName  || ""}</td>
                     <td className="px-4 py-3">{el?.email}</td>
                     <td className="px-4 py-3">
-                      <Badge color={roleColor(el?.role)}>{el?.role || "USER"}</Badge>
+                      <Badge color={roleColor(el?.role)}>
+                        {el?.role || "USER"}
+                      </Badge>
                     </td>
                     <td className="px-4 py-3">{el?.createdAt ? moment(el.createdAt).format('LL') : "-"}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <button
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-green-100 text-green-800 hover:bg-green-200"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-green-100 text-green-800 hover:bg-green-200 dark:bg-emerald-900/40 dark:text-emerald-200 dark:hover:bg-emerald-900/60"
                           onClick={() => { setU(el); setOpenUpdateRole(true); }}
                           title="Edit role"
                         >
                           <MdEdit /> Edit
                         </button>
                         <button
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-rose-100 text-rose-700 hover:bg-rose-200 disabled:opacity-50"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-rose-100 text-rose-700 hover:bg-rose-200 dark:bg-rose-900/40 dark:text-rose-200 dark:hover:bg-rose-900/60 disabled:opacity-50"
                           onClick={() => handleDeleteUser(el?._id)}
                           disabled={String(el?._id) === String(me?._id)}
                           title="Delete user"
@@ -144,7 +155,7 @@ export default function AllUsers() {
 
                 {!loading && rows.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="px-4 py-8 text-center text-slate-500">
+                    <td colSpan={7} className="px-4 py-8 text-center text-slate-600 dark:text-slate-300">
                       No users found.
                     </td>
                   </tr>
@@ -170,10 +181,6 @@ export default function AllUsers() {
   );
 }
 
-
-
-
-// // src/pages/AllUsers.jsx
 // import React, { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
 // import SummaryApi from '../common';
@@ -188,23 +195,17 @@ export default function AllUsers() {
 
 // function useDebounce(value, delay = 400) {
 //   const [v, setV] = useState(value);
-//   useEffect(() => {
-//     const id = setTimeout(() => setV(value), delay);
-//     return () => clearTimeout(id);
-//   }, [value, delay]);
+//   useEffect(() => { const id = setTimeout(()=>setV(value), delay); return ()=>clearTimeout(id); }, [value, delay]);
 //   return v;
 // }
 
 // export default function AllUsers() {
 //   const me = useSelector(s => s?.user?.user);
-
 //   const [rows, setRows] = useState([]);
 //   const [loading, setLoading] = useState(false);
 
 //   const [openUpdateRole, setOpenUpdateRole] = useState(false);
-//   const [updateUserDetails, setUpdateUserDetails] = useState({
-//     email: "", name: "", role: "", _id: ""
-//   });
+//   const [u, setU] = useState(null); // کاربر انتخابی برای ادیت
 
 //   const [q, setQ] = useState("");
 //   const dq = useDebounce(q, 400);
@@ -214,87 +215,60 @@ export default function AllUsers() {
 //       setLoading(true);
 //       const url = SummaryApi.allUser.url + (dq ? `?q=${encodeURIComponent(dq)}` : "");
 //       const res = await fetch(url, {
-//         method: SummaryApi.allUser.method,
-//         credentials: "include",
-//         headers: { ...authHeaders(), "cache-control": "no-cache" },
-//       });
-
-//       if (res.status === 401) {
-//         toast.error("Unauthorized. Please login as admin.");
-//         setRows([]);
-//         return;
-//       }
-
-//       const data = await res.json();
-//       if (data.success) setRows(data.data || []);
-//       else {
-//         toast.error(data.message || "Failed to load users");
-//         setRows([]);
-//       }
-//     } catch (e) {
-//       toast.error(e.message || "Network error");
-//       setRows([]);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // ✅ این تابع اینجاست و در JSX استفاده می‌شود
-//   const handleDeleteUser = async (userId) => {
-//     if (!userId) return;
-//     if (String(userId) === String(me?._id)) {
-//       toast.error("You can't delete your own account");
-//       return;
-//     }
-//     if (!window.confirm("Delete this user?")) return;
-
-//     try {
-//       const res = await fetch(`${SummaryApi.deleteUser.url}/${userId}`, {
-//         method: SummaryApi.deleteUser.method, // DELETE
-//         credentials: "include",
+//         method: SummaryApi.allUser.method, credentials: "include",
 //         headers: { ...authHeaders(), "cache-control": "no-cache" },
 //       });
 //       const data = await res.json();
-//       if (data.success) {
-//         toast.success("User deleted");
-//         fetchAllUsers();
-//       } else {
-//         toast.error(data.message || "Failed to delete user");
+//       if (res.status === 401 || !data.success) {
+//         setRows([]); toast.error(data.message || "Unauthorized"); return;
 //       }
+//       setRows(data.data || []);
 //     } catch (e) {
-//       toast.error(e.message || "Network error");
-//     }
+//       toast.error(e.message || "Network error"); setRows([]);
+//     } finally { setLoading(false); }
 //   };
 
 //   useEffect(() => { fetchAllUsers(); /* eslint-disable-next-line */ }, [dq]);
 
-//   const roleColor = (role) =>
-//     role === "ADMIN" ? "purple" :
-//     role === "manager" ? "amber" :
-//     "green";
+//   const handleDeleteUser = async (userId) => {
+//     if (!userId) return;
+//     if (String(userId) === String(me?._id)) { toast.error("You can't delete your own account"); return; }
+//     if (!window.confirm("Delete this user?")) return;
+//     try {
+//       const res = await fetch(`${SummaryApi.deleteUser.url}/${userId}`, {
+//         method: SummaryApi.deleteUser.method, credentials: "include",
+//         headers: { ...authHeaders(), "cache-control": "no-cache" },
+//       });
+//       const data = await res.json();
+//       if (data.success) { toast.success("User deleted"); fetchAllUsers(); }
+//       else toast.error(data.message || "Failed to delete user");
+//     } catch (e) { toast.error(e.message || "Network error"); }
+//   };
+
+//   const roleColor = (role) => role === "ADMIN" ? "purple" : role === "GENERAL" ? "amber" : "green";
 
 //   return (
 //     <div className="p-4">
 //       <Card>
-//         <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-//           <div className="flex items-center gap-3">
+//         <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl p-3 md:p-4 shadow-sm
+//     bg-[#EDF3FA] dark:bg-[#EDF3FA]
+//     border border-[#C6D6E6]">
+//           <div className="flex items-center gap-3  ">
 //             <CardTitle>All Users</CardTitle>
 //             <div className="text-sm text-slate-500">{rows.length} users</div>
 //           </div>
-
-//           <div className="relative w-full max-w-md">
+//           <div className="relative w-full max-w-md ">
 //             <LuSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
 //             <input
-//               placeholder="Search by name or email…"
-//               value={q}
-//               onChange={(e) => setQ(e.target.value)}
+//               placeholder="Search by first/last name or email…"
+//               value={q} onChange={(e) => setQ(e.target.value)}
 //               className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
 //             />
 //           </div>
 //         </CardHeader>
 
-//         <CardContent>
-//           <div className="overflow-auto rounded-2xl border border-slate-100">
+//         <CardContent> 
+//           <div className="overflow-auto rounded-2xl border border-slate-100 ">
 //             <table className="w-full text-left text-sm">
 //               <thead className="bg-slate-50 text-slate-700">
 //                 <tr>
@@ -312,6 +286,7 @@ export default function AllUsers() {
 //                   <tr key={i} className="border-t">
 //                     <td className="px-4 py-3"><div className="h-4 w-6 bg-slate-200 animate-pulse rounded" /></td>
 //                     <td className="px-4 py-3"><div className="h-4 w-32 bg-slate-200 animate-pulse rounded" /></td>
+//                     <td className="px-4 py-3"><div className="h-4 w-32 bg-slate-200 animate-pulse rounded" /></td>
 //                     <td className="px-4 py-3"><div className="h-4 w-40 bg-slate-200 animate-pulse rounded" /></td>
 //                     <td className="px-4 py-3"><div className="h-5 w-16 bg-slate-200 animate-pulse rounded-full" /></td>
 //                     <td className="px-4 py-3"><div className="h-4 w-28 bg-slate-200 animate-pulse rounded" /></td>
@@ -322,7 +297,8 @@ export default function AllUsers() {
 //                 {!loading && rows.map((el, index) => (
 //                   <tr key={el?._id} className="border-t last:border-b-0 hover:bg-slate-50/60">
 //                     <td className="px-4 py-3">{index + 1}</td>
-//                     <td className="px-4 py-3">{el?.name}</td>
+//                     <td className="px-4 py-3">{el?.firstName || ""}</td>
+//                     <td className="px-4 py-3">{el?.lastName  || ""}</td>
 //                     <td className="px-4 py-3">{el?.email}</td>
 //                     <td className="px-4 py-3">
 //                       <Badge color={roleColor(el?.role)}>{el?.role || "USER"}</Badge>
@@ -332,12 +308,11 @@ export default function AllUsers() {
 //                       <div className="flex items-center gap-2">
 //                         <button
 //                           className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-green-100 text-green-800 hover:bg-green-200"
-//                           onClick={() => { setUpdateUserDetails(el); setOpenUpdateRole(true); }}
+//                           onClick={() => { setU(el); setOpenUpdateRole(true); }}
 //                           title="Edit role"
 //                         >
 //                           <MdEdit /> Edit
 //                         </button>
-
 //                         <button
 //                           className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-rose-100 text-rose-700 hover:bg-rose-200 disabled:opacity-50"
 //                           onClick={() => handleDeleteUser(el?._id)}
@@ -353,7 +328,7 @@ export default function AllUsers() {
 
 //                 {!loading && rows.length === 0 && (
 //                   <tr>
-//                     <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
+//                     <td colSpan={7} className="px-4 py-8 text-center text-slate-500">
 //                       No users found.
 //                     </td>
 //                   </tr>
@@ -364,14 +339,14 @@ export default function AllUsers() {
 //         </CardContent>
 //       </Card>
 
-//       {openUpdateRole && (
+//       {openUpdateRole && u && (
 //         <ChangeUserRole
-//           onclose={() => setOpenUpdateRole(false)}
-//           firstname={updateUserDetails.firstname}
-//           lastname={updateUserDetails.lastname}
-//           email={updateUserDetails.email}
-//           role={updateUserDetails.role}
-//           userId={updateUserDetails._id}
+//           onclose={() => { setOpenUpdateRole(false); setU(null); }}
+//           userId={u._id}
+//           firstName={u.firstName}
+//           lastName={u.lastName}
+//           email={u.email}
+//           role={u.role}
 //           callfunc={fetchAllUsers}
 //         />
 //       )}

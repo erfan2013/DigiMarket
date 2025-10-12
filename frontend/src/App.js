@@ -53,6 +53,7 @@ function App() {
   }, []);
 
   return (
+    <div className='min-h-screen bg-[#E6EEF6] text-slate-900'>
     <Context.Provider
       value={{
         fetchUserDetails,
@@ -92,94 +93,8 @@ function App() {
         {!hideChrome && <Footer />}
       </div>
     </Context.Provider>
+    </div>
   );
 }
 
 export default App;
-
-
-
-
-// import { Outlet } from 'react-router-dom';
-// import './App.css';
-// import Header from './components/Header';
-// import Footer from './components/Footer';
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import { useEffect, useState } from 'react';
-// import SummaryApi from './common';
-// import Context from './context';
-// import { useDispatch } from 'react-redux';
-// import { setUserDetails } from './Store/UserSlice';
-// import { authHeaders } from './common/auth';
-
-
-// function App() {
-//   const dispatch = useDispatch()
-//   const [cartProductCount, setCartProductCount] = useState(0);
-  
-
-//   const fetchUserDetails = async () => {
-//     const dataResponse = await fetch(SummaryApi.current_user.url, {
-//       method: SummaryApi.current_user.method,
-//       credentials: 'include',
-//       cache: 'no-store',
-//       headers: {
-//         ...authHeaders(),
-//       },
-
-//     })
-    
-//     const dataApi = await dataResponse.json();
-
-//     if (dataApi.success) {
-//       dispatch(setUserDetails(dataApi.data))
-//     }
-
-    
-//   }
-
-//   const fetchUserAddToCart = async () => {
-//     const dataResponse = await fetch(SummaryApi.countAddToCart.url, {
-//       method: SummaryApi.countAddToCart.method,
-//       credentials: 'include',
-//       cache: 'no-store',
-//       headers: {
-//        'Content-Type': 'application/json',
-//        ...authHeaders(),
-//      },
-//     })
-
-//     const dataApi = await dataResponse.json();
-//     setCartProductCount(dataApi?.data?.count)
-//   }
-    
-
-//   useEffect(() => {
-//     fetchUserDetails()
-//     fetchUserAddToCart()
-//   }, []);
-//   return (
-//     <>
-//     <Context.Provider value={{
-//       fetchUserDetails, // User Details Fetch
-//       cartProductCount, // current user add to cart count
-//       fetchUserAddToCart // current user add to cart count
-//     }}>
-//       <div className='min-h-screen flex flex-col'>
-//         <ToastContainer
-//     position='top-left'
-//     autoClose={1000}
-//     />
-//     <Header />
-//     <main className='flex-1 pt-20'>
-//       <Outlet/>
-//     </main>    
-//     <Footer />
-//       </div>
-//     </Context.Provider>
-//     </>
-//   );
-// }
-
-// export default App;
