@@ -5,8 +5,13 @@ module.exports = {
     "./src/**/*.{html,js}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Merriweather', 'sans-serif'],
+      },
+    },
   },
+  
   plugins: [],
 }
 
