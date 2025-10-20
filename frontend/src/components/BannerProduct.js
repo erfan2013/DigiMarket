@@ -62,12 +62,12 @@ const BannerProduct = () => {
 
   return (
     <div className='container mx-auto px-4 rounded-lg mt-10'>
-        <div className='h-72 md:h-96 w-full bg-slate-200 relative'>
+        <div className='h-72 md:h-96 w-full bg-[var(--surface-2)] relative'>
 
-                <div className='absolute z-10 h-full w-full md:flex items-center hidden '>
+                <div className='absolute z-10 h-full w-full md:flex items-center hidden'>
                     <div className='flex justify-between w-full text-2xl'>
-                        <button onClick={preveImage} className='text-white text-lg hidden md:block'><FaAngleDoubleLeft/></button>
-                        <button onClick={nextImage} className='text-white text-lg hidden md:block'><FaAngleDoubleRight/></button> 
+                        <button onClick={preveImage} className='text-white text-lg hidden md:block btn btn-ghost'><FaAngleDoubleLeft/></button>
+                        <button onClick={nextImage} className='text-white text-lg hidden md:block btn btn-ghost'><FaAngleDoubleRight/></button> 
                     </div>
                 </div>
 

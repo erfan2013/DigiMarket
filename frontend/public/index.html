@@ -7,6 +7,13 @@
     <meta name="theme-color" content="#070707" />
     <meta name="description" content="Web site created using create-react-app"/>
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <script>
+    try {
+    var t = localStorage.getItem('theme');
+    if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (t === 'dark') document.documentElement.classList.add('dark');
+    } catch (e) {}
+</script>
     <title>DigiMarket</title>
   </head>
   <body>

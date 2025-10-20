@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Licensing() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-slate-50 py-10">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--surface-2)] py-10 page">
       {/* bg glows */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-28 -left-28 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/20 to-violet-500/20 blur-3xl" />
@@ -10,16 +10,16 @@ export default function Licensing() {
       </div>
 
       <div className="relative mx-auto max-w-4xl px-4">
-        <header className="mb-8">
-          <h1 className="text-3xl font-semibold text-slate-900">
+        <header className="mb-8 appbar">
+          <h1 className="text-3xl font-semibold text-[var(--text)]">
             License Agreement
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-[var(--text-muted)]">
             Terms & usage guidelines for DigiMarket digital products
           </p>
         </header>
 
-        <article className="space-y-6 rounded-3xl border border-white/40 bg-white/70 p-6 shadow-lg backdrop-blur">
+        <article className="space-y-6 rounded-3xl border border-white/40 bg-[var(--surface)]/70 p-6 shadow-lg backdrop-blur">
           <Section
             title="Introduction"
             body="Welcome to DigiMarket! By purchasing or using our products, you agree to the terms of this licensing agreement. Please read carefully."
@@ -52,7 +52,7 @@ export default function Licensing() {
           />
           <Section
             title="Intellectual Property"
-            body="All products remain the intellectual property of their creators or DigiMarket. You receive usage rights—not ownership."
+            body="All products remain the intellectual property of their creators or DigiMarket. You receive usage rightsâ€”not ownership."
           />
           <Section
             title="Term and Termination"
@@ -64,7 +64,7 @@ export default function Licensing() {
           />
           <Section
             title="Governing Law"
-            body="This agreement follows the applicable laws of DigiMarket’s operating jurisdiction."
+            body="This agreement follows the applicable laws of DigiMarketâ€™s operating jurisdiction."
           />
           <Section
             title="Contact Us"
@@ -89,11 +89,11 @@ export default function Licensing() {
 
 function Section({ title, body, list }) {
   return (
-    <section className="rounded-2xl bg-white/60 p-4 shadow-sm ring-1 ring-black/5">
-      <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
-      {body && <p className="mt-2 text-slate-600">{body}</p>}
+    <section className="rounded-2xl bg-[var(--surface)]/60 p-4 shadow-sm ring-1 ring-black/5">
+      <h2 className="text-xl font-semibold text-[var(--text)] section-title">{title}</h2>
+      {body && <p className="mt-2 text-[var(--text-muted)]">{body}</p>}
       {Array.isArray(list) && list.length > 0 && (
-        <ul className="mt-3 list-disc space-y-1 pl-5 text-slate-600">
+        <ul className="mt-3 list-disc space-y-1 pl-5 text-[var(--text-muted)]">
           {list.map((li, i) => (
             <li key={i}>{li}</li>
           ))}
@@ -102,3 +102,4 @@ function Section({ title, body, list }) {
     </section>
   );
 }
+

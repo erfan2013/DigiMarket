@@ -22,7 +22,7 @@ export default function ZoomImage({ src, alt, zoom = 2, className = "" }) {
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
       onMouseMove={onMove}
-      className={`relative overflow-hidden rounded-2xl bg-slate-50 ${className}`}
+      className={`relative overflow-hidden rounded-2xl bg-[var(--surface-2)] ${className}`}
     >
       <img
         src={src}

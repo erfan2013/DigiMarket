@@ -26,7 +26,7 @@ export default function ProductImage({
           onError={(e)=> (e.currentTarget.src="/placeholder.png")}
         />
       ) : (
-        <div className="absolute inset-0 grid place-items-center text-slate-400 text-xs">
+        <div className="absolute inset-0 grid place-items-center text-[var(--text-muted)] text-xs">
           No image
         </div>
       )}

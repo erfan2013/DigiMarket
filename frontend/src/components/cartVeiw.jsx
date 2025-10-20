@@ -20,7 +20,7 @@ export default function CartView({
   onDec,
   onRemove,
   onCheckout,
-  onApplyCoupon, // اختیاری
+  onApplyCoupon, // Ø§Ø®ØªÛŒØ§Ø±ÛŒ
   loading = false,
 }) {
   const [coupon, setCoupon] = useState("");
@@ -44,28 +44,28 @@ export default function CartView({
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className="bg-white border border-slate-200 rounded-2xl p-4 animate-pulse"
+              className="rounded-2xl p-4 animate-pulse ui-card"
             >
               <div className="flex gap-4">
-                <div className="h-20 w-20 rounded-xl bg-slate-200" />
+                <div className="h-20 w-20 rounded-xl bg-[var(--surface-border)]" />
                 <div className="flex-1 space-y-3">
-                  <div className="h-4 bg-slate-200 rounded w-2/3" />
-                  <div className="h-4 bg-slate-200 rounded w-1/3" />
-                  <div className="h-8 bg-slate-200 rounded w-24" />
+                  <div className="h-4 bg-[var(--surface-border)] rounded w-2/3" />
+                  <div className="h-4 bg-[var(--surface-border)] rounded w-1/3" />
+                  <div className="h-8 bg-[var(--surface-border)] rounded w-24" />
                 </div>
               </div>
             </div>
           ))}
         </div>
         {/* summary skeleton */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 h-max animate-pulse">
-          <div className="h-5 bg-slate-200 rounded w-1/2 mb-4" />
+        <div className="rounded-2xl p-4 h-max animate-pulse ui-card">
+          <div className="h-5 bg-[var(--surface-border)] rounded w-1/2 mb-4" />
           <div className="space-y-2">
-            <div className="h-4 bg-slate-200 rounded" />
-            <div className="h-4 bg-slate-200 rounded" />
-            <div className="h-4 bg-slate-200 rounded" />
+            <div className="h-4 bg-[var(--surface-border)] rounded" />
+            <div className="h-4 bg-[var(--surface-border)] rounded" />
+            <div className="h-4 bg-[var(--surface-border)] rounded" />
           </div>
-          <div className="h-10 bg-slate-200 rounded mt-4" />
+          <div className="h-10 bg-[var(--surface-border)] rounded mt-4" />
         </div>
       </div>
     );
@@ -73,16 +73,16 @@ export default function CartView({
 
   if (isEmpty) {
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center">
-        <div className="text-2xl font-semibold text-slate-800">
+      <div className="rounded-2xl p-10 text-center ui-card">
+        <div className="text-2xl font-semibold text-[var(--text)]">
           Your cart is empty
         </div>
-        <p className="text-slate-500 mt-2">
+        <p className="text-[var(--text-muted)] mt-2">
           Add some products and come back to checkout.
         </p>
         <Link
           to="/"
-          className="inline-flex items-center justify-center mt-6 rounded-xl bg-slate-900 px-5 py-2.5 text-white hover:bg-slate-800"
+          className="inline-flex items-center justify-center mt-6 rounded-xl bg-[var(--surface-2)] px-5 py-2.5 text-white hover:bg-[var(--surface-2)]"
         >
           Continue shopping
         </Link>
@@ -106,13 +106,13 @@ export default function CartView({
           return (
             <div
               key={it?._id}
-              className="bg-white border border-slate-200 rounded-2xl p-4"
+              className="rounded-2xl p-4 ui-card"
             >
               <div className="flex gap-4">
                 {/* image */}
                 <Link
                   to={`/product/${it?.productId?._id || it?.productId || ""}`}
-                  className="h-24 w-24 shrink-0 rounded-xl bg-slate-50 border border-slate-200 overflow-hidden"
+                  className="h-24 w-24 shrink-0 rounded-xl bg-[var(--surface-border)] border border-[var(--surface-border)] overflow-hidden"
                 >
                   <img
                     src={img}
@@ -125,11 +125,11 @@ export default function CartView({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h3 className="text-sm font-semibold text-slate-900 truncate">
+                      <h3 className="text-sm font-semibold text-[var(--text)] truncate">
                         {it?.ProductName || "Product"}
                       </h3>
-                      <div className="mt-1 text-sm text-slate-500">
-                        {DisplayUSDCurrency(unitPrice)} <span className="text-slate-400">/ each</span>
+                      <div className="mt-1 text-sm text-[var(--text-muted)]">
+                        {DisplayUSDCurrency(unitPrice)} <span className="text-[var(--text-muted)]">/ each</span>
                       </div>
                     </div>
                     <button
@@ -143,10 +143,10 @@ export default function CartView({
 
                   {/* qty & line total */}
                   <div className="mt-3 flex items-center justify-between">
-                    <div className="inline-flex items-center rounded-xl border border-slate-200">
+                    <div className="inline-flex items-center rounded-xl border border-[var(--surface-border)]">
                       <button
                         onClick={() => qty > 1 && onDec?.(it)}
-                        className={`p-2 ${qty > 1 ? "hover:bg-slate-50 text-slate-700" : "text-slate-300 cursor-not-allowed"}`}
+                        className={`p-2 ${qty > 1 ? "hover:bg-[var(--surface-2)] text-[var(--text-muted)]" : "text-[var(--text-muted)] cursor-not-allowed"}`}
                         aria-label="Decrease quantity"
                         disabled={qty <= 1}
                       >
@@ -157,7 +157,7 @@ export default function CartView({
                       </span>
                       <button
                         onClick={() => onInc?.(it)}
-                        className="p-2 hover:bg-slate-50 text-slate-700"
+                        className="p-2 hover:bg-[var(--surface-2)] text-[var(--text-muted)]"
                         aria-label="Increase quantity"
                       >
                         <FiPlus />
@@ -165,8 +165,8 @@ export default function CartView({
                     </div>
 
                     <div className="text-right">
-                      <div className="text-sm text-slate-500">Subtotal</div>
-                      <div className="font-semibold text-slate-900">
+                      <div className="text-sm text-[var(--text-muted)]">Subtotal</div>
+                      <div className="font-semibold text-[var(--text)]">
                         {DisplayUSDCurrency(lineTotal)}
                       </div>
                     </div>
@@ -179,50 +179,50 @@ export default function CartView({
 
         {/* perks */}
         <div className="grid sm:grid-cols-3 gap-3">
-          <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-2xl p-3">
-            <div className="rounded-xl bg-slate-900 text-white p-2.5">
+          <div className="flex items-center gap-3 border rounded-2xl p-3 ui-toolbar">
+            <div className="rounded-xl bg-[var(--surface-2)] text-white p-2.5">
               <FiTruck />
             </div>
             <div className="text-sm">
-              <div className="font-semibold text-slate-900">Fast delivery</div>
-              <div className="text-slate-500">2–5 business days</div>
+              <div className="font-semibold text-[var(--text)]">Fast delivery</div>
+              <div className="text-[var(--text-muted)]">2â€“5 business days</div>
             </div>
           </div>
-          <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-2xl p-3">
-            <div className="rounded-xl bg-slate-900 text-white p-2.5">
+          <div className="flex items-center gap-3 border rounded-2xl p-3 ui-toolbar">
+            <div className="rounded-xl bg-[var(--surface-2)] text-white p-2.5">
               <FiShield />
             </div>
             <div className="text-sm">
-              <div className="font-semibold text-slate-900">Secure payment</div>
-              <div className="text-slate-500">Stripe checkout</div>
+              <div className="font-semibold text-[var(--text)]">Secure payment</div>
+              <div className="text-[var(--text-muted)]">Stripe checkout</div>
             </div>
           </div>
-          <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-2xl p-3">
-            <div className="rounded-xl bg-slate-900 text-white p-2.5">
+          <div className="flex items-center gap-3 border rounded-2xl p-3 ui-toolbar">
+            <div className="rounded-xl bg-[var(--surface-2)] text-white p-2.5">
               <FiTag />
             </div>
             <div className="text-sm">
-              <div className="font-semibold text-slate-900">No hidden fees</div>
-              <div className="text-slate-500">Clear pricing</div>
+              <div className="font-semibold text-[var(--text)]">No hidden fees</div>
+              <div className="text-[var(--text-muted)]">Clear pricing</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* summary */}
-      <aside className="md:sticky md:top-24 h-max">
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+      <aside className="md:sticky md:top-24 h-max sidebar top-[84px] self-start p-4 rounded-xl top-[84px]">
+        <div className="rounded-2xl p-4 shadow-sm ui-card">
           {/* coupon */}
           <div className="flex gap-2 mb-3">
             <input
               value={coupon}
               onChange={(e) => setCoupon(e.target.value)}
               placeholder="Coupon code"
-              className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
+              className="flex-1 rounded-xl border border-[var(--surface-border)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
             />
             <button
               onClick={() => onApplyCoupon?.(coupon)}
-              className="rounded-xl bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-800"
+              className="rounded-xl bg-[var(--surface-2)] px-3 py-2 text-sm text-white hover:bg-[var(--surface-2)]"
             >
               Apply
             </button>
@@ -233,21 +233,21 @@ export default function CartView({
             <Row label="Subtotal" value={DisplayUSDCurrency(totals.subtotal)} />
             <Row label="Shipping" value={totals.shipping ? DisplayUSDCurrency(totals.shipping) : "Free"} />
             <Row label="Tax" value={DisplayUSDCurrency(totals.tax)} />
-            <div className="border-t border-slate-200 my-3" />
+            <div className="border-t border-[var(--surface-border)] my-3" />
             <Row
-              label={<span className="font-semibold text-slate-900">Total</span>}
-              value={<span className="font-semibold text-slate-900">{DisplayUSDCurrency(totals.grand)}</span>}
+              label={<span className="font-semibold text-[var(--text)]">Total</span>}
+              value={<span className="font-semibold text-[var(--text)]">{DisplayUSDCurrency(totals.grand)}</span>}
             />
           </div>
 
           <button
             onClick={onCheckout}
-            className="mt-4 w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-white font-semibold shadow-sm hover:from-blue-700 hover:to-indigo-700"
+            className="mt-4 w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-white font-semibold shadow-sm hover:from-blue-700 hover:to-indigo-700 btn btn-ghost"
           >
             Checkout
           </button>
 
-          <p className="text-[11px] text-slate-500 mt-3">
+          <p className="text-[11px] text-[var(--text-muted)] mt-3">
             By placing your order you agree to our Terms and Privacy Policy.
           </p>
         </div>
@@ -259,8 +259,11 @@ export default function CartView({
 function Row({ label, value }) {
   return (
     <div className="flex items-center justify-between">
-      <div className="text-slate-600">{label}</div>
-      <div className="text-slate-900">{value}</div>
+      <div className="text-[var(--text-muted)]">{label}</div>
+      <div className="text-[var(--text)]">{value}</div>
     </div>
   );
 }
+
+
+

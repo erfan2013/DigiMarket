@@ -27,7 +27,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleOnChange = (e) => {
-    const { name, value } = e.target; // ✅ درستش اینه
+    const { name, value } = e.target; // âœ… Ø¯Ø±Ø³ØªØ´ Ø§ÛŒÙ†Ù‡
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -52,9 +52,9 @@ const SignUp = () => {
     if (!data.address.trim()) return toast.error("Enter your address");
 
     const payload = {
-      firstName: data.firstName.trim(), // ✅ هماهنگ با بک‌اند
+      firstName: data.firstName.trim(), // âœ… Ù‡Ù…Ø§Ù‡Ù†Ú¯ Ø¨Ø§ Ø¨Ú©â€ŒØ§Ù†Ø¯
       lastName: data.lastName.trim(),
-      name: `${data.firstName.trim()} ${data.lastName.trim()}`, // برای سازگاری
+      name: `${data.firstName.trim()} ${data.lastName.trim()}`, // Ø¨Ø±Ø§ÛŒ Ø³Ø§Ø²Ú¯Ø§Ø±ÛŒ
       email: data.email.trim().toLowerCase(),
       password: data.password,
       profilePic: data.profilePic,
@@ -85,7 +85,7 @@ const SignUp = () => {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-slate-950 py-7">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] py-7 page">
       {/* soft gradient blobs */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
@@ -96,14 +96,14 @@ const SignUp = () => {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4">
         <div className="w-full max-w-md">
           {/* glass card */}
-          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
+          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[var(--surface)]/10 p-6 shadow-2xl backdrop-blur-xl">
             {/* header */}
             <div className="flex flex-col items-center gap-4 pt-2">
               <div className="relative">
                 <div className="h-20 w-20 overflow-hidden rounded-2xl ring-2 ring-white/20">
                   <img src={data.profilePic || UserImage} alt="" className="h-full w-full object-cover" />
                 </div>
-                <label className="absolute -bottom-2 left-1/2 -translate-x-1/2 cursor-pointer rounded-xl bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md ring-1 ring-white/30 hover:bg-white/30">
+                <label className="absolute -bottom-2 left-1/2 -translate-x-1/2 cursor-pointer rounded-xl bg-[var(--surface)]/20 px-3 py-1 text-xs text-white backdrop-blur-md ring-1 ring-white/30 hover:bg-[var(--surface)]/30">
                   Upload photo
                   <input type="file" accept="image/*" className="hidden" onChange={handleUploadPic} />
                 </label>
@@ -111,7 +111,7 @@ const SignUp = () => {
 
               <div className="text-center">
                 <h1 className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-2xl font-semibold text-transparent">
-                  Create an account ✨
+                  Create an account âœ¨
                 </h1>
                 <p className="mt-1 text-sm text-slate-200/80">
                   Fill the details to get started
@@ -130,7 +130,7 @@ const SignUp = () => {
                   value={data.firstName}
                   onChange={handleOnChange}
                   placeholder="First name"
-                  className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                  className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                 />
               </label>
 
@@ -143,7 +143,7 @@ const SignUp = () => {
                   value={data.lastName}
                   onChange={handleOnChange}
                   placeholder="Last name"
-                  className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                  className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                 />
               </label>
 
@@ -157,11 +157,11 @@ const SignUp = () => {
                     value={data.email}
                     onChange={handleOnChange}
                     placeholder="you@example.com"
-                    className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                    className="peer w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                     autoComplete="email"
                   />
                   <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                    <span className="text-slate-300/50">@</span>
+                    <span className="text-[var(--text-muted)]/50">@</span>
                   </div>
                 </div>
               </label>
@@ -169,7 +169,7 @@ const SignUp = () => {
               {/* Phone */}
               <label className="grid gap-1">
                 <span className="text-xs text-slate-200/80">Phone</span>
-                <div className="rounded-2xl border border-white/15 bg-white/5 px-2 py-1 text-black">
+                <div className="rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-2 py-1 text-[var(--text)]">
                   <PhoneInput
                     international
                     defaultCountry="IR"
@@ -191,9 +191,9 @@ const SignUp = () => {
                   name="address"
                   value={data.address}
                   onChange={handleOnChange}
-                  placeholder="Street, number, unit…"
+                  placeholder="Street, number, unitâ€¦"
                   rows={3}
-                  className="w-full resize-none rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                  className="w-full resize-none rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                 />
               </label>
 
@@ -206,14 +206,14 @@ const SignUp = () => {
                     name="password"
                     value={data.password}
                     onChange={handleOnChange}
-                    placeholder="••••••••"
-                    className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    className="peer w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                     autoComplete="new-password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((p) => !p)}
-                    className="absolute inset-y-0 right-3 flex items-center text-slate-300/70 hover:text-white"
+                    className="absolute inset-y-0 right-3 flex items-center text-[var(--text-muted)]/70 hover:text-white"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -230,14 +230,14 @@ const SignUp = () => {
                     name="confirmPassword"
                     value={data.confirmPassword}
                     onChange={handleOnChange}
-                    placeholder="••••••••"
-                    className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                    className="peer w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                     autoComplete="new-password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword((p) => !p)}
-                    className="absolute inset-y-0 right-3 flex items-center text-slate-300/70 hover:text-white"
+                    className="absolute inset-y-0 right-3 flex items-center text-[var(--text-muted)]/70 hover:text-white"
                     aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                   >
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -248,7 +248,7 @@ const SignUp = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 btn btn-ghost"
               >
                 {loading ? "Creating account..." : "Sign up"}
               </button>
@@ -258,7 +258,7 @@ const SignUp = () => {
                   <span className="w-full border-t border-white/10" />
                 </div>
                 <div className="relative flex justify-center">
-                  <span className="bg-slate-950 px-3 text-xs text-slate-300/60">
+                  <span className="bg-[var(--bg)] px-3 text-xs text-[var(--text-muted)]/60">
                     or
                   </span>
                 </div>
@@ -275,8 +275,8 @@ const SignUp = () => {
               </p>
             </form>
 
-            <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-white/10 blur-xl" />
-            <div className="pointer-events-none absolute -bottom-10 -right-10 h-24 w-24 -rotate-12 rounded-3xl bg-white/10 blur-xl" />
+            <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
+            <div className="pointer-events-none absolute -bottom-10 -right-10 h-24 w-24 -rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
           </div>
         </div>
       </div>
@@ -377,7 +377,7 @@ export default SignUp;
 //   };
 
 //   return (
-//     <main className="relative min-h-screen overflow-hidden bg-slate-950">
+//     <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] page">
 //       {/* soft gradient blobs */}
 //       <div className="pointer-events-none absolute inset-0">
 //         <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
@@ -388,14 +388,14 @@ export default SignUp;
 //       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4">
 //         <div className="w-full max-w-md">
 //           {/* glass card */}
-//           <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
+//           <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[var(--surface)]/10 p-6 shadow-2xl backdrop-blur-xl">
 //             {/* header */}
 //             <div className="flex flex-col items-center gap-4 pt-2">
 //               <div className="relative">
 //                 <div className="h-20 w-20 overflow-hidden rounded-2xl ring-2 ring-white/20">
 //                   <img src={data.profilePic || UserImage} alt="" className="h-full w-full object-cover" />
 //                 </div>
-//                 <label className="absolute -bottom-2 left-1/2 -translate-x-1/2 cursor-pointer rounded-xl bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md ring-1 ring-white/30 hover:bg-white/30">
+//                 <label className="absolute -bottom-2 left-1/2 -translate-x-1/2 cursor-pointer rounded-xl bg-[var(--surface)]/20 px-3 py-1 text-xs text-white backdrop-blur-md ring-1 ring-white/30 hover:bg-[var(--surface)]/30">
 //                   Upload photo
 //                   <input type="file" accept="image/*" className="hidden" onChange={handleUploadPic} />
 //                 </label>
@@ -403,7 +403,7 @@ export default SignUp;
 
 //               <div className="text-center">
 //                 <h1 className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-2xl font-semibold text-transparent">
-//                   Create an account ✨
+//                   Create an account âœ¨
 //                 </h1>
 //                 <p className="mt-1 text-sm text-slate-200/80">
 //                   Fill the details to get started
@@ -422,7 +422,7 @@ export default SignUp;
 //                   value={data.firstname}
 //                   onChange={handleOnChange}
 //                   placeholder="First name"
-//                   className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                   className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
 //                 />
 //               </label>
 //               <label className="grid gap-1">
@@ -433,7 +433,7 @@ export default SignUp;
 //                   value={data.lastname}
 //                   onChange={handleOnChange}
 //                   placeholder="Last name"
-//                   className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                   className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
 //                 />
 //               </label>
 
@@ -447,11 +447,11 @@ export default SignUp;
 //                     value={data.email}
 //                     onChange={handleOnChange}
 //                     placeholder="you@example.com"
-//                     className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                     className="peer w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
 //                     autoComplete="email"
 //                   />
 //                   <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-//                     <span className="text-slate-300/50">@</span>
+//                     <span className="text-[var(--text-muted)]/50">@</span>
 //                   </div>
 //                 </div>
 //               </label>
@@ -459,7 +459,7 @@ export default SignUp;
 //               {/* Phone */}
 //               <label className="grid gap-1">
 //                 <span className="text-xs text-slate-200/80">Phone</span>
-//                 <div className="rounded-2xl border border-white/15 bg-white/5 px-2 py-1 text-black">
+//                 <div className="rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-2 py-1 text-[var(--text)]">
 //                   <PhoneInput
 //                     international
 //                     defaultCountry="IR"
@@ -481,9 +481,9 @@ export default SignUp;
 //                   name="address"
 //                   value={data.address}
 //                   onChange={handleOnChange}
-//                   placeholder="Street, number, unit…"
+//                   placeholder="Street, number, unitâ€¦"
 //                   rows={3}
-//                   className="w-full resize-none rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                   className="w-full resize-none rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
 //                 />
 //               </label>
 
@@ -496,14 +496,14 @@ export default SignUp;
 //                     name="password"
 //                     value={data.password}
 //                     onChange={handleOnChange}
-//                     placeholder="••••••••"
-//                     className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                     placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+//                     className="peer w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
 //                     autoComplete="new-password"
 //                   />
 //                   <button
 //                     type="button"
 //                     onClick={() => setShowPassword((p) => !p)}
-//                     className="absolute inset-y-0 right-3 flex items-center text-slate-300/70 hover:text-white"
+//                     className="absolute inset-y-0 right-3 flex items-center text-[var(--text-muted)]/70 hover:text-white"
 //                     aria-label={showPassword ? "Hide password" : "Show password"}
 //                   >
 //                     {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -520,14 +520,14 @@ export default SignUp;
 //                     name="confirmPassword"
 //                     value={data.confirmPassword}
 //                     onChange={handleOnChange}
-//                     placeholder="••••••••"
-//                     className="peer w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+//                     placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+//                     className="peer w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 pr-12 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
 //                     autoComplete="new-password"
 //                   />
 //                   <button
 //                     type="button"
 //                     onClick={() => setShowConfirmPassword((p) => !p)}
-//                     className="absolute inset-y-0 right-3 flex items-center text-slate-300/70 hover:text-white"
+//                     className="absolute inset-y-0 right-3 flex items-center text-[var(--text-muted)]/70 hover:text-white"
 //                     aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
 //                   >
 //                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -538,7 +538,7 @@ export default SignUp;
 //               <button
 //                 type="submit"
 //                 disabled={loading}
-//                 className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+//                 className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 btn btn-ghost"
 //               >
 //                 {loading ? "Creating account..." : "Sign up"}
 //               </button>
@@ -548,7 +548,7 @@ export default SignUp;
 //                   <span className="w-full border-t border-white/10" />
 //                 </div>
 //                 <div className="relative flex justify-center">
-//                   <span className="bg-slate-950 px-3 text-xs text-slate-300/60">
+//                   <span className="bg-[var(--bg)] px-3 text-xs text-[var(--text-muted)]/60">
 //                     or
 //                   </span>
 //                 </div>
@@ -565,8 +565,8 @@ export default SignUp;
 //               </p>
 //             </form>
 
-//             <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-white/10 blur-xl" />
-//             <div className="pointer-events-none absolute -bottom-10 -right-10 h-24 w-24 -rotate-12 rounded-3xl bg-white/10 blur-xl" />
+//             <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
+//             <div className="pointer-events-none absolute -bottom-10 -right-10 h-24 w-24 -rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
 //           </div>
 //         </div>
 //       </div>

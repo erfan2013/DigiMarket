@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 export default function Badge({ children, color = "slate", className }) {
   const colors = {
-    slate: "bg-slate-100 text-slate-800",
+    slate: "bg-[var(--surface-2)] text-[var(--text-muted)]",
     blue: "bg-blue-100 text-blue-700",
     green: "bg-green-100 text-green-700",
     red: "bg-red-100 text-red-700",

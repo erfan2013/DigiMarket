@@ -179,17 +179,17 @@ export default function Profile() {
   // ===== UI =====
   if (loading) {
     return (
-      <main className="relative min-h-[60vh] overflow-hidden bg-slate-950">
+      <main className="relative min-h-[60vh] overflow-hidden bg-[var(--bg)] page">
         <div className="absolute inset-0 -z-10">
           <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
           <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-gradient-to-tr from-cyan-400/30 to-teal-500/30 blur-3xl" />
         </div>
         <div className="mx-auto max-w-3xl p-6">
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/10 p-6 backdrop-blur-xl">
-            <div className="h-6 w-40 animate-pulse rounded-lg bg-white/10" />
+          <div className="mt-10 rounded-3xl border border-white/10 bg-[var(--surface)]/10 p-6 backdrop-blur-xl">
+            <div className="h-6 w-40 animate-pulse rounded-lg bg-[var(--surface)]/10" />
             <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-12 animate-pulse rounded-xl bg-white/10" />
+                <div key={i} className="h-12 animate-pulse rounded-xl bg-[var(--surface)]/10" />
               ))}
             </div>
           </div>
@@ -199,7 +199,7 @@ export default function Profile() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-slate-950">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] page">
       {/* soft gradient background */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
@@ -208,23 +208,23 @@ export default function Profile() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-10">
-        <header className="mb-6 flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white">
-            <span className="text-xl">👤</span>
+        <header className="mb-6 flex items-center gap-4 appbar">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--surface)]/10 text-white">
+            <span className="text-xl">ðŸ‘¤</span>
           </div>
           <div>
             <h1 className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-2xl font-semibold text-transparent">
               Profile
             </h1>
-            <p className="text-sm text-slate-300/80">Manage your personal information</p>
+            <p className="text-sm text-[var(--text-muted)]/80">Manage your personal information</p>
           </div>
         </header>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-5">
           {/* LEFT: Avatar */}
           <section className="md:col-span-2">
-            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
-              <h2 className="mb-4 text-lg font-medium text-white/90">Avatar</h2>
+            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[var(--surface)]/10 p-6 shadow-2xl backdrop-blur-xl">
+              <h2 className="mb-4 text-lg font-medium text-white/90 section-title">Avatar</h2>
 
               <div className="flex items-center gap-4">
                 <img
@@ -234,12 +234,12 @@ export default function Profile() {
                 />
                 <div className="flex-1">
                   <label
-                    className="inline-flex cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/90 transition hover:bg-white/10"
+                    className="inline-flex cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-4 py-2 text-sm text-white/90 transition hover:bg-[var(--surface)]/10"
                   >
                     <input type="file" accept="image/*" onChange={onPickAvatar} className="hidden" />
                     Choose image
                   </label>
-                  <p className="mt-2 text-xs text-slate-300/70">
+                  <p className="mt-2 text-xs text-[var(--text-muted)]/70">
                     JPG/PNG/WEBP, up to 2MB
                   </p>
                 </div>
@@ -247,45 +247,45 @@ export default function Profile() {
 
               <form onSubmit={onUpdateAvatar} className="mt-5">
                 <button
-                  className="w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-2.5 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:opacity-60"
+                  className="w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-2.5 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:opacity-60 btn btn-ghost"
                   disabled={!avatarFile}
                 >
                   {me.avatar ? "Change avatar" : "Upload avatar"}
                 </button>
               </form>
 
-              <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-white/10 blur-xl" />
+              <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
             </div>
           </section>
 
           {/* RIGHT: Info + Password */}
           <section className="md:col-span-3 space-y-6">
             {/* Profile info */}
-            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
-              <h2 className="mb-4 text-lg font-medium text-white/90">Basic information</h2>
+            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[var(--surface)]/10 p-6 shadow-2xl backdrop-blur-xl">
+              <h2 className="mb-4 text-lg font-medium text-white/90 section-title">Basic information</h2>
 
               <div className="grid gap-4">
                 <div>
-                  <label className="mb-1 block text-xs text-slate-300/80">Email</label>
-                  <div className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-200">
+                  <label className="mb-1 block text-xs text-[var(--text-muted)]/80">Email</label>
+                  <div className="w-full rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-200">
                     {me.email}
                   </div>
                 </div>
 
                 <form onSubmit={onUpdateProfile} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <label>
-                    <span className="mb-1 block text-xs text-slate-300/80">firstName</span>
+                    <span className="mb-1 block text-xs text-[var(--text-muted)]/80">firstName</span>
                     <input
-                      className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                      className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                       value={form.firstname}
                       onChange={(e) => setForm((f) => ({ ...f, firstname: e.target.value }))}
                       placeholder="Your first name"
                     />
                   </label>
                   <label>
-                    <span className="mb-1 block text-xs text-slate-300/80">Last Name</span>
+                    <span className="mb-1 block text-xs text-[var(--text-muted)]/80">Last Name</span>
                     <input
-                      className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                      className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                       value={form.lastname}
                       onChange={(e) => setForm((f) => ({ ...f, lastname: e.target.value }))}
                       placeholder="Your last name"
@@ -293,9 +293,9 @@ export default function Profile() {
                   </label>
 
                   <label>
-                    <span className="mb-1 block text-xs text-slate-300/80">Phone</span>
+                    <span className="mb-1 block text-xs text-[var(--text-muted)]/80">Phone</span>
                     <input
-                      className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                      className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                       value={form.phone}
                       onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
                       placeholder="+98 912 123 4567"
@@ -303,9 +303,9 @@ export default function Profile() {
                   </label>
 
                   <label className="sm:col-span-2">
-                    <span className="mb-1 block text-xs text-slate-300/80">Address</span>
+                    <span className="mb-1 block text-xs text-[var(--text-muted)]/80">Address</span>
                     <input
-                      className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                      className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                       value={form.address}
                       onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
                       placeholder="Street, No, Unit..."
@@ -313,26 +313,26 @@ export default function Profile() {
                   </label>
 
                   <div className="sm:col-span-2">
-                    <button className="w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110">
+                    <button className="w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 btn btn-ghost">
                       Save changes
                     </button>
                   </div>
                 </form>
               </div>
 
-              <div className="pointer-events-none absolute -right-10 -bottom-10 h-24 w-24 -rotate-12 rounded-3xl bg-white/10 blur-xl" />
+              <div className="pointer-events-none absolute -right-10 -bottom-10 h-24 w-24 -rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
             </div>
 
             {/* Change password */}
-            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
-              <h2 className="mb-4 text-lg font-medium text-white/90">Change password</h2>
+            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[var(--surface)]/10 p-6 shadow-2xl backdrop-blur-xl">
+              <h2 className="mb-4 text-lg font-medium text-white/90 section-title">Change password</h2>
 
               <form onSubmit={onChangePassword} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <label>
-                  <span className="mb-1 block text-xs text-slate-300/80">Current password</span>
+                  <span className="mb-1 block text-xs text-[var(--text-muted)]/80">Current password</span>
                   <input
                     type="password"
-                    className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                    className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                     value={pwd.currentPassword}
                     onChange={(e) => setPwd((s) => ({ ...s, currentPassword: e.target.value }))}
                     autoComplete="current-password"
@@ -340,10 +340,10 @@ export default function Profile() {
                 </label>
 
                 <label>
-                  <span className="mb-1 block text-xs text-slate-300/80">New password</span>
+                  <span className="mb-1 block text-xs text-[var(--text-muted)]/80">New password</span>
                   <input
                     type="password"
-                    className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                    className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                     value={pwd.newPassword}
                     onChange={(e) => setPwd((s) => ({ ...s, newPassword: e.target.value }))}
                     autoComplete="new-password"
@@ -351,13 +351,13 @@ export default function Profile() {
                 </label>
 
                 <div className="sm:col-span-2">
-                  <button className="w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110">
+                  <button className="w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 btn btn-ghost">
                     Update password
                   </button>
                 </div>
               </form>
 
-              <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-white/10 blur-xl" />
+              <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
             </div>
           </section>
         </div>
@@ -365,3 +365,4 @@ export default function Profile() {
     </main>
   );
 }
+

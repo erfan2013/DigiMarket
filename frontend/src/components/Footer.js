@@ -17,14 +17,14 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-slate-800 bg-slate-950 text-slate-300">
+    <footer className="border-t border-[var(--surface-border)] bg-[var(--surface)] text-[var(--text)] mt-10">
       {/* Help strip */}
-      <div className="bg-slate-900 border-b border-slate-800">
-        <div className="mx-auto max-w-7xl px-4 py-3 text-center text-sm">
+      <div className="bg-[var(--surface-2)] border-b border-[var(--surface-border)]">
+        <div className="mx-auto max-w-7xl px-4 py-3 text-center text-sm text-[var(--text-muted)]">
           Need help?{" "}
           <Link
             to="/contact"
-            className="font-semibold text-slate-100 underline underline-offset-4 decoration-slate-600 hover:decoration-slate-300"
+            className="font-semibold underline underline-offset-4 hover:text-[var(--text)]"
           >
             Contact support
           </Link>{" "}
@@ -32,24 +32,29 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Main footer */}
       <div className="mx-auto max-w-7xl px-4 py-10">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4 lg:grid-cols-6">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-4 lg:grid-cols-6">
           {/* Brand + about */}
           <div className="lg:col-span-2">
             <Link to="/" className="inline-flex items-center gap-3">
-              {/* اگر لوگوت تیره‌ست و در تیره دیده نمیشه، کلاس‌های زیر رو باز کن: brightness-0 invert */}
-              <img src={LOGO} alt="DigiMarket" className="h-8 w-auto brightness-0 invert" />
+              {/* در دارک برای دیده‌شدن لوگو: فقط در حالت dark فیلتر شود */}
+              <img
+                src={LOGO}
+                alt="DigiMarket"
+                className="h-8 w-auto dark:invert dark:brightness-0"
+              />
               <span className="sr-only">DigiMarket</span>
             </Link>
 
-            <p className="mt-4 max-w-sm text-sm leading-6 text-slate-400">
+            <p className="mt-4 max-w-sm text-sm leading-6 text-[var(--text-muted)]">
               DigiMarket is your trusted destination for electronics & lifestyle
               products. Fast shipping, secure checkout, and friendly support.
             </p>
 
             {/* Payment methods */}
             <div className="mt-6">
-              <div className="text-xs font-medium text-slate-500">
+              <div className="text-xs font-medium text-[var(--text-muted)]">
                 Payment methods
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -64,36 +69,83 @@ export default function Footer() {
 
           {/* Shop */}
           <nav className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
+            <h3 className="text-sm font-semibold uppercase tracking-wide">
               Shop
             </h3>
-            <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link to="/product-category?category=mobile" className="hover:text-slate-100">Mobile</Link></li>
-              <li><Link to="/product-category?category=laptop" className="hover:text-slate-100">Laptops</Link></li>
-              <li><Link to="/product-category?category=watch" className="hover:text-slate-100">Watches</Link></li>
-              <li><Link to="/product-category?category=accessories" className="hover:text-slate-100">Accessories</Link></li>
+            <ul className="space-y-2 text-sm text-[var(--text-muted)]">
+              <li>
+                <Link
+                  to="/product-category?category=mobile"
+                  className="hover:text-[var(--text)]"
+                >
+                  Mobile
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/product-category?category=laptop"
+                  className="hover:text-[var(--text)]"
+                >
+                  Laptops
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/product-category?category=watch"
+                  className="hover:text-[var(--text)]"
+                >
+                  Watches
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/product-category?category=accessories"
+                  className="hover:text-[var(--text)]"
+                >
+                  Accessories
+                </Link>
+              </li>
             </ul>
           </nav>
 
           {/* Help */}
           <nav className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
+            <h3 className="text-sm font-semibold uppercase tracking-wide">
               Help
             </h3>
-            <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link to="/contact" className="hover:text-slate-100">Support</Link></li>
-              <li><Link to="/privacy-policy" className="hover:text-slate-100">Privacy Policy</Link></li>
-              <li><Link to="/licensing" className="hover:text-slate-100">Licensing</Link></li>
-              <li><Link to="/about" className="hover:text-slate-100">About Us</Link></li>
+            <ul className="space-y-2 text-sm text-[var(--text-muted)]">
+              <li>
+                <Link to="/contact" className="hover:text-[var(--text)]">
+                  Support
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/privacy-policy"
+                  className="hover:text-[var(--text)]"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/licensing" className="hover:text-[var(--text)]">
+                  Licensing
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-[var(--text)]">
+                  About Us
+                </Link>
+              </li>
             </ul>
           </nav>
 
           {/* Newsletter */}
           <div className="lg:col-span-2">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
+            <h3 className="text-sm font-semibold uppercase tracking-wide">
               Newsletter
             </h3>
-            <p className="mt-2 text-sm text-slate-400">
+            <p className="mt-2 text-sm text-[var(--text-muted)]">
               Get product updates, deals, and tips—straight to your inbox.
             </p>
             <form onSubmit={onSubscribe} className="mt-4 flex w-full max-w-md gap-2">
@@ -102,12 +154,9 @@ export default function Footer() {
                 name="email"
                 required
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:border-slate-600 focus:ring-2 focus:ring-slate-700"
+                className="ui-input w-full text-sm"
               />
-              <button
-                type="submit"
-                className="shrink-0 rounded-lg bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-white"
-              >
+              <button type="submit" className="btn btn-primary shrink-0 btn-ghost">
                 Subscribe
               </button>
             </form>
@@ -138,16 +187,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-6 text-sm text-slate-400 md:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-[var(--surface-border)] pt-6 text-sm text-[var(--text-muted)] md:flex-row">
           <p>© {year} DigiMarket. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link to="/privacy-policy" className="hover:text-slate-200">
+            <Link to="/privacy-policy" className="hover:text-[var(--text)]">
               Privacy
             </Link>
-            <Link to="/licensing" className="hover:text-slate-200">
+            <Link to="/licensing" className="hover:text-[var(--text)]">
               Terms
             </Link>
-            <Link to="/contact" className="hover:text-slate-200">
+            <Link to="/contact" className="hover:text-[var(--text)]">
               Contact
             </Link>
           </div>
@@ -159,7 +208,7 @@ export default function Footer() {
 
 function Badge({ children }) {
   return (
-    <span className="rounded-md border border-slate-700 bg-slate-900 px-2.5 py-1 text-xs font-medium text-slate-300">
+    <span className="rounded-md border border-[var(--surface-border)] bg-[var(--surface-2)] px-2.5 py-1 text-xs font-medium text-[var(--text-muted)]">
       {children}
     </span>
   );
@@ -172,7 +221,7 @@ function Social({ href, children, label }) {
       target="_blank"
       rel="noreferrer"
       aria-label={label}
-      className="rounded-full border border-slate-700 p-2 text-slate-300 transition hover:border-slate-500 hover:bg-slate-800 hover:text-white"
+      className="rounded-full border border-[var(--surface-border)] p-2 text-[var(--text-muted)] transition hover:bg-[var(--surface-2)] hover:text-[var(--text)]"
     >
       {children}
     </a>

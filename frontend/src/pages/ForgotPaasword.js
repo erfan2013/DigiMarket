@@ -36,7 +36,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-slate-950">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] page">
       {/* soft gradient blobs */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
@@ -46,7 +46,7 @@ export default function ForgotPassword() {
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4">
         <div className="w-full max-w-md">
-          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
+          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[var(--surface)]/10 p-6 shadow-2xl backdrop-blur-xl">
             <div className="text-center">
               <h1 className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-2xl font-semibold text-transparent">
                 Forgot password?
@@ -64,14 +64,14 @@ export default function ForgotPassword() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-300/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                  className="w-full rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
                 />
               </label>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 btn btn-ghost"
               >
                 {loading ? "Sending..." : "Send reset link"}
               </button>
@@ -94,7 +94,7 @@ export default function ForgotPassword() {
             )}
 
             {devLink && (
-              <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-slate-200">
+              <div className="mt-4 rounded-xl border border-white/10 bg-[var(--surface)]/5 p-3 text-xs text-slate-200">
                 <div className="mb-1 font-medium">DEV reset link:</div>
                 <a className="text-indigo-300 underline" href={devLink}>
                   {devLink}
@@ -102,12 +102,13 @@ export default function ForgotPassword() {
               </div>
             )}
 
-            <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-white/10 blur-xl" />
-            <div className="pointer-events-none absolute -bottom-10 -right-10 h-24 w-24 -rotate-12 rounded-3xl bg-white/10 blur-xl" />
+            <div className="pointer-events-none absolute -left-10 -top-10 h-24 w-24 rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
+            <div className="pointer-events-none absolute -bottom-10 -right-10 h-24 w-24 -rotate-12 rounded-3xl bg-[var(--surface)]/10 blur-xl" />
           </div>
         </div>
       </div>
     </main>
   );
 }
+
 

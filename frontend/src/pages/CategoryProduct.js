@@ -11,9 +11,9 @@ const CategoryProduct = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // خواندن دسته‌بندی‌ها از QueryString
+  // Ø®ÙˆØ§Ù†Ø¯Ù† Ø¯Ø³ØªÙ‡â€ŒØ¨Ù†Ø¯ÛŒâ€ŒÙ‡Ø§ Ø§Ø² QueryString
   const URLSearch = new URLSearchParams(location.search);
-  const urlCategoryListArray = URLSearch.getAll("category"); // مثلا ?category=phone&category=laptop
+  const urlCategoryListArray = URLSearch.getAll("category"); // Ù…Ø«Ù„Ø§ ?category=phone&category=laptop
   const urlCategoryListObject = {};
   urlCategoryListArray.forEach((el) => {
     urlCategoryListObject[el] = true;
@@ -23,7 +23,7 @@ const CategoryProduct = () => {
   const [filterCategoryList, setFilterCategoryList] = useState([]);
   const [sort, setSort] = useState("");
 
-  // گرفتن دیتا بر اساس فیلتر دسته‌بندی
+  // Ú¯Ø±ÙØªÙ† Ø¯ÛŒØªØ§ Ø¨Ø± Ø§Ø³Ø§Ø³ ÙÛŒÙ„ØªØ± Ø¯Ø³ØªÙ‡â€ŒØ¨Ù†Ø¯ÛŒ
   const fetchdata = async () => {
     try {
       setLoading(true);
@@ -52,7 +52,7 @@ const CategoryProduct = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterCategoryList]);
 
-  // هر بار که چک‌باکس‌ها تغییر کنند، QueryString و لیست فیلتر به‌روز می‌شود
+  // Ù‡Ø± Ø¨Ø§Ø± Ú©Ù‡ Ú†Ú©â€ŒØ¨Ø§Ú©Ø³â€ŒÙ‡Ø§ ØªØºÛŒÛŒØ± Ú©Ù†Ù†Ø¯ØŒ QueryString Ùˆ Ù„ÛŒØ³Øª ÙÛŒÙ„ØªØ± Ø¨Ù‡â€ŒØ±ÙˆØ² Ù…ÛŒâ€ŒØ´ÙˆØ¯
   useEffect(() => {
     const arrayofCategory = Object.keys(selectedCatgory)
       .map((key) => (selectedCatgory[key] ? key : null))
@@ -60,7 +60,7 @@ const CategoryProduct = () => {
 
     setFilterCategoryList(arrayofCategory);
 
-    // ساخت آدرس تمیز: /product-category?category=a&category=b
+    // Ø³Ø§Ø®Øª Ø¢Ø¯Ø±Ø³ ØªÙ…ÛŒØ²: /product-category?category=a&category=b
     const qs = arrayofCategory
       .map((el) => `category=${encodeURIComponent(el)}`)
       .join("&");
@@ -68,7 +68,7 @@ const CategoryProduct = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCatgory]);
 
-  // سورت قیمت (Low→High / High→Low) بر اساس Selling (درصورت نبود Price)
+  // Ø³ÙˆØ±Øª Ù‚ÛŒÙ…Øª (Lowâ†’High / Highâ†’Low) Ø¨Ø± Ø§Ø³Ø§Ø³ Selling (Ø¯Ø±ØµÙˆØ±Øª Ù†Ø¨ÙˆØ¯ Price)
   const num = (x) => Number(x ?? 0);
   const effective = (p) => num(p?.Selling ?? p?.Price);
   const handleOnchengeSortBy = (e) => {
@@ -85,10 +85,10 @@ const CategoryProduct = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="hidden lg:grid grid-cols-[220px,1fr] gap-6">
-        {/* ستون فیلترها */}
-        <aside className="rounded-2xl border border-slate-200 bg-white p-4 h-max sticky top-24">
+        {/* Ø³ØªÙˆÙ† ÙÛŒÙ„ØªØ±Ù‡Ø§ */}
+        <aside className="rounded-2xl p-4 h-max sticky top-24 ui-card sidebar top-[84px] self-start rounded-xl top-[84px]">
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-900">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-[var(--text)]">
               Sort By
             </h3>
             <form className="text-sm flex flex-col gap-2 py-3">
@@ -100,7 +100,7 @@ const CategoryProduct = () => {
                   value="asc"
                   onChange={handleOnchengeSortBy}
                 />
-                <span>Price Low → High</span>
+                <span>Price Low â†’ High</span>
               </label>
               <label className="flex items-center gap-3">
                 <input
@@ -110,13 +110,13 @@ const CategoryProduct = () => {
                   value="dsc"
                   onChange={handleOnchengeSortBy}
                 />
-                <span>Price High → Low</span>
+                <span>Price High â†’ Low</span>
               </label>
             </form>
           </div>
 
           <div className="mt-4">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-900">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-[var(--text)]">
               Category
             </h3>
             <form className="text-sm flex flex-col gap-2 py-3">
@@ -137,9 +137,9 @@ const CategoryProduct = () => {
           </div>
         </aside>
 
-        {/* ستون نتایج */}
-        <main>
-          <p className="font-semibold mb-3 text-slate-800 text-lg">
+        {/* Ø³ØªÙˆÙ† Ù†ØªØ§ÛŒØ¬ */}
+        <main className="page">
+          <p className="font-semibold mb-3 text-[var(--text-muted)] text-lg">
             Search Results : {data?.length ?? 0}
           </p>
           <ProductGrid
@@ -150,9 +150,9 @@ const CategoryProduct = () => {
         </main>
       </div>
 
-      {/* موبایل */}
+      {/* Ù…ÙˆØ¨Ø§ÛŒÙ„ */}
       <div className="lg:hidden">
-        <p className="font-semibold my-2 text-slate-800 text-lg">
+        <p className="font-semibold my-2 text-[var(--text-muted)] text-lg">
           Search Results : {data?.length ?? 0}
         </p>
         <ProductGrid
@@ -166,3 +166,6 @@ const CategoryProduct = () => {
 };
 
 export default CategoryProduct;
+
+
+

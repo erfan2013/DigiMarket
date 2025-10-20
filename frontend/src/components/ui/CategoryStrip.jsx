@@ -59,24 +59,24 @@ export default function CategoryStrip({ items = [], onSelect }) {
         aria-label="scroll left"
         onClick={() => scrollBy(-1)}
         className={[
-          "absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-2 shadow-sm",
+          "absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-[var(--surface-border)] bg-[var(--surface)] p-2 shadow-sm",
           "transition disabled:opacity-40 disabled:cursor-not-allowed",
         ].join(" ")}
         disabled={!canLeft}
       >
-        <LuChevronLeft className="h-5 w-5 text-slate-700" />
+        <LuChevronLeft className="h-5 w-5 text-[var(--text-muted)]" />
       </button>
 
       <button
         aria-label="scroll right"
         onClick={() => scrollBy(1)}
         className={[
-          "absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-2 shadow-sm",
+          "absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-[var(--surface-border)] bg-[var(--surface)] p-2 shadow-sm",
           "transition disabled:opacity-40 disabled:cursor-not-allowed",
         ].join(" ")}
         disabled={!canRight}
       >
-        <LuChevronRight className="h-5 w-5 text-slate-700" />
+        <LuChevronRight className="h-5 w-5 text-[var(--text-muted)]" />
       </button>
 
       {/* لیست افقی */}
@@ -93,15 +93,15 @@ export default function CategoryStrip({ items = [], onSelect }) {
               onClick={() => handleClick(c.value)}
               className={[
                 "group flex shrink-0 items-center gap-3 rounded-2xl border px-3 py-2",
-                "transition hover:border-slate-300 hover:bg-slate-50",
+                "transition hover:border-[var(--surface-border)] hover:bg-[var(--surface-2)]",
                 isActive
-                  ? "border-slate-900 bg-slate-900 text-white"
-                  : "border-slate-200 bg-white text-slate-700",
+                  ? "border-[var(--surface-border)] bg-[var(--surface-2)] text-white"
+                  : "border-[var(--surface-border)] bg-[var(--surface)] text-[var(--text-muted)]",
               ].join(" ")}
               title={c.label}
             >
               {/* آواتار/آیکن اختیاری */}
-              <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-slate-100">
+              <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-[var(--surface-2)]">
                 {c.image ? (
                   <img
                     src={c.image}
@@ -110,7 +110,7 @@ export default function CategoryStrip({ items = [], onSelect }) {
                     loading="lazy"
                   />
                 ) : (
-                  <span className={isActive ? "text-white" : "text-slate-600"}>
+                  <span className={isActive ? "text-white" : "text-[var(--text-muted)]"}>
                     {String(c.label || "?").charAt(0)}
                   </span>
                 )}

@@ -29,15 +29,18 @@ const paymentController = require('../controller/payment/paymentController');
 const { forgotPassword, resetPassword } = require("../controller/auth/passwordController");
 const { verifyAll } = require("../utils/email");
 const { getMe, updateMe, changePassword ,updateAvatar} = require("../controller/user/meController");
+const multer = require('multer');
+const memUpload = multer({ storage: multer.memoryStorage() , limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
 // User Profile Routes
+console.log("DBG types =>", "authToken:", typeof authToken);
 router.get("/me", authToken, getMe);
-router.patch("/me", authToken, updateMe);                           // ⭐️ برای ویرایش نام/تلفن/آدرس
+router.patch("/me", authToken, updateMe);
+router.patch("/me/avatar", authToken, memUpload.single("avatar"), updateAvatar);                       // ⭐️ برای ویرایش نام/تلفن/آدرس
 router.patch("/me/password", authToken, changePassword);
 router.patch("/change-password", authToken, changePassword);
-router.patch("/me/avatar", authToken, upload.single("avatar"), updateAvatar);
 router.patch("/product/:id", authToken, updateProductController);
 
-
+router.post("/me/avatar", authToken, memUpload.single("avatar"), updateAvatar);
 router.delete("/user/:id", authToken, deleteUser);
 router.delete("/product/:id", authToken, deleteProductController);
 router.post("/auth/forgot-password", forgotPassword);
@@ -87,6 +90,7 @@ router.post("/filter-Product",filterProductController)
 //peyment 
 
 router.post("/checkout",authToken,paymentController)
+
 
 
 

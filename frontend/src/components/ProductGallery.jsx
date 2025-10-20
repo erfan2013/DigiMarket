@@ -8,7 +8,7 @@ export default function ProductGallery({ images = [] }) {
 
   if (!prepared.length) {
     return (
-      <div className="rounded-2xl bg-slate-50 aspect-square flex items-center justify-center text-slate-400">
+      <div className="rounded-2xl bg-[var(--surface-2)] aspect-square flex items-center justify-center text-[var(--text-muted)]">
         No image
       </div>
     );
@@ -16,7 +16,7 @@ export default function ProductGallery({ images = [] }) {
 
   return (
     <div className="grid gap-3">
-      <div className="rounded-2xl border border-slate-100 bg-white p-2">
+      <div className="rounded-2xl p-2 ui-card">
         <img
           src={prepared[active]}
           alt="product"
@@ -33,7 +33,7 @@ export default function ProductGallery({ images = [] }) {
               "h-20 w-20 shrink-0 rounded-xl border p-1 transition-all",
               i === active
                 ? "border-blue-500 ring-2 ring-blue-300"
-                : "border-slate-200 hover:border-slate-300"
+                : "border-[var(--surface-border)] hover:border-[var(--surface-border)]"
             )}
           >
             <img src={u} alt={`thumb-${i}`} className="h-full w-full object-contain rounded-lg" />

@@ -36,16 +36,16 @@ const VerticalCardProduct = ({ category, heading }) => {
 
   return (
     <div className="container mx-auto px-4 mt-10 my-6 relative">
-      <h2 className="text-2xl font-semibold py-4">{heading}</h2>
+      <h2 className="text-2xl font-semibold py-4 section-title">{heading}</h2>
 
       <div
         className="flex items-center gap-4 md:gap-6 overflow-x-scroll scrollbar-none transition-all"
         ref={scrollElement}
       >
-        <button className="text-black bg-white rounded-full p-1 text-3xl absolute left-0" onClick={scrollLeft}>
+        <button className="text-[var(--text)] rounded-full p-1 text-3xl absolute left-0 btn btn-ghost" onClick={scrollLeft}>
           <FaAngleDoubleLeft />
         </button>
-        <button className="text-black bg-white rounded-full p-1 text-3xl absolute right-0" onClick={scrollRight}>
+        <button className="text-[var(--text)] rounded-full p-1 text-3xl absolute right-0 btn btn-ghost" onClick={scrollRight}>
           <FaAngleDoubleRight />
         </button>
 
@@ -53,24 +53,24 @@ const VerticalCardProduct = ({ category, heading }) => {
           loadingList.map((_, index) => (
             <div
               key={index}
-              className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow"
+              className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-[var(--surface)] rounded-lg shadow"
             >
-              {/* اسکلت تصویر با نسبت ثابت (۱:۱) */}
+              {/* Ø§Ø³Ú©Ù„Øª ØªØµÙˆÛŒØ± Ø¨Ø§ Ù†Ø³Ø¨Øª Ø«Ø§Ø¨Øª (Û±:Û±) */}
               <div className="p-4">
-                <div className="relative w-full overflow-hidden rounded-xl bg-slate-200">
+                <div className="relative w-full overflow-hidden rounded-xl bg-[var(--surface-2)]">
                   <div style={{ paddingTop: '100%' }} className="animate-pulse" />
                 </div>
               </div>
 
               <div className="p-4 mx-auto gap-3">
-                <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black p-1 animate-pulse rounded-full py-2"></h2>
-                <p className="capitalize text-slate-500 p-1 animate-pulse rounded-full py-2"></p>
+                <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-[var(--text)] p-1 animate-pulse rounded-full py-2 section-title"></h2>
+                <p className="capitalize text-[var(--text-muted)] p-1 animate-pulse rounded-full py-2"></p>
                 <div className="flex gap-3">
                   <p className="text-blue-700 font-medium p-1 animate-pulse rounded-full py-2"></p>
-                  <p className="text-slate-500 line-through p-1 animate-pulse rounded-full py-2"></p>
+                  <p className="text-[var(--text-muted)] line-through p-1 animate-pulse rounded-full py-2 price-old"></p>
                 </div>
                 <div className="flex justify-center">
-                  <button className="p-1 animate-pulse mt-2 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg md:text-sm text-xs md:px-5 md:py-2.5 px-3 py-2.5"></button>
+                  <button className="p-1 animate-pulse mt-2 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg md:text-sm text-xs md:px-5 md:py-2.5 px-3 py-2.5 btn btn-ghost"></button>
                 </div>
               </div>
             </div>
@@ -80,37 +80,37 @@ const VerticalCardProduct = ({ category, heading }) => {
             <Link
               key={index}
               to={'/product/' + product?._id}
-              className="group w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow"
+              className="group w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-[var(--surface)] rounded-lg shadow"
               onClick={scrollToTop}
             >
-              {/* فقط padding؛ ارتفاع/فلکس نمی‌دیم. نسبت را ProductImage می‌سازد */}
+              {/* ÙÙ‚Ø· paddingØ› Ø§Ø±ØªÙØ§Ø¹/ÙÙ„Ú©Ø³ Ù†Ù…ÛŒâ€ŒØ¯ÛŒÙ…. Ù†Ø³Ø¨Øª Ø±Ø§ ProductImage Ù…ÛŒâ€ŒØ³Ø§Ø²Ø¯ */}
               <div className="p-4">
                 <ProductImage
                   src={resolveImageUrl(product?.ProductImage?.[0])}
                   alt={product?.ProductName || product?.category || ''}
-                  ratio="1:1"           // اگر مستطیلی می‌خوای: "4:3"
+                  ratio="1:1"           // Ø§Ú¯Ø± Ù…Ø³ØªØ·ÛŒÙ„ÛŒ Ù…ÛŒâ€ŒØ®ÙˆØ§ÛŒ: "4:3"
                   fit="contain"
-                  bg="bg-slate-100"
+                  bg="bg-[var(--surface-2)]"
                   className="transition-transform duration-200 group-hover:scale-[1.02]"
                 />
               </div>
 
               <div className="p-4 mx-auto gap-3">
-                <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black">
+                <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-[var(--text)] section-title">
                   {product?.ProductName}
                 </h2>
-                <p className="capitalize text-slate-500">{product?.category}</p>
+                <p className="capitalize text-[var(--text-muted)]">{product?.category}</p>
                 <div className="flex gap-3">
                   <p className="text-blue-700 font-medium">
                     {DisplayUSDCurrency(product?.Selling)}
                   </p>
-                  <p className="text-slate-500 line-through">
+                  <p className="text-[var(--text-muted)] line-through price-old">
                     {DisplayUSDCurrency(product?.Price)}
                   </p>
                 </div>
                 <div className="flex justify-center">
                   <button
-                    className="mt-2 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg md:text-sm text-xs md:px-5 md:py-2.5 px-3 py-2.5"
+                    className="mt-2 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg md:text-sm text-xs md:px-5 md:py-2.5 px-3 py-2.5 btn btn-ghost"
                     onClick={(e) => handleAddToCart(e, product?._id)}
                   >
                     Add to cart

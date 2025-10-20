@@ -5,7 +5,7 @@
 
 
 .userTable{
-    @apply bg-white 
+    @apply bg-[var(--surface)] 
 
 }
 .userTable th{
@@ -22,4 +22,27 @@
 /** scroll bar */ 
 .scrollbar-none::-webkit-scrollbar {
     display: none;
+}
+
+.ui-card {
+  @apply rounded-xl border p-4;
+  background: var(--surface);
+  border-color: var(--surface-border);
+  color: var(--text);
+}
+.ui-input {
+  @apply rounded-lg border px-3 py-2 outline-none focus:ring-2;
+  background: var(--surface);
+  border-color: var(--surface-border);
+  color: var(--text);
+}
+.btn-primary {
+  @apply rounded-lg px-4 py-2 font-medium;
+  background: var(--primary);
+  color: var(--primary-ink);
+}
+.page {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
 }

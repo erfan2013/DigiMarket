@@ -31,11 +31,11 @@ export default function ProductGrid({
 
 function Skel() {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-3">
-      <div className="h-48 w-full rounded-xl bg-slate-200 animate-pulse" />
-      <div className="mt-3 h-4 w-3/4 rounded bg-slate-200 animate-pulse" />
-      <div className="mt-2 h-3 w-1/2 rounded bg-slate-200 animate-pulse" />
-      <div className="mt-3 h-9 w-full rounded-lg bg-slate-200 animate-pulse" />
+    <div className="rounded-2xl p-3 ui-card">
+      <div className="h-48 w-full rounded-xl bg-[var(--surface-2)] animate-pulse" />
+      <div className="mt-3 h-4 w-3/4 rounded bg-[var(--surface-2)] animate-pulse" />
+      <div className="mt-2 h-3 w-1/2 rounded bg-[var(--surface-2)] animate-pulse" />
+      <div className="mt-3 h-9 w-full rounded-lg bg-[var(--surface-2)] animate-pulse" />
     </div>
   );
 }

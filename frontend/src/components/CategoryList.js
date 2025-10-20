@@ -38,12 +38,7 @@ const CategoryList = () => {
               className="cursor-pointer"
               key={product?.category}
             >
-              <div className="
-                  w-16 md:w-20 h-20 rounded-lg overflow-hidden p-4
-                  bg-[#E9EEF6] ring-1 ring-[#D5DEE8]
-                  flex items-center justify-center
-                  transition-transform duration-200 hover:scale-105
-                ">
+              <div className="w-16 md:w-20 h-20 rounded-lg overflow-hidden p-4 bg-[#E9EEF6] ring-1 ring-[#D5DEE8] flex items-center justify-center transition-transform duration-200 hover:scale-105">
                 <ProductImage
                   src={resolveImageUrl(product?.ProductImage?.[0])}
                   alt={product?.category || ''}
@@ -103,7 +98,7 @@ export default CategoryList
 //             categoryLoading.map((_, index) => (
 //               <div
 //                 key={'category-loading-' + index}
-//                 className='h-16 w-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-slate-200 animate-pulse'
+//                 className='h-16 w-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-[var(--surface-2)] animate-pulse'
 //               />
 //             ))
 //           ) : (
@@ -114,7 +109,7 @@ export default CategoryList
 //                 key={product?.category}
 //               >
 //                 {/* ظرف بیرونی مثل قبل می‌مونه؛ فقط محتواش ProductImage استاندارد می‌شه */}
-//                 <div className='w-16 md:w-20 h-20 rounded-lg overflow-hidden p-4 bg-slate-200 flex items-center justify-center'>
+//                 <div className='w-16 md:w-20 h-20 rounded-lg overflow-hidden p-4 bg-[var(--surface-2)] flex items-center justify-center'>
 //                   <ProductImage
 //                     src={resolveImageUrl(product?.ProductImage?.[0])}
 //                     alt={product?.category || ''}

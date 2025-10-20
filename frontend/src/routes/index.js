@@ -20,6 +20,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Profile from '../pages/Profile';
 import AdminRoute from './AdminRoute';
 import ResetPassword from '../pages/ResetPasswords';
+import AdminHomeSlider from '../components/AdminHomeSlider';
 
 const router = createBrowserRouter([
         {
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
                         {
                             path: "all-products",
                             element: <AllProducts/>
+                        },
+                        {
+                            path: "home-slider",
+                            element: <AdminHomeSlider/>
                         },
                     ]
 

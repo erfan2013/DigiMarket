@@ -37,7 +37,7 @@ const SearchProduct = () => {
       </p>
 
       {!loading && (!data || data.length === 0) && (
-        <p className="text-lg text-center p-4 bg-white rounded-2xl">
+        <p className="text-lg text-center p-4 bg-[var(--surface)] rounded-2xl">
           No data found...
         </p>
       )}

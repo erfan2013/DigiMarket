@@ -5,16 +5,14 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
 const uploadRoutes = require("./routes/upload.routes");
 const router = require("./routes/index");     // ← فقط یک روتر نهایی
-
+const sliderRoutes = require("./routes/slider.routes");
 // یا اگر همه‌چیز در user.js است: const router = require("./routes/user");
 const path = require("path");
 
 const app = express();
 app.set("trust proxy", 1);
-
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ---------- CORS (حتماً قبل از /api) ----------
 const allowedOrigins = (process.env.FRONT_END_URLS || "")
@@ -47,6 +45,8 @@ app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
 
 // ---------- API (فقط یک بار) ----------
 app.use("/api", router);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api", sliderRoutes);
 
 const PORT = process.env.PORT || 8080;
 connectDB().then(() => {

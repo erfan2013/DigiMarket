@@ -2,8 +2,8 @@
 import React, { useMemo } from "react";
 import resolveImageUrl from "../helper/resolveImageUrl";
 import DisplayUSDCurrency from "../helper/displayCurrency";
-// اگر مسیرش فرق می‌کنه، مطابق پروژهٔ خودت اصلاحش کن
-import ZoomImage from "./ui/zoomImage"; // یا: import ZoomImage from "../components/ui/ZoomImage";
+// Ø§Ú¯Ø± Ù…Ø³ÛŒØ±Ø´ ÙØ±Ù‚ Ù…ÛŒâ€ŒÚ©Ù†Ù‡ØŒ Ù…Ø·Ø§Ø¨Ù‚ Ù¾Ø±ÙˆÚ˜Ù‡Ù” Ø®ÙˆØ¯Øª Ø§ØµÙ„Ø§Ø­Ø´ Ú©Ù†
+import ZoomImage from "./ui/zoomImage"; // ÛŒØ§: import ZoomImage from "../components/ui/ZoomImage";
 
 export default function ProductDetailsView({ product, onAddToCart, onBuyNow }) {
   const pics = useMemo(() => {
@@ -19,13 +19,13 @@ export default function ProductDetailsView({ product, onAddToCart, onBuyNow }) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-        {/* LEFT: تصویر کوچکتر + زوم با ZoomImage خودت */}
+        {/* LEFT: ØªØµÙˆÛŒØ± Ú©ÙˆÚ†Ú©ØªØ± + Ø²ÙˆÙ… Ø¨Ø§ ZoomImage Ø®ÙˆØ¯Øª */}
         <div>
           <ZoomImage
             src={main}
             alt={product?.ProductName}
-            zoom={2}                     // شدت زوم (بخواهی تغییر بده)
-            className="rounded-2xl ring-1 ring-slate-200 bg-slate-50
+            zoom={2}                     // Ø´Ø¯Øª Ø²ÙˆÙ… (Ø¨Ø®ÙˆØ§Ù‡ÛŒ ØªØºÛŒÛŒØ± Ø¨Ø¯Ù‡)
+            className="rounded-2xl ring-1 ring-slate-200 bg-[var(--surface-2)]
                        max-h-[460px] aspect-square overflow-hidden"
           />
 
@@ -34,7 +34,7 @@ export default function ProductDetailsView({ product, onAddToCart, onBuyNow }) {
               {pics.map((src, i) => (
                 <div
                   key={i}
-                  className="h-20 w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-slate-200 bg-white"
+                  className="h-20 w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-slate-200 bg-[var(--surface)]"
                 >
                   <img
                     src={src}
@@ -48,19 +48,19 @@ export default function ProductDetailsView({ product, onAddToCart, onBuyNow }) {
           )}
         </div>
 
-        {/* RIGHT: اطلاعات محصول */}
+        {/* RIGHT: Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ù…Ø­ØµÙˆÙ„ */}
         <div className="space-y-5">
-          <h1 className="text-2xl font-semibold text-slate-900">
+          <h1 className="text-2xl font-semibold text-[var(--text)]">
             {product?.ProductName}
           </h1>
 
           <div className="flex items-baseline gap-3">
-            <div className="text-2xl font-bold text-slate-900">
+            <div className="text-2xl font-bold text-[var(--text)]">
               {DisplayUSDCurrency(price)}
             </div>
             {hasDiscount && (
               <>
-                <div className="text-slate-500 line-through">
+                <div className="text-[var(--text-muted)] line-through price-old">
                   {DisplayUSDCurrency(old)}
                 </div>
                 <span className="rounded-full bg-green-100 px-2 py-0.5 text-sm text-green-700">
@@ -71,40 +71,38 @@ export default function ProductDetailsView({ product, onAddToCart, onBuyNow }) {
           </div>
 
           {product?.brand && (
-            <div className="text-sm text-slate-600">
-              Brand: <span className="font-medium text-slate-800">{product.brand}</span>
+            <div className="text-sm text-[var(--text-muted)]">
+              Brand: <span className="font-medium text-[var(--text-muted)]">{product.brand}</span>
             </div>
           )}
           {product?.category && (
-            <div className="text-sm text-slate-600">
-              Category: <span className="font-medium text-slate-800">{product.category}</span>
+            <div className="text-sm text-[var(--text-muted)]">
+              Category: <span className="font-medium text-[var(--text-muted)]">{product.category}</span>
             </div>
           )}
 
           {product?.description && (
-            <p className="text-slate-700 leading-7">{product.description}</p>
+            <p className="text-[var(--text-muted)] leading-7">{product.description}</p>
           )}
 
           <div className="flex items-center gap-3">
             <button
               onClick={onAddToCart}
-              className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-2.5 text-white
-                         hover:scale-105 active:scale-100 transition-transform duration-200 ease-out
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+              className="inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-white hover:scale-105 active:scale-100 transition-transform duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 btn btn-ghost"
             >
               Add to cart
             </button>
 
             <button
               onClick={onBuyNow}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-700 hover:bg-slate-50 transition"
+              className="rounded-xl px-4 py-2.5 text-[var(--text-muted)] hover:bg-[var(--surface-2)] transition ui-card btn btn-ghost"
             >
               Buy now
             </button>
           </div>
 
           {Array.isArray(product?.features) && product.features.length > 0 && (
-            <ul className="mt-2 list-disc pl-5 text-slate-700 space-y-1">
+            <ul className="mt-2 list-disc pl-5 text-[var(--text-muted)] space-y-1">
               {product.features.map((f, idx) => <li key={idx}>{f}</li>)}
             </ul>
           )}
@@ -128,7 +126,7 @@ export default function ProductDetailsView({ product, onAddToCart, onBuyNow }) {
 //   product,
 //   onAddToCart,
 //   onBuyNow,
-//   rightExtra,     // اگر خواستی چیز اضافه در ستون راست نمایش بدی
+//   rightExtra,     // Ø§Ú¯Ø± Ø®ÙˆØ§Ø³ØªÛŒ Ú†ÛŒØ² Ø§Ø¶Ø§ÙÙ‡ Ø¯Ø± Ø³ØªÙˆÙ† Ø±Ø§Ø³Øª Ù†Ù…Ø§ÛŒØ´ Ø¨Ø¯ÛŒ
 // }) {
 //   if (!product) return null;
 
@@ -140,24 +138,24 @@ export default function ProductDetailsView({ product, onAddToCart, onBuyNow }) {
 //       {/* Info */}
 //       <div className="space-y-4">
 //         <div>
-//           <h1 className="text-2xl font-bold text-slate-900">{product?.ProductName}</h1>
+//           <h1 className="text-2xl font-bold text-[var(--text)]">{product?.ProductName}</h1>
 //           {product?.category && (
-//             <div className="mt-1 text-sm text-slate-500">{product?.category}</div>
+//             <div className="mt-1 text-sm text-[var(--text-muted)]">{product?.category}</div>
 //           )}
 //         </div>
 
 //         <div className="flex items-end gap-3">
-//           <div className="text-2xl font-extrabold text-slate-900">
+//           <div className="text-2xl font-extrabold text-[var(--text)]">
 //             {DisplayUSDCurrency(product?.Price)}
 //           </div>
 //           {product?.Discount > 0 && (
-//             <div className="text-sm text-slate-400 line-through">
+//             <div className="text-sm text-[var(--text-muted)] line-through price-old">
 //               {DisplayUSDCurrency(Number(product?.Price) + Number(product?.Discount || 0))}
 //             </div>
 //           )}
 //         </div>
 
-//         <p className="text-slate-700 leading-relaxed">
+//         <p className="text-[var(--text-muted)] leading-relaxed">
 //           {product?.description || "No description"}
 //         </p>
 
@@ -171,3 +169,4 @@ export default function ProductDetailsView({ product, onAddToCart, onBuyNow }) {
 //     </div>
 //   );
 // }
+

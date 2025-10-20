@@ -53,16 +53,17 @@ function App() {
   }, []);
 
   return (
-    <div className='min-h-screen bg-[#E6EEF6] text-slate-900'>
+    <div className='min-h-screen bg-[var(--bg)] text-[var(--text)]'>
     <Context.Provider
       value={{
         fetchUserDetails,
         cartProductCount,
         fetchUserAddToCart,
+        
       }}
     >
       <div className="min-h-screen flex flex-col">
-        <ToastContainer position="top-left" autoClose={1000} />
+        <ToastContainer position="top-left" autoClose={1000} theme={document.documentElement.classList.contains('dark') ? 'dark' : 'light'} />
 
         {/* فقط وقتی auth page نیست هدر رو نشون بده */}
         {!hideChrome && <Header />}
@@ -72,8 +73,8 @@ function App() {
             <Link to="/" 
             className=" ml-5 fixed left-4 top-4 z-50 inline-flex items-center gap-2 rounded-xl
                       px-3 py-1.5 text-sm font-medium
-                      bg-white/10 text-white ring-1 ring-white/20 backdrop-blur
-                      hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/40"
+                      bg-[var(--surface)]/10 text-white ring-1 ring-white/20 backdrop-blur
+                      hover:bg-[var(--surface)]/20 focus:outline-none focus:ring-2 focus:ring-white/40"
            aria-label="Back to home">
               {/* Add content inside the Link, e.g. a home icon or text */}
               <span>
@@ -85,7 +86,7 @@ function App() {
 
         {/* اگر هدر داریم، فاصله‌ی بالای مین رو بذاریم؛
             Header ارتفاع h-16 (4rem) داره، پس pt-16 دقیقا فیت می‌شه */}
-        <main className={`flex-1 ${hideChrome ? '' : 'pt-16'}`}>
+      <main className={`flex-1 ${hideChrome ? '' : 'pt-16'} bg-[var(--bg)] text-[var(--text)]`}>
           <Outlet />
         </main>
 

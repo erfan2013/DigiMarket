@@ -49,11 +49,11 @@ const ChengeUserRool = ({
        
     }
   return (
-    <div className='fixed top-0 left-0 bottom-0 right-0 w-full h-full z-10 flex justify-between items-center bg-slate-50 bg-opacity-60'>
-      <div className='mx-auto bg-white shadow-md p-4 w-full max-w-sm'>
+    <div className='fixed top-0 left-0 bottom-0 right-0 w-full h-full z-10 flex justify-between items-center bg-[var(--surface-2)] bg-opacity-60'>
+      <div className='mx-auto bg-[var(--surface)] shadow-md p-4 w-full max-w-sm'>
 
 
-        <button className='text-2xl block ml-auto' onClick={onclose}>
+        <button className='text-2xl block ml-auto btn btn-ghost' onClick={onclose}>
         <IoMdCloseCircle />
         </button>
 
@@ -67,7 +67,7 @@ const ChengeUserRool = ({
         <p> Email : {email}</p>
         <div className='flex items-center justify-between my-4'>
         <p>Role :</p>
-        <select className='border px-4 py-1' value={userRole} onChange={handleOnChengeSelected}>
+        <select className='px-4 py-1 ui-input' value={userRole} onChange={handleOnChengeSelected}>
     {
         Object.values(ROLE).map(el => {
 
@@ -78,7 +78,7 @@ const ChengeUserRool = ({
     }
         </select>
         </div>
-        <button className='w-fit mx-auto block text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center' onClick={updateUserRole}>Chenge roll</button>
+        <button className='w-fit mx-auto block text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center btn btn-ghost' onClick={updateUserRole}>Chenge roll</button>
       </div>
     </div>
   )

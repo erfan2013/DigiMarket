@@ -87,11 +87,11 @@ const UploadProdoct = ({
 
 
   return (
-    <div className='fixed inset-0 z-[9999] w-full h-full bg-slate-200 bg-opacity-35 top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
-      <div className='bg-white p-4 rounded-lg w-full max-w-xl h-full max-h-[82%] overflow-hidden'>
+    <div className='fixed inset-0 z-[9999] w-full h-full bg-[var(--surface-2)] bg-opacity-35 top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
+      <div className='bg-[var(--surface)] p-4 rounded-lg w-full max-w-xl h-full max-h-[82%] overflow-hidden'>
 
         <div className='flex items-center justify-between'>
-            <h2 className='font-bold text-lg'>Upload Product</h2>
+            <h2 className='font-bold text-lg section-title'>Upload Product</h2>
             <div className='w-fit ml-auto text-3xl cursor-pointer hover:text-red-500 mb-2' onClick={onClose}>
             <IoMdCloseCircle />
             </div>
@@ -100,11 +100,11 @@ const UploadProdoct = ({
         <form className='grid p-4 overflow-y-scroll h-full' onSubmit={handleSubmit}>
             <div>
             <label htmlFor="productname" className='block mb-2 text-sm font-medium text-gray-900 '>Product Name :</label>
-            <input name='ProductName' value={data.ProductName} onChange={handleOnChenge} type="text" id="productname" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Product Name' required />
+            <input name='ProductName' value={data.ProductName} onChange={handleOnChenge} type="text" id="productname" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Product Name' required />
             <label htmlFor="Brandname" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Brand Name :</label>
-            <input name='BrandName' value={data.BrandName} onChange={handleOnChenge} type="text" id="brandname" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Brand Name' required />
+            <input name='BrandName' value={data.BrandName} onChange={handleOnChenge} type="text" id="brandname" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Brand Name' required />
             <label htmlFor="category" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Category :</label>
-            <select name='category' value={data.category} onChange={handleOnChenge} type="text" id="category" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Category' required>
+            <select name='category' value={data.category} onChange={handleOnChenge} type="text" id="category" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Category' required>
             <option value={""}>Select Category</option>
                 {
                     ProductCategory.map((el,index) => {
@@ -117,7 +117,7 @@ const UploadProdoct = ({
             </select>
             <label htmlFor="ProductImage" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Product Image :</label>
             <label htmlFor='uploadImageInput'>
-            <div className='p-2 bg-slate-100 border rounded-lg h-32 w-full mb-4 flex justify-center items-center cursor-pointer' >
+            <div className='p-2 border rounded-lg h-32 w-full mb-4 flex justify-center items-center cursor-pointer ui-toolbar' >
                <div className='flex flex-col justify-center items-center gap-2'>
                 <span className='text-4xl'><IoIosCloudUpload /></span>
                 <p className='text-sm'>UploadProdoct Image</p>
@@ -133,7 +133,7 @@ const UploadProdoct = ({
                             data.ProductImage.map((el,index) => {
                                 return (
                                     <div key={index} className='relative group'>
-                                        <img src={el} alt={el} width={80} height={80} className='bg-slate-100 border rounded-lg' onClick={() =>{
+                                        <img src={el} alt={el} width={80} height={80} className='bg-[var(--surface-2)] border rounded-lg' onClick={() =>{
                                         setOpenFullScreenImage(true)
                                         setFullScreenImage(el)
                                     }} />
@@ -154,24 +154,24 @@ const UploadProdoct = ({
             </div>
 
             <label htmlFor="Price" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Price :</label>
-            <input name='Price' value={data.Price} onChange={handleOnChenge} type="number" id="Price" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Price' required />
+            <input name='Price' value={data.Price} onChange={handleOnChenge} type="number" id="Price" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Price' required />
 
             <label htmlFor="Selling" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Selling :</label>
-            <input name='Selling' value={data.Selling} onChange={handleOnChenge} type="number" id="Selling" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Selling' required />
+            <input name='Selling' value={data.Selling} onChange={handleOnChenge} type="number" id="Selling" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Selling' required />
 
             <label htmlFor="Description" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Description :</label>
-            <textarea rows={5} name='Description' value={data.Description} onChange={handleOnChenge} type="text" id="Description" className='resize-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Enter Your Description' required />
+            <textarea rows={5} name='Description' value={data.Description} onChange={handleOnChenge} type="text" id="Description" className='resize-none bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Enter Your Description' required />
 
-            {/* <input name='ProductImage' value={data.ProductImage} onChange={handleOnChenge} type="text" id="ProductImage" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Product Image' required />
+            {/* <input name='ProductImage' value={data.ProductImage} onChange={handleOnChenge} type="text" id="ProductImage" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Product Image' required />
             <label htmlFor="Price" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Price :</label>
-            <input name='Price' value={data.Price} onChange={handleOnChenge} type="text" id="Price" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Price' required />
+            <input name='Price' value={data.Price} onChange={handleOnChenge} type="text" id="Price" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Price' required />
             <label htmlFor="Description" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Description :</label>
-            <input name='Description' value={data.Description} onChange={handleOnChenge} type="text" id="Description" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Description' required />
+            <input name='Description' value={data.Description} onChange={handleOnChenge} type="text" id="Description" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Description' required />
             <label htmlFor="Selling" className='block mb-2 text-sm font-medium text-gray-900 mt-2 '>Selling :</label>
-            <input name='Selling' value={data.Selling} onChange={handleOnChenge} type="text" id="Selling" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ' placeholder='Selling' required /> */}
+            <input name='Selling' value={data.Selling} onChange={handleOnChenge} type="text" id="Selling" className='bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ui-input' placeholder='Selling' required /> */}
             </div>
             <div className='my-5'>
-            <button type='submit' className='w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600'>Upload Product</button>
+            <button type='submit' className='w-full bg-blue-500 text-white font-bold py-2 rounded-md hover:bg-blue-600 btn btn-ghost'>Upload Product</button>
             </div>
         </form>
 
@@ -190,3 +190,4 @@ const UploadProdoct = ({
 }
 
 export default UploadProdoct
+

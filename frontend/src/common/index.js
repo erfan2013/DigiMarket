@@ -1,3 +1,4 @@
+
 const backendDomain = process.env.REACT_APP_BASE_URL?.trim() || "http://localhost:8080"
 
 const SummaryApi = {
@@ -122,8 +123,27 @@ const SummaryApi = {
         url: `${backendDomain}/api/user`,
         method: "DELETE"
     },
-    
-    
+    sliderPublic: {
+    url: `${backendDomain}/api/slider`,
+    method: "GET",
+  },
+  sliderAdminUpload: {
+    url: `${backendDomain}/api/admin/slider`,
+    method: "POST",
+  },
+  sliderAdminReorder: {
+    url: `${backendDomain}/api/admin/slider`,
+    method: "PATCH",
+  },
+  // برای حذف یکی از تصاویر: `${sliderAdminRemove.url}/${publicId}`
+  sliderAdminRemove: {
+    url: `${backendDomain}/api/admin/slider`,
+    method: "DELETE",
+  },
+  sliderAdminList: {
+    url: `${backendDomain}/api/admin/slider`,
+    method: "GET",
+  },
 }
 
 export default SummaryApi

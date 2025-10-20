@@ -5,7 +5,7 @@ import addToCart from "../helper/addToCart";
 import productCategory from "../helper/ProductCategory";
 import CategoryList from "../components/CategoryList";
 import ProductRail from "../components/ui/ProductRail";
-
+import HomeSlider from "../components/ui/HomeSlider";
 export default function Home() {
   const { fetchUserAddToCart } = useContext(Context);
 
@@ -36,9 +36,11 @@ export default function Home() {
           <CategoryList />
         </div>
       </div>
+      
 
-      {/* --- محتوای صفحهٔ اصلی --- */}
+      {/* -- محتوای صفحهٔ اصلی --- */}
       <div className="mx-auto max-w-7xl px-4 space-y-12 mt-6 bg-[#CFDDEA] py-6">
+        <HomeSlider />
         <ProductRail title="Top Airpods" category={CAT.airpodes || CAT.airpods || "airpodes"} onAdd={handleAdd} />
         <ProductRail title="Mobiles"      category={CAT.mobiles || CAT.mobile || "mobiles"} onAdd={handleAdd} />
         <ProductRail title="Earphones"    category={CAT.earphones || "earphones"} onAdd={handleAdd} />

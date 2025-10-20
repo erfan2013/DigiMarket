@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+﻿import React, { useEffect } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { Link, Outlet ,useNavigate } from 'react-router-dom'
@@ -12,15 +12,13 @@ const AdminPanel = () => {
       if(user?.role !== ROLE.ADMIN){
         navigate("/")
         }
-    },[user])
+    },[user,navigate])
 
 
 
   return (
     <div className='min-h-[calc(100vh-120px)] md:flex hidden'>
-      <aside className='min-h-full w-full max-w-72 custumShadow
-    bg-[#EDF3FA] dark:bg-[#EDF3FA]
-    border-r border-[#C6D6E6]'>
+      <aside className='min-h-full w-full max-w-72 custumShadow bg-[#EDF3FA] dark:bg-[#EDF3FA] border-r border-[#C6D6E6] sidebar sticky self-start p-4 rounded-xl top-[84px]'>
         <div className='h-32 flex items-center justify-center flex-col'>
         <div className='text-5xl cursor-pointer relative flex items-center justify-center py-4'>
            {user?.avatar || user?.profilePic ? (
@@ -40,12 +38,12 @@ const AdminPanel = () => {
           <nav className='grid p-4'>
             <Link to={"all-users"} className='px-2 py-1 hover:bg-stone-100'>All Users</Link>
             <Link to={"all-products"} className='px-2 py-1 hover:bg-stone-100'>Products</Link>
-
+            <Link to={"home-slider"} className='px-2 py-1 hover:bg-stone-100'>Home Slider</Link>
           </nav>
         </div>
       </aside>
 
-      <main className='w-full h-full p-2'>
+      <main className='w-full h-full p-2 page'>
             <Outlet/>
       </main>
     </div>
@@ -53,3 +51,6 @@ const AdminPanel = () => {
 }
 
 export default AdminPanel
+
+
+

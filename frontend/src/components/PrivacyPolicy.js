@@ -2,23 +2,23 @@ import React from "react";
 
 export default function PrivacyPolicy() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-slate-50 py-10">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--surface-2)] py-10 page">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br from-rose-500/20 to-fuchsia-500/20 blur-3xl" />
         <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-gradient-to-tr from-blue-400/20 to-cyan-500/20 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-4xl px-4">
-        <header className="mb-8">
-          <h1 className="text-3xl font-semibold text-slate-900">
+        <header className="mb-8 appbar">
+          <h1 className="text-3xl font-semibold text-[var(--text)]">
             Privacy Policy
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-[var(--text-muted)]">
             How DigiMarket collects, uses, and protects your data
           </p>
         </header>
 
-        <article className="space-y-6 rounded-3xl border border-white/40 bg-white/70 p-6 shadow-lg backdrop-blur">
+        <article className="space-y-6 rounded-3xl border border-white/40 bg-[var(--surface)]/70 p-6 shadow-lg backdrop-blur">
           <Section
             title="Introduction"
             body="We value your privacy and are committed to protecting your personal information."
@@ -80,11 +80,11 @@ export default function PrivacyPolicy() {
 
 function Section({ title, body, list }) {
   return (
-    <section className="rounded-2xl bg-white/60 p-4 shadow-sm ring-1 ring-black/5">
-      <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
-      {body && <p className="mt-2 text-slate-600">{body}</p>}
+    <section className="rounded-2xl bg-[var(--surface)]/60 p-4 shadow-sm ring-1 ring-black/5">
+      <h2 className="text-xl font-semibold text-[var(--text)] section-title">{title}</h2>
+      {body && <p className="mt-2 text-[var(--text-muted)]">{body}</p>}
       {Array.isArray(list) && list.length > 0 && (
-        <ul className="mt-3 list-disc space-y-1 pl-5 text-slate-600">
+        <ul className="mt-3 list-disc space-y-1 pl-5 text-[var(--text-muted)]">
           {list.map((li, i) => (
             <li key={i}>{li}</li>
           ))}
@@ -93,3 +93,4 @@ function Section({ title, body, list }) {
     </section>
   );
 }
+

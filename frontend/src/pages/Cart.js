@@ -141,7 +141,7 @@ const Cart = () => {
   return (
     <div className="container mx-auto p-4">
       {!data?.length && !loading && (
-        <p className="bg-white py-5 text-center rounded-2xl">No Data</p>
+        <p className="bg-[var(--surface)] py-5 text-center rounded-2xl">No Data</p>
       )}
 
       <CartView

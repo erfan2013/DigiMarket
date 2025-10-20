@@ -6,7 +6,7 @@ import ProductImage from './ui/productImage';
 const DisplayImage = ({ imageUrl, onClose }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg max-w-5xl mx-auto">
+      <div className="bg-[var(--surface)] shadow-lg rounded-lg max-w-5xl mx-auto">
         <div
           className="w-fit ml-auto text-3xl cursor-pointer hover:text-red-500 p-2"
           onClick={onClose}
@@ -22,7 +22,7 @@ const DisplayImage = ({ imageUrl, onClose }) => {
             ratio="1:1"      // اگر مستطیلی می‌خوای: "4:3"
             fit="contain"
             className="w-full"
-            bg="bg-white"
+            bg="bg-[var(--surface)]"
           />
         </div>
       </div>

@@ -47,21 +47,21 @@ export default function ProductRail({ title, category, onAdd, limit = 16 }) {
     el.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
-  // فقط وقتی واقعاً افقی حرکت می‌کنیم preventDefault بزن
+  // ÙÙ‚Ø· ÙˆÙ‚ØªÛŒ ÙˆØ§Ù‚Ø¹Ø§Ù‹ Ø§ÙÙ‚ÛŒ Ø­Ø±Ú©Øª Ù…ÛŒâ€ŒÚ©Ù†ÛŒÙ… preventDefault Ø¨Ø²Ù†
   const onWheel = (e) => {
     const el = railRef.current; if (!el) return;
     const canScrollX = el.scrollWidth > el.clientWidth;
-    if (!canScrollX) return; // پاس بده به اسکرول صفحه
+    if (!canScrollX) return; // Ù¾Ø§Ø³ Ø¨Ø¯Ù‡ Ø¨Ù‡ Ø§Ø³Ú©Ø±ÙˆÙ„ ØµÙØ­Ù‡
 
-    // اجازه بده deltaX (تاچ‌پد) native کار کنه
+    // Ø§Ø¬Ø§Ø²Ù‡ Ø¨Ø¯Ù‡ deltaX (ØªØ§Ú†â€ŒÙ¾Ø¯) native Ú©Ø§Ø± Ú©Ù†Ù‡
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
 
-    // deltaY را به افقی ترجمه کن
+    // deltaY Ø±Ø§ Ø¨Ù‡ Ø§ÙÙ‚ÛŒ ØªØ±Ø¬Ù…Ù‡ Ú©Ù†
     const before = el.scrollLeft;
     el.scrollBy({ left: e.deltaY, behavior: "auto" });
     const moved = el.scrollLeft !== before;
 
-    if (moved) e.preventDefault(); // فقط اگر حرکت کردیم
+    if (moved) e.preventDefault(); // ÙÙ‚Ø· Ø§Ú¯Ø± Ø­Ø±Ú©Øª Ú©Ø±Ø¯ÛŒÙ…
   };
 
   const skeletons = new Array(6).fill(0);
@@ -69,7 +69,7 @@ export default function ProductRail({ title, category, onAdd, limit = 16 }) {
   return (
     <section className="relative">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-lg md:text-xl font-semibold text-slate-900">{title}</h2>
+        <h2 className="text-lg md:text-xl font-semibold text-[var(--text)] section-title">{title}</h2>
       </div>
 
       <div className="relative">
@@ -93,7 +93,7 @@ export default function ProductRail({ title, category, onAdd, limit = 16 }) {
           <>
             <NavBtn side="left"  onClick={() => scrollBy(-1)} />
             <NavBtn side="right" onClick={() => scrollBy(1)} />
-            {/* گرادیان نرم دو طرف */}
+            {/* Ú¯Ø±Ø§Ø¯ÛŒØ§Ù† Ù†Ø±Ù… Ø¯Ùˆ Ø·Ø±Ù */}
             <div className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-slate-50 to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-slate-50 to-transparent" />
           </>
@@ -105,11 +105,11 @@ export default function ProductRail({ title, category, onAdd, limit = 16 }) {
 
 function Skeleton() {
   return (
-    <div className="min-w-[260px] sm:min-w-[300px] xl:min-w-[320px] rounded-2xl bg-white p-3 ring-1 ring-slate-200 shadow-sm">
-      <div className="h-56 md:h-64 w-full rounded-xl bg-slate-200 animate-pulse" />
-      <div className="mt-3 h-4 w-3/4 rounded bg-slate-200 animate-pulse" />
-      <div className="mt-2 h-3 w-1/2 rounded bg-slate-200 animate-pulse" />
-      <div className="mt-3 h-9 w-full rounded-lg bg-slate-200 animate-pulse" />
+    <div className="min-w-[260px] sm:min-w-[300px] xl:min-w-[320px] rounded-2xl bg-[var(--surface)] p-3 ring-1 ring-slate-200 shadow-sm">
+      <div className="h-56 md:h-64 w-full rounded-xl bg-[var(--surface-2)] animate-pulse" />
+      <div className="mt-3 h-4 w-3/4 rounded bg-[var(--surface-2)] animate-pulse" />
+      <div className="mt-2 h-3 w-1/2 rounded bg-[var(--surface-2)] animate-pulse" />
+      <div className="mt-3 h-9 w-full rounded-lg bg-[var(--surface-2)] animate-pulse" />
     </div>
   );
 }
@@ -123,12 +123,13 @@ function NavBtn({ side="left", onClick }) {
       className={[
         "absolute top-1/2 -translate-y-1/2 z-10",
         isLeft ? "left-2" : "right-2",
-        "rounded-full border border-slate-200 bg-white/95 p-2 shadow hover:bg-white"
+        "rounded-full border border-[var(--surface-border)] bg-[var(--surface)]/95 p-2 shadow hover:bg-[var(--surface)]"
       ].join(" ")}
     >
-      <svg viewBox="0 0 24 24" className="h-5 w-5 text-slate-700" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <svg viewBox="0 0 24 24" className="h-5 w-5 text-[var(--text-muted)]" fill="none" stroke="currentColor" strokeWidth="1.8">
         {isLeft ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 6l6 6-6 6" />}
       </svg>
     </button>
   );
 }
+

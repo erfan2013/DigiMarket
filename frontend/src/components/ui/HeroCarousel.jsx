@@ -25,7 +25,7 @@ export default function HeroCarousel({
 
   return (
     <div className={["relative mx-auto max-w-7xl px-4", className].join(" ")}>
-      <div className="relative overflow-hidden rounded-2xl bg-slate-900/5">
+      <div className="relative overflow-hidden rounded-2xl bg-[var(--surface-2)]/5">
         {/* Track */}
         <div
           className="flex transition-transform duration-500"
@@ -41,17 +41,17 @@ export default function HeroCarousel({
           <>
             <button
               onClick={prev}
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow hover:bg-white"
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-[var(--surface)]/80 p-2 shadow hover:bg-[var(--surface)] btn btn-ghost"
               aria-label="Previous"
             >
-              <span className="block h-4 w-4 rotate-180 border-r-2 border-t-2 border-slate-700" />
+              <span className="block h-4 w-4 rotate-180 border-r-2 border-t-2 border-[var(--surface-border)]" />
             </button>
             <button
               onClick={next}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow hover:bg-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-[var(--surface)]/80 p-2 shadow hover:bg-[var(--surface)] btn btn-ghost"
               aria-label="Next"
             >
-              <span className="block h-4 w-4 border-r-2 border-t-2 border-slate-700" />
+              <span className="block h-4 w-4 border-r-2 border-t-2 border-[var(--surface-border)]" />
             </button>
           </>
         )}
@@ -65,7 +65,7 @@ export default function HeroCarousel({
                 onClick={() => setIdx(i)}
                 className={[
                   "h-2.5 w-2.5 rounded-full transition",
-                  i === idx ? "bg-white shadow" : "bg-white/60 hover:bg-white",
+                  i === idx ? "bg-[var(--surface)] shadow" : "bg-[var(--surface)]/60 hover:bg-[var(--surface)]",
                 ].join(" ")}
                 aria-label={`Go to slide ${i + 1}`}
               />
@@ -91,10 +91,10 @@ function Slide({ slide }) {
     );
   }
   return (
-    <div className="min-h-[320px] w-full flex-shrink-0 grid md:grid-cols-2 bg-white">
+    <div className="min-h-[320px] w-full flex-shrink-0 grid md:grid-cols-2 bg-[var(--surface)]">
       <div className="p-8 md:p-14 flex flex-col justify-center">
-        <div className="text-2xl md:text-4xl font-semibold text-slate-900">{slide.title}</div>
-        <div className="mt-2 text-slate-600">{slide.subtitle}</div>
+        <div className="text-2xl md:text-4xl font-semibold text-[var(--text)]">{slide.title}</div>
+        <div className="mt-2 text-[var(--text-muted)]">{slide.subtitle}</div>
       </div>
       <div className="relative">
         <img

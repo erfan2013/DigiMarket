@@ -173,13 +173,13 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl bg-[var(--surface)] shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-200 p-4">
+        <div className="flex items-center justify-between border-b border-[var(--surface-border)] p-4">
           <h3 className="text-lg font-semibold">Edit product</h3>
           <button
             onClick={onClose}
-            className="rounded-lg border border-slate-200 px-3 py-1 text-sm hover:bg-slate-50"
+            className="rounded-lg border px-3 py-1 text-sm hover:bg-[var(--surface-2)] btn btn-ghost"
           >
             Close
           </button>
@@ -189,76 +189,76 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
         <form onSubmit={onSubmit} className="grid gap-4 p-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <label className="grid gap-1">
-              <span className="text-sm text-slate-700">Product name</span>
+              <span className="text-sm text-[var(--text-muted)]">Product name</span>
               <input
                 name="ProductName"
                 value={form.ProductName}
                 onChange={onChange}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="rounded-lg px-3 py-2 text-sm outline-none focus:border-[var(--surface-border)] focus:ring-2 focus:ring-slate-200 ui-input"
               />
             </label>
 
             <label className="grid gap-1">
-              <span className="text-sm text-slate-700">Brand</span>
+              <span className="text-sm text-[var(--text-muted)]">Brand</span>
               <input
                 name="BrandName"
                 value={form.BrandName}
                 onChange={onChange}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="rounded-lg px-3 py-2 text-sm outline-none focus:border-[var(--surface-border)] focus:ring-2 focus:ring-slate-200 ui-input"
               />
             </label>
 
             <label className="grid gap-1">
-              <span className="text-sm text-slate-700">Category</span>
+              <span className="text-sm text-[var(--text-muted)]">Category</span>
               <input
                 name="category"
                 value={form.category}
                 onChange={onChange}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="rounded-lg px-3 py-2 text-sm outline-none focus:border-[var(--surface-border)] focus:ring-2 focus:ring-slate-200 ui-input"
               />
             </label>
 
             <label className="grid gap-1">
-              <span className="text-sm text-slate-700">Selling price</span>
+              <span className="text-sm text-[var(--text-muted)]">Selling price</span>
               <input
                 type="number"
                 min="0"
                 name="Selling"
                 value={form.Selling}
                 onChange={onChange}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="rounded-lg px-3 py-2 text-sm outline-none focus:border-[var(--surface-border)] focus:ring-2 focus:ring-slate-200 ui-input"
               />
             </label>
 
             <label className="grid gap-1">
-              <span className="text-sm text-slate-700">Original price</span>
+              <span className="text-sm text-[var(--text-muted)]">Original price</span>
               <input
                 type="number"
                 min="0"
                 name="Price"
                 value={form.Price}
                 onChange={onChange}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="rounded-lg px-3 py-2 text-sm outline-none focus:border-[var(--surface-border)] focus:ring-2 focus:ring-slate-200 ui-input"
               />
             </label>
 
             <label className="grid gap-1 md:col-span-2">
-              <span className="text-sm text-slate-700">Description</span>
+              <span className="text-sm text-[var(--text-muted)]">Description</span>
               <textarea
                 name="Description"
                 value={form.Description}
                 onChange={onChange}
                 rows={3}
-                className="w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                className="w-full resize-none rounded-lg px-3 py-2 text-sm outline-none focus:border-[var(--surface-border)] focus:ring-2 focus:ring-slate-200 ui-input"
               />
             </label>
           </div>
 
           {/* تصاویر قبلی (kept) */}
-          <div className="rounded-xl border border-slate-200 p-3">
-            <div className="mb-2 text-sm font-medium text-slate-700">Current images</div>
+          <div className="rounded-xl border border-[var(--surface-border)] p-3">
+            <div className="mb-2 text-sm font-medium text-[var(--text-muted)]">Current images</div>
             {keptUrls.length === 0 && (
-              <div className="text-xs text-slate-500">No images kept.</div>
+              <div className="text-xs text-[var(--text-muted)]">No images kept.</div>
             )}
             <div className="flex flex-wrap gap-3">
               {keptUrls.map((u, idx) => (
@@ -269,12 +269,12 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
                     alt=""
                     ratio="1:1"
                     fit="cover"
-                    className="w-20 rounded-lg border border-slate-200"
+                    className="w-20 rounded-lg border border-[var(--surface-border)]"
                   />
                   <button
                     type="button"
                     onClick={() => removeKeptUrl(idx)}
-                    className="absolute -right-2 -top-2 rounded-full bg-white border border-slate-200 px-2 py-0.5 text-xs text-rose-600 shadow-sm hover:bg-rose-50"
+                    className="absolute -right-2 -top-2 rounded-full bg-[var(--surface)] border border-[var(--surface-border)] px-2 py-0.5 text-xs text-rose-600 shadow-sm hover:bg-rose-50"
                     title="Remove"
                   >
                     ×
@@ -285,14 +285,14 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
           </div>
 
             {/* انتخاب فایل‌های جدید */}
-          <div className="rounded-xl border border-slate-200 p-3">
-            <div className="mb-2 text-sm font-medium text-slate-700">Add new images</div>
+          <div className="rounded-xl border border-[var(--surface-border)] p-3">
+            <div className="mb-2 text-sm font-medium text-[var(--text-muted)]">Add new images</div>
             <input
               type="file"
               accept="image/*"
               multiple
               onChange={onPickFiles}
-              className="block w-full text-sm file:mr-3 file:rounded-lg file:border file:border-slate-300 file:bg-white file:px-3 file:py-2 file:text-sm file:hover:bg-slate-50"
+              className="block w-full text-sm file:mr-3 file:rounded-lg file:border file:border-[var(--surface-border)] file:bg-[var(--surface)] file:px-3 file:py-2 file:text-sm file:hover:bg-[var(--surface-2)] ui-input"
             />
             {previews.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-3">
@@ -304,12 +304,12 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
                       alt=""
                       ratio="1:1"
                       fit="cover"
-                      className="w-20 rounded-lg border border-slate-200"
+                      className="w-20 rounded-lg border border-[var(--surface-border)]"
                     />
                     <button
                       type="button"
                       onClick={() => removeNewFile(idx)}
-                      className="absolute -right-2 -top-2 rounded-full bg-white border border-slate-200 px-2 py-0.5 text-xs text-rose-600 shadow-sm hover:bg-rose-50"
+                      className="absolute -right-2 -top-2 rounded-full bg-[var(--surface)] border border-[var(--surface-border)] px-2 py-0.5 text-xs text-rose-600 shadow-sm hover:bg-rose-50"
                       title="Remove"
                     >
                       ×
@@ -321,18 +321,18 @@ export default function AdminEditProduct({ productData, onClose, fetchdata }) {
           </div>
 
           {/* اکشن‌ها */}
-          <div className="flex items-center justify-end gap-2 pt-2 sticky bottom-0 bg-white">
+          <div className="flex items-center justify-end gap-2 pt-2 sticky bottom-0 bg-[var(--surface)]">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-slate-200 px-4 py-2 text-sm hover:bg-slate-50"
+              className="rounded-lg border px-4 py-2 text-sm hover:bg-[var(--surface-2)] btn btn-ghost"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-white hover:bg-[var(--surface-2)] disabled:opacity-60 btn btn-ghost"
             >
               {saving ? "Saving…" : "Save changes"}
             </button>
