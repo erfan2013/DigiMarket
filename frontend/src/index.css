@@ -264,3 +264,505 @@ footer .help-strip { border-color: color-mix(in oklab, var(--surface-border) 85%
   object-fit: cover;
   display: block;
 }
+  
+/* === UX OVERRIDES (safe) — 20251021-143839 === */
+:root {
+  --btn-hover: color-mix(in oklab, var(--primary) 14%, var(--surface-2));
+}
+:root.dark {
+  --btn-hover: color-mix(in oklab, var(--primary) 22%, var(--surface-2));
+}
+
+/* دکمه عمومی: Hover لایت/دارک */
+.btn:hover {
+  background: var(--btn-hover) !important;
+  border-color: color-mix(in oklab, var(--primary) 45%, var(--surface-border));
+  filter: none !important;
+}
+
+/* دکمه پرایمری: Hover جذاب‌تر و قابل تشخیص در دارک/لایت */
+.btn-primary:hover {
+  background: linear-gradient(90deg,
+    color-mix(in oklab, #2563EB 95%, white),
+    color-mix(in oklab, #3B82F6 95%, white)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(59,130,246,.35);
+  filter: none !important;
+}
+
+/* کنتراست بهتر لیبل‌های فرم (مثل لاگین/ساين‌آپ) بدون دست‌کاری JSX */
+.page form label > span {
+  color: color-mix(in oklab, var(--text) 70%, transparent) !important;
+}
+
+/* placeholder‌ها کمی خواناتر */
+.ui-input::placeholder {
+  color: color-mix(in oklab, var(--text-muted) 72%, transparent) !important;
+}
+/* ===== UI FIXES (safe) – 20251021-144750 ===== */
+
+/* 1) Headingها خواناتر (تیترهای سکشن/کارت‌ها و هدر فرم‌ها) */
+.page h1, .page h2, .page .section-title, .page .card-title {
+  color: color-mix(in oklab, var(--text, #0f172a) 92%, transparent) !important;
+}
+
+/* Headingهای لاگین/ساين‌آپ که با gradient شفاف بودن → متن ساده با کنتراست */
+.page h1.bg-gradient-to-r,
+.page h2.bg-gradient-to-r {
+  background: none !important;
+  -webkit-text-fill-color: unset !important;
+  color: color-mix(in oklab, var(--text, #0f172a) 95%, transparent) !important;
+}
+
+/* 2) نوار عنوان سکشن‌ها (مثل All Products) پس‌زمینه لطیف‌تر و متن پرکنتراست */
+.section-bar, .page .rounded-2xl:has(> h2), .page .rounded-xl:has(> h2) {
+  background: color-mix(in oklab, #ffffff 75%, var(--bg, #eef2f7)) !important;
+  border: 1px solid color-mix(in oklab, #000 8%, transparent) !important;
+}
+:root.dark .section-bar,
+:root.dark .page .rounded-2xl:has(> h2),
+:root.dark .page .rounded-xl:has(> h2) {
+  background: color-mix(in oklab, #0b1220 82%, #111827) !important;
+  border-color: color-mix(in oklab, #fff 10%, transparent) !important;
+}
+
+/* 3) دکمه‌ها: کنتراست و hover مناسب در لایت/دارک (بدون تغییر JSX) */
+.page button {
+  transition: background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.page button:hover {
+  filter: none !important;
+}
+:root {
+  --btn-base: color-mix(in oklab, #ffffff 85%, var(--surface-2, #e5e7eb));
+  --btn-text: color-mix(in oklab, #0f172a 90%, transparent);
+  --btn-hover: color-mix(in oklab, #3b82f6 18%, var(--btn-base));
+}
+:root.dark {
+  --btn-base: color-mix(in oklab, #1f2937 78%, #0b1220);
+  --btn-text: color-mix(in oklab, #f8fafc 92%, transparent);
+  --btn-hover: color-mix(in oklab, #60a5fa 28%, var(--btn-base));
+}
+/* همه دکمه‌های خاکستری (مثل Upload product) ظاهر بهتر بگیرن */
+.page .toolbar button,
+.page .filters button,
+.page .card button:not([class*="primary"]):not([class*="danger"]) {
+  background: var(--btn-base) !important;
+  color: var(--btn-text) !important;
+  border: 1px solid color-mix(in oklab, #000 12%, transparent) !important;
+}
+.page .toolbar button:hover,
+.page .filters button:hover,
+.page .card button:not([class*="primary"]):not([class*="danger"]):hover {
+  background: var(--btn-hover) !important;
+  border-color: color-mix(in oklab, #3b82f6 38%, #0000) !important;
+  box-shadow: 0 4px 12px rgba(59,130,246,.15);
+}
+
+/* 4) Add to cart داخل کارت محصول */
+.page [class*="product"] [class*="card"] button,
+.page [class*="Product"] [class*="Card"] button {
+  background: var(--btn-base) !important;
+  color: var(--btn-text) !important;
+  border: 1px solid color-mix(in oklab, #000 12%, transparent) !important;
+}
+.page [class*="product"] [class*="card"] button:hover,
+.page [class*="Product"] [class*="Card"] button:hover {
+  background: var(--btn-hover) !important;
+}
+
+/* 5) اگر دکمه غیرفعال نیست، ولی به نظر میاد disabled: opacity را برگردون */
+.page button:not([disabled]) {
+  opacity: 1 !important;
+}
+
+/* 6) ورودی/لیبل فرم‌ها کمی پررنگ‌تر (Login/Signup) */
+.page form label > span {
+  color: color-mix(in oklab, var(--text, #0f172a) 78%, transparent) !important;
+}
+.ui-input::placeholder {
+  color: color-mix(in oklab, var(--text-muted, #6b7280) 75%, transparent) !important;
+}
+/* ===== UI FIXES (stronger selectors) – 20251021-145157 ===== */
+
+/* 1) Heading های داخل باکس‌های عنوان (All Products و مشابه) */
+.page .rounded-xl > h1,
+.page .rounded-xl > h2,
+.page .rounded-2xl > h1,
+.page .rounded-2xl > h2,
+.page .section-header > h1,
+.page .section-header > h2 {
+  color: color-mix(in oklab, var(--text, #0f172a) 96%, transparent) !important;
+  text-shadow: none !important;
+}
+
+/* بک‌گراند نوار عنوان در لایت/دارک (بدون :has) */
+.page .section-header,
+.page .rounded-xl.section-bar,
+.page .rounded-2xl.section-bar {
+  background: color-mix(in oklab, #fff 78%, var(--bg, #eef2f7)) !important;
+  border: 1px solid color-mix(in oklab, #000 10%, transparent) !important;
+}
+:root.dark .page .section-header,
+:root.dark .page .rounded-xl.section-bar,
+:root.dark .page .rounded-2xl.section-bar {
+  background: color-mix(in oklab, #0b1220 85%, #111827) !important;
+  border-color: color-mix(in oklab, #fff 12%, transparent) !important;
+}
+
+/* 2) Upload product (دکمه خاکستریِ تولبار/فیلتر) — Hover واضح */
+.page .toolbar button,
+.page .filters button {
+  background: var(--btn-base) !important;
+  color: var(--btn-text) !important;
+  border: 1px solid color-mix(in oklab, #000 12%, transparent) !important;
+}
+.page .toolbar button:hover,
+.page .filters button:hover {
+  background: var(--btn-hover) !important;
+  border-color: color-mix(in oklab, #3b82f6 38%, #0000) !important;
+  box-shadow: 0 6px 14px rgba(59,130,246,.18);
+}
+
+/* 3) دکمه Add to cart در کارت محصول */
+.page .product-card button,
+.page [class*='product'] [class*='card'] button {
+  background: var(--btn-base) !important;
+  color: var(--btn-text) !important;
+  border: 1px solid color-mix(in oklab, #000 12%, transparent) !important;
+}
+.page .product-card button:hover,
+.page [class*='product'] [class*='card'] button:hover {
+  background: var(--btn-hover) !important;
+}
+
+/* 4) هدینگ‌های لاگین/ساين‌آپ خیلی کمرنگ نباشند (غیر فعال‌سازی گرادیان) */
+.page .auth-card h1,
+.page .auth-card h2,
+.page .auth h1,
+.page .auth h2 {
+  background: none !important;
+  -webkit-text-fill-color: unset !important;
+  color: color-mix(in oklab, var(--text, #0f172a) 96%, transparent);
+}
+
+/* 5) متن‌های درون کارت عنوان (placeholderهای خیلی کم‌رنگ) */
+.page .section-header .placeholder,
+.page .rounded-xl .placeholder,
+.page .rounded-2xl .placeholder {
+  color: color-mix(in oklab, var(--text-muted, #6b7280) 72%, transparent) !important;
+}
+/* ===== LOGIN LIGHT FIXES (scoped) – 20251021-150711 ===== */
+.page .auth-card h1{
+  background:none !important;
+  -webkit-text-fill-color:unset !important;
+  color:#1f2937; /* slate-800 */
+}
+/* labels & helper text */
+.page .auth-card form label>span{ color:#475569 !important; } /* slate-600 */
+/* inputs readability only inside auth-card */
+.page .auth-card input.ui-input{
+  color:#0f172a !important;                          /* slate-900 */
+  background:rgba(255,255,255,.66) !important;       /* soft white */
+  border-color:rgba(148,163,184,.6) !important;      /* slate-400-ish */
+}
+.page .auth-card input.ui-input::placeholder{ color:#94a3b8 !important; } /* slate-400 */
+/* checkbox label (already set via JSX, keep here as safety) */
+.page .auth-card label[for="remember"]{ white-space:nowrap; color:#475569 !important; }
+/* Sign in button: از حالت ghost مات خارج شود (فقط داخل auth-card) */
+.page .auth-card .btn-ghost{
+  background: linear-gradient(90deg,#6366f1,#7c3aed,#db2777) !important;
+  color:#fff !important; border:1px solid rgba(255,255,255,.18) !important;
+}
+.page .auth-card .btn-ghost:hover{ filter:none !important; opacity:1 !important; }
+/* ===== POLISH: Login & Home FAB (scoped) – 20251021-151754 ===== */
+
+/* -------------------------------------------
+   A) LOGIN: دکمه‌ی Sign in ملایم‌تر (Light/Dark)
+   فقط داخل کارت لاگین: .auth-card
+--------------------------------------------*/
+:root{
+  --btn-grad-light: linear-gradient(90deg,#6d77f3 0%, #7a5af8 50%, #db3a8c 100%);
+  --btn-grad-dark:  linear-gradient(90deg,#6366f1 0%, #7c3aed 50%, #d946ef 100%);
+}
+.page .auth-card button[type="submit"]{
+  border-radius: 14px !important;
+  border: 1px solid rgba(0,0,0,.05) !important;
+  box-shadow: 0 8px 24px rgba(99,102,241,.18) !important; /* indigo */
+  transition: transform .08s ease, box-shadow .2s ease, filter .15s ease !important;
+}
+:root .page .auth-card button[type="submit"]{
+  background: var(--btn-grad-light) !important;
+  filter: saturate(.9) brightness(.98);
+}
+:root.dark .page .auth-card button[type="submit"]{
+  background: var(--btn-grad-dark) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  box-shadow: 0 10px 28px rgba(124,58,237,.22) !important;
+  filter: saturate(.95) brightness(1.02);
+}
+.page .auth-card button[type="submit"]:hover{
+  filter: none !important;
+  transform: translateY(-1px);
+}
+.page .auth-card button[type="submit"]:active{
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(99,102,241,.18) !important;
+}
+
+/* زیرنویس «or» و لینک پایین خواناتر شوند (فقط داخل کارت) */
+.page .auth-card .text-xs{ color: color-mix(in oklab, var(--text, #0f172a) 60%, transparent) !important; }
+:root.dark .page .auth-card .text-xs{ color: color-mix(in oklab, #fff 70%, transparent) !important; }
+.page .auth-card p.text-center{ color: color-mix(in oklab, var(--text, #0f172a) 65%, transparent) !important; }
+:root.dark .page .auth-card p.text-center{ color: color-mix(in oklab, #fff 78%, transparent) !important; }
+.page .auth-card p.text-center a{ text-decoration: underline; text-underline-offset: 3px; }
+
+/* لیبل‌ها و ورودی‌ها در Dark کمی روشن‌تر شوند */
+:root.dark .page .auth-card form label>span{ color: #cbd5e1 !important; } /* slate-300 */
+:root.dark .page .auth-card input.ui-input{
+  background: rgba(255,255,255,.06) !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
+:root.dark .page .auth-card input.ui-input::placeholder{ color:#9aa6b2 !important; }
+
+/* -------------------------------------------
+   B) HOME FAB (بالا-چپ): ظاهر یکدست و هوور نرم
+   هدف‌گیری روی عناصر رایج: aria-label/title/class
+--------------------------------------------*/
+.home-fab,
+a[aria-label="Home"], a[title="Home"],
+a[class*="home"][class*="btn"], a[class*="home"][class*="icon"]{
+  position: fixed;
+  top: 16px; left: 16px;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 44px; width: 44px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(15,23,42,.08);             /* slate-900 */
+  box-shadow: 0 6px 18px rgba(2,6,23,.10);
+  transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+  z-index: 50; /* روی گرادیانت‌ها بایستد */
+}
+:root.dark .home-fab,
+:root.dark a[aria-label="Home"], :root.dark a[title="Home"],
+:root.dark a[class*="home"][class*="btn"], :root.dark a[class*="home"][class*="icon"]{
+  background: rgba(15,23,42,.55);                    /* slate-900 */
+  border-color: rgba(255,255,255,.10);
+  box-shadow: 0 8px 20px rgba(0,0,0,.28);
+}
+.home-fab:hover,
+a[aria-label="Home"]:hover, a[title="Home"]:hover,
+a[class*="home"][class*="btn"]:hover, a[class*="home"][class*="icon"]:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(2,6,23,.14);
+}
+:root.dark .home-fab:hover,
+:root.dark a[aria-label="Home"]:hover, :root.dark a[title="Home"]:hover,
+:root.dark a[class*="home"][class*="btn"]:hover, :root.dark a[class*="home"][class*="icon"]:hover{
+  box-shadow: 0 12px 28px rgba(0,0,0,.36);
+}
+.home-fab svg,
+a[aria-label="Home"] svg, a[title="Home"] svg,
+a[class*="home"][class*="btn"] svg, a[class*="home"][class*="icon"] svg{
+  width: 22px; height: 22px;
+  color: #0f172a;                                   /* slate-900 */
+}
+:root.dark .home-fab svg,
+:root.dark a[aria-label="Home"] svg, :root.dark a[title="Home"] svg,
+:root.dark a[class*="home"][class*="btn"] svg, :root.dark a[class*="home"][class*="icon"] svg{
+  color: #e2e8f0;                                   /* slate-200 */
+}
+:root:not(.dark) .page .auth-card h1{
+  color:#1f2937 !important;            /* Light */
+}
+
+:root.dark .page .auth-card h1{
+  color:#e6edf3 !important;            /* Dark: خوانا و روشن */
+}
+
+:root.dark .page .auth-card p{
+  color:#cbd5e1 !important;            /* ساب‌تایتل روشن‌تر در دارک */
+}
+
+/* ===== SCOPED AUTH/PROFILE/FORGOT OVERRIDES – FIX HOME ===== */
+
+/* هر چیزی که قبلاً با .page شروع می‌شد، فقط داخل این اسکوپ‌ها اعمال شود */
+.auth-card :is(input.ui-input, textarea.ui-input, .PhoneInputInput),
+.profile-page :is(input.ui-input, textarea.ui-input, .PhoneInputInput),
+.forgot-card :is(input.ui-input, textarea.ui-input, .PhoneInputInput) {
+  color: var(--text) !important;
+  -webkit-text-fill-color: var(--text) !important;
+  background: color-mix(in oklab, var(--surface-2) 70%, transparent) !important;
+  border-color: color-mix(in oklab, var(--surface-border) 90%, transparent) !important;
+  caret-color: #93c5fd !important;
+  opacity: 1 !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+/* placeholder */
+.auth-card :is(input.ui-input, textarea.ui-input)::placeholder,
+.profile-page :is(input.ui-input, textarea.ui-input)::placeholder,
+.forgot-card :is(input.ui-input, textarea.ui-input)::placeholder,
+.auth-card .PhoneInputInput::placeholder,
+.profile-page .PhoneInputInput::placeholder,
+.forgot-card .PhoneInputInput::placeholder {
+  color: #9aa6b2 !important;
+}
+
+/* فوکوس فرم‌ها */
+.auth-card :is(input.ui-input, textarea.ui-input, .PhoneInputInput):focus,
+.profile-page :is(input.ui-input, textarea.ui-input, .PhoneInputInput):focus,
+.forgot-card :is(input.ui-input, textarea.ui-input, .PhoneInputInput):focus {
+  outline: 2px solid rgba(99,102,241,.45) !important;
+  outline-offset: 2px;
+}
+
+/* دکمه‌های خاکستریِ داخل فرم‌ها فقط در همین اسکوپ‌ها تقویت شوند */
+.auth-card :is(.toolbar button, .filters button, .card button:not([class*="primary"]):not([class*="danger"])),
+.profile-page :is(.toolbar button, .filters button, .card button:not([class*="primary"]):not([class*="danger"])),
+.forgot-card :is(.toolbar button, .filters button, .card button:not([class*="primary"]):not([class*="danger"])) {
+  background: color-mix(in oklab, #ffffff 85%, var(--surface-2)) !important;
+  color: color-mix(in oklab, #0f172a 90%, transparent) !important;
+  border: 1px solid color-mix(in oklab, #000 12%, transparent) !important;
+}
+.auth-card :is(.toolbar button:hover, .filters button:hover, .card button:not([class*="primary"]):not([class*="danger"]):hover),
+.profile-page :is(.toolbar button:hover, .filters button:hover, .card button:not([class*="primary"]):not([class*="danger"]):hover),
+.forgot-card :is(.toolbar button:hover, .filters button:hover, .card button:not([class*="primary"]):not([class*="danger"]):hover) {
+  background: color-mix(in oklab, #3b82f6 18%, #ffffff) !important;
+  border-color: color-mix(in oklab, #3b82f6 38%, #0000) !important;
+  box-shadow: 0 4px 12px rgba(59,130,246,.15);
+}
+
+/* هدر/نوار عنوان سکشن‌ها فقط در فرم‌ها */
+.auth-card :is(.section-header, .rounded-xl.section-bar, .rounded-2xl.section-bar),
+.profile-page :is(.section-header, .rounded-xl.section-bar, .rounded-2xl.section-bar),
+.forgot-card :is(.section-header, .rounded-xl.section-bar, .rounded-2xl.section-bar) {
+  background: color-mix(in oklab, #fff 78%, var(--bg)) !important;
+  border: 1px solid color-mix(in oklab, #000 10%, transparent) !important;
+}
+
+/* دارک‌مد فقط داخل فرم‌ها روشن‌تر شود (بدون اثر روی Home) */
+:root.dark .auth-card :is(input.ui-input, textarea.ui-input, .PhoneInputInput),
+:root.dark .profile-page :is(input.ui-input, textarea.ui-input, .PhoneInputInput),
+:root.dark .forgot-card :is(input.ui-input, textarea.ui-input, .PhoneInputInput) {
+  color: #e6edf3 !important;
+  -webkit-text-fill-color: #e6edf3 !important;
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.16) !important;
+}
+:root.dark .auth-card :is(input.ui-input, textarea.ui-input)::placeholder,
+:root.dark .profile-page :is(input.ui-input, textarea.ui-input)::placeholder,
+:root.dark .forgot-card :is(input.ui-input, textarea.ui-input)::placeholder,
+:root.dark .auth-card .PhoneInputInput::placeholder,
+:root.dark .profile-page .PhoneInputInput::placeholder,
+:root.dark .forgot-card .PhoneInputInput::placeholder {
+  color: #9aa6b2 !important;
+}
+/* Home-safe: هر سکشنی که خودش کلاس خاص ندارد را دست نزن */
+.home-page :is(.section-header, .rounded-xl.section-bar, .rounded-2xl.section-bar) {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+
+
+/* ===== PATCH: scope & reverts – 2025-10-27 ===== */
+
+/* A) احراز هویت فقط داخل .auth  (Login/Signup/Forgot) */
+.auth .auth-card h1,
+.auth .auth-card h2 {
+  background: none !important;
+  -webkit-text-fill-color: unset !important;
+  color: color-mix(in oklab, var(--text, #0f172a) 96%, transparent) !important;
+}
+
+/* فیلدهای احراز هویت در Dark */
+:root.dark .auth input.ui-input,
+:root.dark .auth textarea.ui-input {
+  color: #e6edf3 !important;
+  -webkit-text-fill-color: #e6edf3 !important;
+  background: rgba(255,255,255,.08) !important;
+  border-color: rgba(255,255,255,.16) !important;
+  caret-color: #93c5fd !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+}
+:root.dark .auth input.ui-input::placeholder,
+:root.dark .auth textarea.ui-input::placeholder {
+  color: #9aa6b2 !important;
+}
+:root.dark .auth form label > span {
+  color: #cbd5e1 !important;
+}
+
+/* PhoneInput فقط داخل auth */
+.auth .PhoneInputInput {
+  background: transparent !important;
+  color: inherit !important;
+}
+:root.dark .auth .PhoneInputInput {
+  color: #e6edf3 !important;
+}
+.auth .PhoneInputInput::placeholder {
+  color: inherit !important;
+}
+:root.dark .auth .PhoneInputInput::placeholder {
+  color: #9aa6b2 !important;
+}
+
+/* دکمه submit صفحات auth – گرادیانت تمیز و اسکوپ‌شده */
+.auth .auth-card button[type="submit"] {
+  border-radius: 14px !important;
+  border: 1px solid rgba(0,0,0,.05) !important;
+  box-shadow: 0 8px 24px rgba(99,102,241,.18) !important;
+  transition: transform .08s ease, box-shadow .2s ease, filter .15s ease !important;
+  background: linear-gradient(90deg,#6d77f3 0%, #7a5af8 50%, #db3a8c 100%) !important;
+}
+:root.dark .auth .auth-card button[type="submit"] {
+  background: linear-gradient(90deg,#6366f1 0%, #7c3aed 50%, #d946ef 100%) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  box-shadow: 0 10px 28px rgba(124,58,237,.22) !important;
+}
+
+/* B) Revert/حذف رنگ‌های زمینه‌ای ناخواسته روی سکشن‌ها در صفحات غیر-auth */
+.page .section-header,
+.page .rounded-xl.section-bar,
+.page .rounded-2xl.section-bar {
+  background: transparent !important;
+  border-color: var(--surface-border) !important;
+}
+
+/* Home: نوارها/اسلایدرها بدون زمینه‌ی آبی ناخواسته */
+.home .section-header,
+.home .rounded-xl.section-bar,
+.home .rounded-2xl.section-bar,
+.home .swiper,
+.home .slider-wrap .swiper {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* C) Profile: ایمیلِ readonly هم‌رنگ/هم‌استایل شود */
+.profile .readbox {
+  /* همان ظاهر ui-input ولی readonly */
+  border: 1px solid var(--surface-border);
+  background: color-mix(in oklab, var(--surface-2) 65%, transparent);
+  color: var(--text);
+  border-radius: 1rem;
+  padding: .75rem 1rem;
+  line-height: 1.25rem;
+}
+:root.dark .profile .readbox {
+  background: rgba(255,255,255,.06);
+  color: #e6edf3;
+  border-color: rgba(255,255,255,.12);
+}
+
+/* Profile: حذف هاله‌ی رنگی اضافه‌ی باکس بالای فرم‌ها */
+.profile .card-surface-trim {
+  background: transparent !important;
+}

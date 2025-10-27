@@ -199,7 +199,7 @@ export default function Profile() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] page">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] page profile">
       {/* soft gradient background */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
@@ -208,9 +208,9 @@ export default function Profile() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-10">
-        <header className="mb-6 flex items-center gap-4 appbar">
+        <header className="mb-6 flex items-center gap-4">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--surface)]/10 text-white">
-            <span className="text-xl">ðŸ‘¤</span>
+            <span className="text-xl"></span>
           </div>
           <div>
             <h1 className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-2xl font-semibold text-transparent">
@@ -234,7 +234,7 @@ export default function Profile() {
                 />
                 <div className="flex-1">
                   <label
-                    className="inline-flex cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-4 py-2 text-sm text-white/90 transition hover:bg-[var(--surface)]/10"
+                    className="inline-flex cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-4 py-2 text-sm text-[var(--text)] transition hover:bg-[var(--surface)]/10"
                   >
                     <input type="file" accept="image/*" onChange={onPickAvatar} className="hidden" />
                     Choose image
@@ -247,7 +247,7 @@ export default function Profile() {
 
               <form onSubmit={onUpdateAvatar} className="mt-5">
                 <button
-                  className="w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-2.5 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 disabled:opacity-60 btn btn-ghost"
+                  className="btn-gradient w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-600 to-fuchsia-500 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-900/20 transition hover:brightness-110 btn"
                   disabled={!avatarFile}
                 >
                   {me.avatar ? "Change avatar" : "Upload avatar"}
@@ -267,7 +267,7 @@ export default function Profile() {
               <div className="grid gap-4">
                 <div>
                   <label className="mb-1 block text-xs text-[var(--text-muted)]/80">Email</label>
-                  <div className="w-full rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-200">
+                  <div className="w-full rounded-2xl border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input">
                     {me.email}
                   </div>
                 </div>
@@ -365,4 +365,5 @@ export default function Profile() {
     </main>
   );
 }
+
 

@@ -36,7 +36,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] page">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)] page auth">
       {/* soft gradient blobs */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/40 to-violet-600/30 blur-3xl" />
@@ -46,12 +46,12 @@ export default function ForgotPassword() {
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4">
         <div className="w-full max-w-md">
-          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[var(--surface)]/10 p-6 shadow-2xl backdrop-blur-xl">
+          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[var(--surface)]/10 p-6 shadow-2xl backdrop-blur-xl forgot-card">
             <div className="text-center">
               <h1 className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-2xl font-semibold text-transparent">
                 Forgot password?
               </h1>
-              <p className="mt-1 text-sm text-slate-200/80">
+              <p className="mt-1 text-sm text-[var(--text)]">
                 Enter your email to receive a reset link.
               </p>
             </div>
@@ -64,7 +64,7 @@ export default function ForgotPassword() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20"
+                  className="w-full rounded-2xl border border-white/15 bg-[var(--surface)]/5 px-4 py-3 text-slate-100 outline-none placeholder:text-[var(--text-muted)]/40 focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-400/20 ui-input"
                 />
               </label>
 

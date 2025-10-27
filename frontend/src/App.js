@@ -73,12 +73,12 @@ function App() {
             <Link to="/" 
             className=" ml-5 fixed left-4 top-4 z-50 inline-flex items-center gap-2 rounded-xl
                       px-3 py-1.5 text-sm font-medium
-                      bg-[var(--surface)]/10 text-white ring-1 ring-white/20 backdrop-blur
+                      bg-[var(--surface)]/10 text-[var(--text)]/70 backdrop-blur
                       hover:bg-[var(--surface)]/20 focus:outline-none focus:ring-2 focus:ring-white/40"
            aria-label="Back to home">
               {/* Add content inside the Link, e.g. a home icon or text */}
               <span>
-                <MdOutlineHome className='text-white text-5xl' />
+                <MdOutlineHome className='text-5xl'  />
               </span>
             </Link>
           )
